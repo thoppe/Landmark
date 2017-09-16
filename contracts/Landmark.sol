@@ -9,9 +9,12 @@ contract Landmark {
     uint timestamp;
   }
 
-  address curator = msg.sender;
-
+  address curator;
   postContent[] Messages;
+
+  function Landmark() {
+    curator = msg.sender;
+  }
 
   function post(string message) public {
     Messages.push(postContent(message, msg.sender, block.timestamp));
