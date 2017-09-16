@@ -27,6 +27,15 @@ contract('Landmark', function(accounts) {
     var msg1 = "is there a point?"
     var msg2 = "this is the end."
 
+    it("Get curator address", function() {
+	return LANDMARK.deployed().then(function(instance) {
+	    return instance.getCuratorAddress.call();
+	}).then(function(result) {
+	    console.log("Curator address", result);
+	});
+    });
+    
+
     it("Simple, single post", function() {
 	post_message(msg0);
     });
