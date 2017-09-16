@@ -1,6 +1,5 @@
 var LANDMARK = artifacts.require("./Landmark.sol");
 
-
 function post_message(message) {
     return LANDMARK.deployed().then(function(instance) {
 	return instance.post(message);
@@ -59,6 +58,30 @@ contract('Landmark', function(accounts) {
 	    assert.equal(result, accounts[0]);
 	});
     });
+
+    it("Get a message timestamp", function() {
+	var promise2 = null, promise0 = null;
+	var t2, t0;
+	
+	return LANDMARK.deployed().then(function(instance) {
+	    promise0 = instance.getMessageTimestamp.call(0);
+	    promise2 = instance.getMessageTimestamp.call(2);
+	    return promise0;
+	    
+	}).then(function(result) {
+	    t0 = result.toNumber();
+	    return promise2;
+	    
+	}).then(function(result) {
+	    t2 = result.toNumber();
+	    // console.log(t0,t2);
+	    // require that the later message is >= the first message
+	    // since testrpc is so quick, this never really gets checked
+	    assert( t0 <= t2);
+	});
+    });
+
+    
 
     it("Ask for a message that doesn't exist (larger than idx)", function() {
 	test_require("getMessage", 5);

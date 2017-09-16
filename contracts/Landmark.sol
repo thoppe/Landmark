@@ -6,10 +6,13 @@ contract Landmark {
 
   string  [] messageContents;
   address [] messageAddress;
+  uint    [] messageTimestamp;
 
   function post(string message) public {
     messageContents.push(message);
     messageAddress.push(msg.sender);
+    messageTimestamp.push(block.timestamp);
+    
   }
 
   function getMessageCount() public constant returns (uint) {
@@ -29,6 +32,11 @@ contract Landmark {
   function getMessageAddress(uint i) public constant returns (address) {
     _checkValidIndex(i);
     return messageAddress[i];
+  }
+
+  function getMessageTimestamp(uint i) public constant returns (uint) {
+    _checkValidIndex(i);
+    return messageTimestamp[i];
   }
   
 }
