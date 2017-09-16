@@ -1,30 +1,5 @@
+var LANDMARK = artifacts.require("./Landmark.sol");
 
-/*
-function test_constant_function(func_name, a, b, expected_result) {
-    
-    return VEX.deployed().then(function(instance) {
-	return instance[func_name].call(a,b);
-    }).then(function(result) {
-	console.log(func_name, a, b, "= " + result.toNumber());
-	assert.equal(result.toNumber(), expected_result);
-    });
-    
-};
-
-function test_network_function(func_name, a, b, expected_result) {
-
-    return VEX.deployed().then(function(instance) {
-	return instance[func_name](a,b);
-    }).then(function(result) {
-	log = result.logs[0]
-	val = log.args._value;
-	console.log(func_name, a,b, "= " + val.toNumber());
-	console.log(" +", func_name, "mined on blockNumber "+log.blockNumber);
-	console.log(" +", func_name, "gas used "+result.receipt.gasUsed);
-	assert.equal(val.toNumber(), expected_result);
-    });
-};
-*/
 
 function post_message(message) {
     return LANDMARK.deployed().then(function(instance) {
@@ -46,9 +21,6 @@ function test_require(func_name, arg) {
     });
     
 }
-
-
-var LANDMARK = artifacts.require("./Landmark.sol");
 
 contract('Landmark', function(accounts) {
 
