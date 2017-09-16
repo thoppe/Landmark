@@ -31,7 +31,7 @@ contract('Landmark', function(accounts) {
 	post_message(msg0);
     });
     
-
+    
     it("Check post count after posting a few more", function() {
 	post_message(msg1);	
 	post_message(msg2);
@@ -90,6 +90,6 @@ contract('Landmark', function(accounts) {
     it("Ask for a message that doesn't exist (negative)", function() {
 	test_require("getMessage", -1);
     });
-    
+
     
 });
