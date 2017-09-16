@@ -44,11 +44,19 @@ contract('Landmark', function(accounts) {
 	});
     });
 
-    it("Get a message", function() {
+    it("Get message contents", function() {
 	return LANDMARK.deployed().then(function(instance) {
-	    return instance.getMessage.call(1);
+	    return instance.getMessageContents.call(1);
 	}).then(function(result) {
 	    assert.equal(result, msg1);
+	});
+    });
+
+    it("Get a message sender address", function() {
+	return LANDMARK.deployed().then(function(instance) {
+	    return instance.getMessageAddress.call(1);
+	}).then(function(result) {
+	    assert.equal(result, accounts[0]);
 	});
     });
 

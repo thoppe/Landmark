@@ -2,31 +2,33 @@ pragma solidity ^0.4.4;
 
 contract Landmark {
 
-  event result(int _value);
+  // event result(int _value);
 
-  string [] messages;
+  string  [] messageContents;
+  address [] messageAddress;
 
   function post(string message) public {
-    messages.push(message);
+    messageContents.push(message);
+    messageAddress.push(msg.sender);
   }
 
   function getMessageCount() public constant returns (uint) {
-    return messages.length;
+    return messageContents.length;
   }
 
-  function getMessage(uint i) public constant returns (string) {
+  function _checkValidIndex(uint i) private constant {
     require(i < getMessageCount());
     require(i >= 0);
-    //getMessageCount();
-    return messages[i];
   }
 
-  
-
-  /*
-  function network_multiply(int x, int y) public {
-    result(multiply(x,y));
+  function getMessageContents(uint i) public constant returns (string) {
+    _checkValidIndex(i);
+    return messageContents[i];
   }
-  */
+
+  function getMessageAddress(uint i) public constant returns (address) {
+    _checkValidIndex(i);
+    return messageAddress[i];
+  }
   
 }
