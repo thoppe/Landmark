@@ -3,14 +3,22 @@ pragma solidity ^0.4.4;
 contract Landmark {
 
   // event result(int _value);
+
   struct postContent {
     string contents;
     address senderAddress;
     uint timestamp;
   }
 
+  struct profileContent {
+    string contents;
+    uint timestamp;
+  }
+
   address curator;
+  
   postContent[] Messages;
+  mapping (address => profileContent) public Profiles;
 
   function Landmark() {
     curator = msg.sender;
@@ -44,9 +52,16 @@ contract Landmark {
     return Messages[i].timestamp;
   }
 
-  
   function getCuratorAddress() public constant returns (address) {
     return curator;
+  }
+    
+  function postProfile(string message) public {
+    Profiles[msg.sender] = profileContent(message, block.timestamp);
+  }
+
+  function getProfileContent(address target) public constant returns (string) {
+    return Profiles[target].contents;
   }
 
   
