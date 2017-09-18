@@ -32,23 +32,24 @@ contract Landmark {
     return Messages.length;
   }
 
-  function _checkValidIndex(uint i) private constant {
+  modifier checkValidIndex(uint i) {
     require(i < getMessageCount());
     require(i >= 0);
+    _;
   }
 
-  function getMessageContents(uint i) public constant returns (string) {
-    _checkValidIndex(i);
+  function getMessageContents(uint i) checkValidIndex(i)
+    public constant returns (string) {
     return Messages[i].contents;
   }
 
-  function getMessageAddress(uint i) public constant returns (address) {
-    _checkValidIndex(i);
+  function getMessageAddress(uint i) checkValidIndex(i)
+    public constant returns (address) {
     return Messages[i].senderAddress;
   }
 
-  function getMessageTimestamp(uint i) public constant returns (uint) {
-    _checkValidIndex(i);
+  function getMessageTimestamp(uint i) checkValidIndex(i)
+    public constant returns (uint) {
     return Messages[i].timestamp;
   }
 
