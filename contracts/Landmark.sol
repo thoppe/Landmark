@@ -62,6 +62,9 @@ contract Landmark {
   }
 
   function getProfileContent(address target) public constant returns (string) {
+
+    // Timestamp will be set to non-zero if profile ever set
+    require(Profiles[target].timestamp>0);
     return Profiles[target].contents;
   }
 

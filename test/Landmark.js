@@ -96,4 +96,10 @@ contract('Landmark', function(accounts) {
 	testOPCodeFail("getMessageContents", -1);
     });
 
+    it("Ask for a profile that doesn't exist", function() {
+	testOPCodeFail("getProfileContent", accounts[1]);
+    });
+
+    
+
 });
