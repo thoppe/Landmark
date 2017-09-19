@@ -35,8 +35,6 @@ contract('Landmark', function(accounts) {
     var msg2 = "this is the end."
     var profileMsg0 = "I am who I say I am."
 
-    
-
     it("Get curator address", async function() {
 	const result = (await promise_call("getCuratorAddress"));
 	console.log("Curator address", result);
@@ -60,6 +58,19 @@ contract('Landmark', function(accounts) {
     it("Post profile", function() {
 	promise_execute("postProfile", profileMsg0);
     });
+
+    it("Unicode characters in post", async function() {
+	msg = "LOL! Emoji in Landmark 😀😀😀";
+	await promise_execute("post", msg);
+	const idx  = (await promise_call("getMessageCount")) - 1;
+	const msgX = (await promise_call("getMessageContents",idx));
+	var post = await promise_execute("post", msg);
+	console.log(idx,msgX);
+    });
+
+    // *********************************************************************
+    // Getters
+    // *********************************************************************
 
     it("Get profile contents", async function() {
 	const result = (await promise_call("getProfileContent", accounts[0]));
@@ -102,6 +113,11 @@ contract('Landmark', function(accounts) {
     it("Ask for a profile that doesn't exist", function() {
 	testOPCodeFail("getProfileContent", accounts[1]);
     });
+    
+
+    // *********************************************************************
+    // Stress tests
+    // *********************************************************************
 
 
     it("Stress test (long post)", async function() {
@@ -117,7 +133,7 @@ contract('Landmark', function(accounts) {
 	console.log("Single post gasUsed per char", cost_single/msg0.length);
 	console.log("Multi  post gasUsed per char", cost_multi/k/msg0.length);
     });
-
+    
     /*
     it("Stress test (N posts)", function() {
 	var N=200;
