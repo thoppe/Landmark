@@ -20,6 +20,8 @@ contract Landmark {
   postContent[] Messages;
   mapping (address => profileContent) public Profiles;
 
+  uint16 limitPostLength = 720; 
+
   function Landmark() {
     curator = msg.sender;
   }
@@ -32,9 +34,37 @@ contract Landmark {
     return Messages.length;
   }
 
+
+  function getPostLength(string message)
+    public constant returns (uint length) {
+    // This is complicated since unicode takes up a different amount of space
+    uint i=0;
+    bytes memory string_rep = bytes(message);
+	
+    while (i<string_rep.length) {
+      if (string_rep[i]>>7==0)
+	i+=1;
+      else if (string_rep[i]>>5==0x6)
+	i+=2;
+      else if (string_rep[i]>>4==0xE)
+	i+=3;
+      else if (string_rep[i]>>3==0x1E)
+	i+=4;
+      else
+	 
+	i+=1; //For safety
+      length++;
+    }
+  }
+
   modifier checkValidIndex(uint i) {
     require(i < getMessageCount());
     require(i >= 0);
+    _;
+  }
+
+  modifier checkLength(string message) {
+    require(getPostLength(message) <= limitPostLength);
     _;
   }
 

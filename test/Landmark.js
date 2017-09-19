@@ -1,5 +1,11 @@
 var LANDMARK = artifacts.require("./Landmark.sol");
 
+// Counting characters in Unicode (and emoji) are hard, see
+// http://blog.jonnew.com/posts/poo-dot-length-equals-two
+function fancyCount(str){
+  return Array.from(str.split(/[\ufe00-\ufe0f]/).join("")).length;
+}
+
 // Execute a function that writes to the chain
 function promise_execute(func_name, ...args) {
     return LANDMARK.deployed().then(function(instance) {
@@ -30,15 +36,15 @@ async function testOPCodeFail(func_name, ...args) {
 contract('Landmark', function(accounts) {
 
     
-    var msg0 = "hello world!"
-    var msg1 = "is there a point?"
-    var msg2 = "this is the end."
-    var profileMsg0 = "I am who I say I am."
+    var msg0 = "hello world!";
+    var msg1 = "is there a point?";
+    var msg2 = "this is the end.";
+    var msg3 = "LOL! 💩 Emoji in Landmark 😀😀😀";
+    var profileMsg0 = "I am who I say I am.";
 
-    it("Get curator address", async function() {
-	const result = (await promise_call("getCuratorAddress"));
-	console.log("Curator address", result);
-    });
+    // *********************************************************************
+    // Setters
+    // *********************************************************************
     
     it("Simple, single post", function() {
 	promise_execute("post", msg0);
@@ -60,17 +66,27 @@ contract('Landmark', function(accounts) {
     });
 
     it("Unicode characters in post", async function() {
-	msg = "LOL! Emoji in Landmark 😀😀😀";
-	await promise_execute("post", msg);
+	await promise_execute("post", msg3);
 	const idx  = (await promise_call("getMessageCount")) - 1;
 	const msgX = (await promise_call("getMessageContents",idx));
-	var post = await promise_execute("post", msg);
+	var post = await promise_execute("post", msg3);
 	console.log(idx,msgX);
     });
 
     // *********************************************************************
     // Getters
     // *********************************************************************
+
+    it("Get curator address", async function() {
+	const result = (await promise_call("getCuratorAddress"));
+	console.log("Curator address", result);
+    });
+    
+    it("Get post length", async function() {
+	const length_eth = (await promise_call("getPostLength",  msg3));
+	const length_js  = fancyCount(msg3);
+	assert.equal(length_eth, length_js);
+    });
 
     it("Get profile contents", async function() {
 	const result = (await promise_call("getProfileContent", accounts[0]));
@@ -100,6 +116,8 @@ contract('Landmark', function(accounts) {
 
     // *********************************************************************
     // Bounds checking
+    // [fail on empty post]
+    // [fail on post too long]
     // *********************************************************************
 
     it("Ask for a message that doesn't exist (larger than idx)", function() {
@@ -117,6 +135,7 @@ contract('Landmark', function(accounts) {
 
     // *********************************************************************
     // Stress tests
+    // [set stress test length == limitLength]
     // *********************************************************************
 
 
