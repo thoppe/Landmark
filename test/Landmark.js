@@ -4,7 +4,7 @@ var LANDMARK = artifacts.require("./Landmark.sol");
 function promise_execute(func_name, ...args) {
     return LANDMARK.deployed().then(function(instance) {
 	return instance[func_name](...args);
-    }).then(function(result) { });
+    })
 }
 
 // Call a read-only function, returns a promise
@@ -29,10 +29,13 @@ async function testOPCodeFail(func_name, ...args) {
 
 contract('Landmark', function(accounts) {
 
+    
     var msg0 = "hello world!"
     var msg1 = "is there a point?"
     var msg2 = "this is the end."
     var profileMsg0 = "I am who I say I am."
+
+    
 
     it("Get curator address", async function() {
 	const result = (await promise_call("getCuratorAddress"));
@@ -100,6 +103,31 @@ contract('Landmark', function(accounts) {
 	testOPCodeFail("getProfileContent", accounts[1]);
     });
 
-    
 
+    it("Stress test (long post)", async function() {
+	var k=3000;
+	var msg='x'
+
+	var single = await promise_execute("post", msg.repeat(1));
+	var multi = await promise_execute("post", msg.repeat(k));
+
+	var cost_single = single.receipt.gasUsed;
+	var cost_multi = multi.receipt.gasUsed;
+	
+	console.log("Single post gasUsed per char", cost_single/msg0.length);
+	console.log("Multi  post gasUsed per char", cost_multi/k/msg0.length);
+    });
+
+    /*
+    it("Stress test (N posts)", function() {
+	var N=200;
+	var promiseList = [];
+	for (i = 0; i<N; i++) {
+	    promise_execute("post", msg0).then(function(result) {
+		//console.log("posted", result.tx, "to", result.receipt.blockNumber);
+	    });
+	}
+    });
+    */
+    
 });
