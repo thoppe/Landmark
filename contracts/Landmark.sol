@@ -4,21 +4,21 @@ contract Landmark {
 
   // event result(int _value);
 
-  struct postContent {
+  struct _postContent {
     string contents;
     address senderAddress;
     uint timestamp;
   }
 
-  struct profileContent {
+  struct _profileContent {
     string contents;
     uint timestamp;
   }
 
   address curator;
   
-  postContent[] Messages;
-  mapping (address => profileContent) public Profiles;
+  _postContent[] Messages;
+  mapping (address => _profileContent) public Profiles;
 
   uint16 limitPostLength = 720; 
 
@@ -26,8 +26,8 @@ contract Landmark {
     curator = msg.sender;
   }
 
-  function post(string message) checkLength(message) public {
-    Messages.push(postContent(message, msg.sender, block.timestamp));
+  function postMessage(string message) checkLength(message) public {
+    Messages.push(_postContent(message, msg.sender, block.timestamp));
   }
  
   function getMessageCount() public constant returns (uint) {
@@ -91,7 +91,7 @@ contract Landmark {
   }
     
   function postProfile(string message) checkLength(message) public {
-    Profiles[msg.sender] = profileContent(message, block.timestamp);
+    Profiles[msg.sender] = _profileContent(message, block.timestamp);
   }
 
   function getProfileContent(address target) public constant returns (string) {

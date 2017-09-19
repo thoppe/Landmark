@@ -11,3 +11,9 @@ The canonical address is
 
 But you can build your own "Landmark" by deploying it to the blockchain.
 If you build one, let us know and we'll list it here!
+
+### Roadmap
+
++ [ ] Allow for payments to curator for post/profilePost
++ [ ] Build frontend to make it a proper DApp
++ [ ] Deploy to main chain

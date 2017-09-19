@@ -48,7 +48,7 @@ contract('Landmark', function(accounts) {
     // *********************************************************************
     
     it("Simple, single post", function() {
-	promise_execute("post", msg0);
+	promise_execute("postMessage", msg0);
     });
 
     it("Set profile", function() {
@@ -56,8 +56,8 @@ contract('Landmark', function(accounts) {
     });
     
     it("Check post count after posting a few more", async function() {
-	promise_execute("post", msg1);
-	promise_execute("post", msg2);
+	promise_execute("postMessage", msg1);
+	promise_execute("postMessage", msg2);
 	const result = (await promise_call("getMessageCount")).toNumber();
 	assert.equal(result, 3);
     });
@@ -67,11 +67,10 @@ contract('Landmark', function(accounts) {
     });
 
     it("Unicode characters in post", async function() {
-	await promise_execute("post", msg3);
+	await promise_execute("postMessage", msg3);
 	const idx  = (await promise_call("getMessageCount")) - 1;
 	const msgX = (await promise_call("getMessageContents",idx));
-	var post = await promise_execute("post", msg3);
-	console.log(idx,msgX);
+	console.log("Emoji test:", msgX);
     });
 
     // *********************************************************************
@@ -141,7 +140,7 @@ contract('Landmark', function(accounts) {
     it("Post a message too long", async function() {
 	const k = (await promise_call("getLimitPostLength")).toNumber();
 	const msg = 'x'.repeat(k+1)
-	testOPCodeFail("post", msg);
+	testOPCodeFail("postMessage", msg);
     });
 
     it("Post a profile too long", async function() {
@@ -159,8 +158,8 @@ contract('Landmark', function(accounts) {
 	const k = (await promise_call("getLimitPostLength")).toNumber();
 	var msg='x'
 
-	var single = await promise_execute("post", msg.repeat(1));
-	var multi = await promise_execute("post", msg.repeat(k));
+	var single = await promise_execute("postMessage", msg.repeat(1));
+	var multi = await promise_execute("postMessage", msg.repeat(k));
 
 	var cost_single = single.receipt.gasUsed;
 	var cost_multi = multi.receipt.gasUsed;
@@ -174,7 +173,7 @@ contract('Landmark', function(accounts) {
 	var N=200;
 	var promiseList = [];
 	for (i = 0; i<N; i++) {
-	    promise_execute("post", msg0).then(function(result) {
+	    promise_execute("postMessage", msg0).then(function(result) {
 		//console.log("posted", result.tx, "to", result.receipt.blockNumber);
 	    });
 	}
