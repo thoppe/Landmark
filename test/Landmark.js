@@ -1,4 +1,5 @@
 var LANDMARK = artifacts.require("./Landmark.sol");
+var default_limitLength= 720;
 
 // Counting characters in Unicode (and emoji) are hard, see
 // http://blog.jonnew.com/posts/poo-dot-length-equals-two
@@ -24,7 +25,7 @@ function promise_call(func_name, ...args) {
 async function testOPCodeFail(func_name, ...args) {
     try {
 	const result = await promise_call(func_name, ...args);
-	assert(false,"Result should not have completed");
+	assert(false,"Expected a throw (but no throw detected)");
     }
     catch(error) {
 	const opIDX = error.toString().indexOf("invalid opcode");
@@ -81,6 +82,11 @@ contract('Landmark', function(accounts) {
 	const result = (await promise_call("getCuratorAddress"));
 	console.log("Curator address", result);
     });
+
+    it("Get max post length", async function() {
+	const maxlength = (await promise_call("getLimitPostLength"));
+	assert.equal(maxlength.toNumber(), default_limitLength);
+    });
     
     it("Get post length", async function() {
 	const length_eth = (await promise_call("getPostLength",  msg3));
@@ -116,9 +122,7 @@ contract('Landmark', function(accounts) {
 
     // *********************************************************************
     // Bounds checking
-    // [fail on empty post]
-    // [fail on post too long]
-    // *********************************************************************
+     // *********************************************************************
 
     it("Ask for a message that doesn't exist (larger than idx)", function() {
 	testOPCodeFail("getMessageContents", 27);
@@ -131,16 +135,26 @@ contract('Landmark', function(accounts) {
     it("Ask for a profile that doesn't exist", function() {
 	testOPCodeFail("getProfileContent", accounts[1]);
     });
-    
+
+    it("Post a message too long", async function() {
+	const k = (await promise_call("getLimitPostLength")).toNumber();
+	const msg = 'x'.repeat(k+1)
+	testOPCodeFail("post", msg);
+    });
+
+    it("Post a profile too long", async function() {
+	const k = (await promise_call("getLimitPostLength")).toNumber();
+	const msg = 'x'.repeat(k+1)
+	testOPCodeFail("postProfile", msg);
+    });
+
 
     // *********************************************************************
     // Stress tests
-    // [set stress test length == limitLength]
     // *********************************************************************
 
-
     it("Stress test (long post)", async function() {
-	var k=3000;
+	const k = (await promise_call("getLimitPostLength")).toNumber();
 	var msg='x'
 
 	var single = await promise_execute("post", msg.repeat(1));
@@ -149,8 +163,8 @@ contract('Landmark', function(accounts) {
 	var cost_single = single.receipt.gasUsed;
 	var cost_multi = multi.receipt.gasUsed;
 	
-	console.log("Single post gasUsed per char", cost_single/msg0.length);
-	console.log("Multi  post gasUsed per char", cost_multi/k/msg0.length);
+	console.log("Single post gasUsed per char", cost_single);
+	console.log("Multi  post gasUsed per char", cost_multi/k);
     });
     
     /*

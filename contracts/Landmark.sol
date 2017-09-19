@@ -26,14 +26,13 @@ contract Landmark {
     curator = msg.sender;
   }
 
-  function post(string message) public {
+  function post(string message) checkLength(message) public {
     Messages.push(postContent(message, msg.sender, block.timestamp));
   }
  
   function getMessageCount() public constant returns (uint) {
     return Messages.length;
   }
-
 
   function getPostLength(string message)
     public constant returns (uint length) {
@@ -86,8 +85,12 @@ contract Landmark {
   function getCuratorAddress() public constant returns (address) {
     return curator;
   }
+
+  function getLimitPostLength() public constant returns (uint16) {
+    return limitPostLength;
+  }
     
-  function postProfile(string message) public {
+  function postProfile(string message) checkLength(message) public {
     Profiles[msg.sender] = profileContent(message, block.timestamp);
   }
 
