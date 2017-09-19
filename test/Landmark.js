@@ -122,10 +122,11 @@ contract('Landmark', function(accounts) {
 
     // *********************************************************************
     // Bounds checking
-     // *********************************************************************
+    // *********************************************************************
 
     it("Ask for a message that doesn't exist (larger than idx)", function() {
-	testOPCodeFail("getMessageContents", 27);
+	const k = (await promise_call("getMessageCount")).toNumber();
+	testOPCodeFail("getMessageContents", k+1);
     });
 
     it("Ask for a message that doesn't exist (negative)", function() {
