@@ -124,7 +124,8 @@ contract('Landmark', function(accounts) {
     // Bounds checking
     // *********************************************************************
 
-    it("Ask for a message that doesn't exist (larger than idx)", function() {
+    it("Ask for a message that doesn't exist (larger than idx)",
+       async function() {
 	const k = (await promise_call("getMessageCount")).toNumber();
 	testOPCodeFail("getMessageContents", k+1);
     });
