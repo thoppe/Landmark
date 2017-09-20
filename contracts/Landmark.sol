@@ -2,7 +2,14 @@ pragma solidity ^0.4.4;
 
 contract Landmark {
 
-  // event result(int _value);
+  // Curator address fixed on contract creation
+  address curator;
+
+  // Post length hard-coded and fixed on contract creation
+  uint16 limitPostLength = 720;
+
+  // Once a site is closed, it can never be reopened
+  bool isSiteOpen = true;
 
   struct _postContent {
     string contents;
@@ -15,18 +22,17 @@ contract Landmark {
     uint timestamp;
   }
 
-  address curator;
-  
-  _postContent[] Messages;
+  _postContent[] Messages;  
   mapping (address => _profileContent) public Profiles;
 
-  uint16 limitPostLength = 720;
-  bool isSiteOpen = true;
 
   function Landmark() {
     curator = msg.sender;
   }
 
+  
+  // ****************** Post functions ******************
+  
   function postMessage(string message)
     checkLength(message)
     checkIsOpen() public {
@@ -39,51 +45,29 @@ contract Landmark {
     Profiles[msg.sender] = _profileContent(message, block.timestamp);
   }
 
-  function getMessageCount() public constant returns (uint) {
-    return Messages.length;
-  }
-
-  function getPostLength(string message)
-    public constant returns (uint length) {
-    // This is complicated since unicode takes up a different amount of space
-    uint i=0;
-    bytes memory string_rep = bytes(message);
-	
-    while (i<string_rep.length) {
-      if (string_rep[i]>>7==0)
-	i+=1;
-      else if (string_rep[i]>>5==0x6)
-	i+=2;
-      else if (string_rep[i]>>4==0xE)
-	i+=3;
-      else if (string_rep[i]>>3==0x1E)
-	i+=4;
-      else
-	 
-	i+=1; //For safety
-      length++;
-    }
-  }
-
+  // ****************** Validation funcs *****************
+  
   modifier checkValidIndex(uint i) {
     require(i < getMessageCount());
-    require(i >= 0);
-    _;
+    require(i >= 0); _;
   }
 
   modifier checkLength(string message) {
-    require(getPostLength(message) <= limitPostLength);
-    _;
+    require(getPostLength(message) <= limitPostLength); _;
   }
 
   modifier checkCurator() {
-    require(curator==msg.sender);
-    _;
+    require(curator==msg.sender); _;
   }
 
   modifier checkIsOpen() {
-    require(isSiteOpen);
-    _;
+    require(isSiteOpen); _;
+  }
+
+  // ****************** Getters        ******************
+  
+  function getMessageCount() public constant returns (uint) {
+    return Messages.length;
   }
 
   function getMessageContents(uint i) checkValidIndex(i)
@@ -113,15 +97,42 @@ contract Landmark {
     return isSiteOpen;
   }
 
-  function closeLandmarkSite() public checkCurator() {
-    isSiteOpen=false;
-  }
-    
+      
   function getProfileContent(address target) public constant returns (string) {
     // Timestamp will be set to non-zero if profile ever set
     require(Profiles[target].timestamp>0);
     return Profiles[target].contents;
   }
 
+
+  // ****************** Utility funcs  ******************
+
+  function closeLandmarkSite() public checkCurator() {
+    isSiteOpen=false;
+  }
+
+  // ****************** Helper funcs   ******************
+  
+  function getPostLength(string message)
+    public constant returns (uint length) {
+    // This is complicated since unicode takes up a different amount of space
+    uint i=0;
+    bytes memory string_rep = bytes(message);
+	
+    while (i<string_rep.length) {
+      if (string_rep[i]>>7==0)
+	i+=1;
+      else if (string_rep[i]>>5==0x6)
+	i+=2;
+      else if (string_rep[i]>>4==0xE)
+	i+=3;
+      else if (string_rep[i]>>3==0x1E)
+	i+=4;
+      else
+	 
+	i+=1; //For safety
+      length++;
+    }
+  }
   
 }
