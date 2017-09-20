@@ -52,6 +52,11 @@ contract Landmark {
     require(i >= 0); _;
   }
 
+  modifier checkValidProfile(address target) {
+    // Timestamp will be set to non-zero if profile ever set
+    require(Profiles[target].timestamp>0); _;
+  }
+
   modifier checkLength(string message) {
     require(getPostLength(message) <= limitPostLength); _;
   }
@@ -96,14 +101,11 @@ contract Landmark {
   function getIsSiteOpen() public constant returns (bool) {
     return isSiteOpen;
   }
-
       
-  function getProfileContent(address target) public constant returns (string) {
-    // Timestamp will be set to non-zero if profile ever set
-    require(Profiles[target].timestamp>0);
+  function getProfileContent(address target) checkValidProfile(target)
+    public constant returns (string) {
     return Profiles[target].contents;
   }
-
 
   // ****************** Utility funcs  ******************
 
