@@ -154,6 +154,7 @@ contract('Landmark', function(accounts) {
     // Stress tests
     // *********************************************************************
 
+    /*
     it("Stress test (long post)", async function() {
 	const k = (await promise_call("getLimitPostLength")).toNumber();
 	var msg='x'
@@ -168,7 +169,6 @@ contract('Landmark', function(accounts) {
 	console.log("Multi  post gasUsed per char", cost_multi/k);
     });
     
-    /*
     it("Stress test (N posts)", function() {
 	var N=200;
 	var promiseList = [];
@@ -179,5 +179,30 @@ contract('Landmark', function(accounts) {
 	}
     });
     */
+
+    
+    // *********************************************************************
+    // Shutdown 
+    // *********************************************************************
+
+    
+    it("Try to have non-curator shutdown", function() {
+	testOPCodeFail("closeLandmarkSite", {from:accounts[1]});
+    });
+    
+    it("Shutdown and verify closed", async function() {
+	const curator = await promise_call("getCuratorAddress");
+	assert.equal(await promise_call("getIsSiteOpen"), true);
+	await promise_execute("closeLandmarkSite", {from:curator});
+	assert.equal(await promise_call("getIsSiteOpen"), false);
+    });
+
+    it("Post message on shutdown site", async function() {
+	testOPCodeFail("postMessage", msg0);
+    });
+
+    it("Post profile shutdown site", async function() {
+	testOPCodeFail("postProfile", msg0);
+    });
     
 });

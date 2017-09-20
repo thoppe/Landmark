@@ -20,16 +20,25 @@ contract Landmark {
   _postContent[] Messages;
   mapping (address => _profileContent) public Profiles;
 
-  uint16 limitPostLength = 720; 
+  uint16 limitPostLength = 720;
+  bool isSiteOpen = true;
 
   function Landmark() {
     curator = msg.sender;
   }
 
-  function postMessage(string message) checkLength(message) public {
+  function postMessage(string message)
+    checkLength(message)
+    checkIsOpen() public {
     Messages.push(_postContent(message, msg.sender, block.timestamp));
   }
- 
+
+  function postProfile(string message)
+    checkLength(message)
+    checkIsOpen() public {
+    Profiles[msg.sender] = _profileContent(message, block.timestamp);
+  }
+
   function getMessageCount() public constant returns (uint) {
     return Messages.length;
   }
@@ -67,6 +76,16 @@ contract Landmark {
     _;
   }
 
+  modifier checkCurator() {
+    require(curator==msg.sender);
+    _;
+  }
+
+  modifier checkIsOpen() {
+    require(isSiteOpen);
+    _;
+  }
+
   function getMessageContents(uint i) checkValidIndex(i)
     public constant returns (string) {
     return Messages[i].contents;
@@ -89,13 +108,16 @@ contract Landmark {
   function getLimitPostLength() public constant returns (uint16) {
     return limitPostLength;
   }
-    
-  function postProfile(string message) checkLength(message) public {
-    Profiles[msg.sender] = _profileContent(message, block.timestamp);
+
+  function getIsSiteOpen() public constant returns (bool) {
+    return isSiteOpen;
   }
 
+  function closeLandmarkSite() public checkCurator() {
+    isSiteOpen=false;
+  }
+    
   function getProfileContent(address target) public constant returns (string) {
-
     // Timestamp will be set to non-zero if profile ever set
     require(Profiles[target].timestamp>0);
     return Profiles[target].contents;
