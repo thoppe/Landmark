@@ -107,11 +107,21 @@ contract Landmark {
     return Profiles[target].contents;
   }
 
+  function getContractValue() public checkCurator()
+    constant returns (uint) {
+    return this.balance;
+  }
+
   // ****************** Utility funcs  ******************
 
   function closeLandmarkSite() public checkCurator() {
     isSiteOpen=false;
   }
+
+  // TO DO: Start contract payables soon
+  //function fund() payable returns (bool) {
+  //  return true; 
+  //}
 
   // ****************** Helper funcs   ******************
   

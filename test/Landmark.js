@@ -7,6 +7,11 @@ function fancyCount(str){
   return Array.from(str.split(/[\ufe00-\ufe0f]/).join("")).length;
 }
 
+// Simple sleep promise to check timing
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 // Execute a function that writes to the chain
 function promise_execute(func_name, ...args) {
     return LANDMARK.deployed().then(function(instance) {
@@ -67,6 +72,7 @@ contract('Landmark', function(accounts) {
     });
 
     it("Unicode characters in post", async function() {
+	await sleep(100);  // delay in posting to find timing differences
 	await promise_execute("postMessage", msg3);
 	const idx  = (await promise_call("getMessageCount")) - 1;
 	const msgX = (await promise_call("getMessageContents",idx));
@@ -110,13 +116,17 @@ contract('Landmark', function(accounts) {
     });
 
     it("Get message timestamp", async function() {
-
 	const t0 = (await promise_call("getMessageTimestamp", 0));
-	const t2 = (await promise_call("getMessageTimestamp", 2));
-
-	// require that the later message is >= the first message
-	// since testrpc is so quick, this never really gets checked
+	const t2 = (await promise_call("getMessageTimestamp", 3));
 	assert(t0.toNumber() <= t2.toNumber(), "timestamps out of order");
+    });
+
+
+    // TO DO: Test this with a payable...
+    // TO DO: Add in a cost to post variable...
+    it("Get contract value", async function() {
+	const val = (await promise_call("getContractValue")).toNumber();
+	console.log("Current contract value", val);
     });
 
     // *********************************************************************
