@@ -1,6 +1,8 @@
-// Load the helper functions
-const helper = require('./helper_funcs.js');
-for (var key in helper) global[key] = helper[key];
+const helperFuncs = require('./helper_funcs.js');
+for (var key in helperFuncs)
+    global[key] = helperFuncs[key]
+
+//console.log("promise_call");
 
 contract('Landmark', function(accounts) {
 
@@ -8,8 +10,20 @@ contract('Landmark', function(accounts) {
     var ethCostMsg = 1337;
     var ethCostPro = 927;
 
+    /*
+    it("create new contract", async function() {
+	await promise_execute("postMessage", msg0);
+	const k1 = (await promise_call("getMessageCount")).toNumber();
+	console.log("PRE", k1);
+	await createNewContract();
+	const k2 = (await promise_call("getMessageCount")).toNumber();
+	console.log("POST", k2);
+	assert.equal(k2, 0);
+    });
+    */
+    
     it("Set post message cost", async function() {
-	await helper.promise_execute("setCostPostMessage", ethCostMsg);
+	await promise_execute("setCostPostMessage", ethCostMsg);
 	const val = await promise_call("getCostPostMessage");
 	assert.equal(val.toNumber(), ethCostMsg);
     });
@@ -18,22 +32,6 @@ contract('Landmark', function(accounts) {
 	await promise_execute("setCostPostProfile", ethCostPro);
 	const val = await promise_call("getCostPostProfile");
 	assert.equal(val.toNumber(), ethCostPro);
-    });
-    
-    it("Non-curator message cost change", function() {
-	testOPCodeFail("setCostPostMessage", ethCostMsg, {from:accounts[1]});
-    });
-
-    it("Non-curator profile cost change", function() {
-	testOPCodeFail("setCostProfileMessage", ethCostPro, {from:accounts[1]});
-    });
-
-    it("Try to post message without ether with cost set", function() {
-	testOPCodeFail("postMessage", msg0);
-    });
-
-    it("Try to post profile without ether with cost set", function() {
-	testOPCodeFail("postProfile", msg0);
     });
 
     it("Post a message (and pay for it!)", async function() {
@@ -49,6 +47,26 @@ contract('Landmark', function(accounts) {
     it("Check the cost of two previous posts", async function() {
 	const val = await promise_call("getContractValue");
 	assert.equal(val.toNumber(), ethCostPro + ethCostMsg);
+    });
+
+    it("Non-curator message cost change", function() {
+	failExecute("setCostPostMessage", ethCostMsg, {from:accounts[1]});
+    });
+
+    it("Try to post message without ether with cost set", function() {
+	failExecute("postMessage", msg0);
+    });
+
+    it("Try to post profile without ether with cost set", function() {
+	failExecute("postProfile", msg0);
+    });
+
+    it("Non-curator profile cost change", async function() {
+	failExecute("setCostProfileMessage", ethCostPro, {from:accounts[1]});
+    });
+
+    it("Non-curator profile cost change", function() {
+	failExecute("setCostProfileMessage", ethCostPro, {from:accounts[1]});
     });
 
 });

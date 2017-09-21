@@ -108,27 +108,27 @@ contract('Landmark', function(accounts) {
     it("Ask for a message that doesn't exist (larger than idx)",
        async function() {
 	const k = (await promise_call("getMessageCount")).toNumber();
-	testOPCodeFail("getMessageContents", k+1);
+	failCall("getMessageContents", k+1);
     });
 
     it("Ask for a message that doesn't exist (negative)", function() {
-	testOPCodeFail("getMessageContents", -1);
+	failCall("getMessageContents", -1);
     });
 
     it("Ask for a profile that doesn't exist", function() {
-	testOPCodeFail("getProfileContent", accounts[1]);
+	failCall("getProfileContent", accounts[1]);
     });
 
     it("Post a message too long", async function() {
 	const k = (await promise_call("getLimitPostLength")).toNumber();
 	const msg = 'x'.repeat(k+1)
-	testOPCodeFail("postMessage", msg);
+	failExecute("postMessage", msg);
     });
 
     it("Post a profile too long", async function() {
 	const k = (await promise_call("getLimitPostLength")).toNumber();
 	const msg = 'x'.repeat(k+1)
-	testOPCodeFail("postProfile", msg);
+	failExecute("postProfile", msg);
     });
 
 
@@ -169,7 +169,7 @@ contract('Landmark', function(accounts) {
 
     
     it("Try to have non-curator shutdown", function() {
-	testOPCodeFail("closeLandmarkSite", {from:accounts[1]});
+	failExecute("closeLandmarkSite", {from:accounts[1]});
     });
     
     it("Shutdown and verify closed", async function() {
@@ -180,11 +180,11 @@ contract('Landmark', function(accounts) {
     });
 
     it("Post message on shutdown site", async function() {
-	testOPCodeFail("postMessage", msg0);
+	failExecute("postMessage", msg0);
     });
 
     it("Post profile shutdown site", async function() {
-	testOPCodeFail("postProfile", msg0);
+	failExecute("postProfile", msg0);
     });
     
 });

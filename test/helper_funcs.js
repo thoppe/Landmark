@@ -1,23 +1,38 @@
 var LANDMARK = artifacts.require("./Landmark.sol");
+var LANDMARK_instance = LANDMARK.deployed();
+
+// Create a fresh instance of the contract
+async function createNewContract() {
+    const new_address = (await LANDMARK.new()).address;
+    LANDMARK_instance = LANDMARK.at(new_address);
+}
 
 // Execute a function that writes to the chain
 function promise_execute(func_name, ...args) {
-    return LANDMARK.deployed().then(function(instance) {
+    return LANDMARK_instance.then(function(instance) {
 	return instance[func_name](...args);
     })
 }
 
 // Call a read-only function, returns a promise
 function promise_call(func_name, ...args) {
-    return LANDMARK.deployed().then(function(instance) {
+    return LANDMARK_instance.then(function(instance) {
 	return instance[func_name].call(...args);
     });
 }
 
+function failCall(func_name, ...args) {
+    _testOPCodeFail(func_name, promise_call, ...args);
+}
+
+function failExecute(func_name, ...args) {
+    _testOPCodeFail(func_name, promise_execute, ...args);
+}
+
 // Looks for the test to fail with the words "invalid opcode"
-async function testOPCodeFail(func_name, ...args) {
+async function _testOPCodeFail(func_name, callFunc, ...args) {
     try {
-	const result = await promise_call(func_name, ...args);
+	const result = await callFunc(func_name, ...args);
 	assert(false,"Expected a throw (but no throw detected)");
     }
     catch(error) {
@@ -40,8 +55,15 @@ function sleep(ms) {
 
 module.exports.promise_execute = promise_execute;
 module.exports.promise_call = promise_call
+module.exports.failExecute = failExecute;
+module.exports.failCall = failCall;
+
 module.exports.sleep = sleep;
 module.exports.fancyCount = fancyCount;
-module.exports.testOPCodeFail = testOPCodeFail;
+
+module.exports.createNewContract = createNewContract;
+
+module.exports.LANDMARK = LANDMARK;
+module.exports.LANDMARK_instance = LANDMARK_instance;
 
 
