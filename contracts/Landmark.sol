@@ -1,5 +1,7 @@
 pragma solidity ^0.4.4;
 
+// TO DO: Add withdraw function
+
 contract Landmark {
 
   // Curator address fixed on contract creation
@@ -38,14 +40,24 @@ contract Landmark {
   // ****************** Post functions ******************
   
   function postMessage(string message)
+    payable
     checkLength(message)
     checkIsOpen() public {
+
+    if(costPostMessage>0) {
+      require(msg.value >= costPostMessage);
+    }
     Messages.push(_postContent(message, msg.sender, block.timestamp));
   }
 
   function postProfile(string message)
+    payable
     checkLength(message)
     checkIsOpen() public {
+
+    if(costPostProfile>0) {
+      require(msg.value >= costPostProfile);
+    }
     Profiles[msg.sender] = _profileContent(message, block.timestamp);
   }
 
@@ -140,12 +152,6 @@ contract Landmark {
   function setCostPostProfile(uint newcost) public checkCurator() {
     costPostProfile = newcost;
   }
-
-
-  // TO DO: Start contract payables soon
-  //function fund() payable returns (bool) {
-  //  return true; 
-  //}
 
   // ****************** Helper funcs   ******************
   

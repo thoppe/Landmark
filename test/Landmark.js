@@ -4,7 +4,6 @@ eval(require('fs').readFileSync('test/helper_funcs.js')+'');
 var default_limitLength = 720;
 
 contract('Landmark', function(accounts) {
-
     
     var msg0 = "hello world!";
     var msg1 = "is there a point?";
@@ -96,9 +95,6 @@ contract('Landmark', function(accounts) {
 	assert(t0.toNumber() <= t2.toNumber(), "timestamps out of order");
     });
 
-
-    // TO DO: Test this with a payable...
-    // TO DO: Add in a cost to post variable...
     it("Get contract value", async function() {
 	const val = (await promise_call("getContractValue")).toNumber();
 	console.log("Current contract value", val);
