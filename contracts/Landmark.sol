@@ -131,13 +131,15 @@ contract Landmark {
     isSiteOpen=false;
   }
 
-  function setCostPostMessage(uint newcost) public checkCurator() {
+  function setCostPostMessage(uint newcost) public {
     costPostMessage = newcost;
   }
+
 
   function setCostPostProfile(uint newcost) public checkCurator() {
     costPostProfile = newcost;
   }
+
 
   // TO DO: Start contract payables soon
   //function fund() payable returns (bool) {
