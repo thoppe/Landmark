@@ -1,5 +1,6 @@
-eval(require('fs').readFileSync('test/helper_funcs.js')+'');
-
+// Load the helper functions
+const helper = require('./helper_funcs.js');
+for (var key in helper) global[key] = helper[key];
 
 contract('Landmark', function(accounts) {
 
@@ -8,7 +9,7 @@ contract('Landmark', function(accounts) {
     var ethCostPro = 927;
 
     it("Set post message cost", async function() {
-	await promise_execute("setCostPostMessage", ethCostMsg);
+	await helper.promise_execute("setCostPostMessage", ethCostMsg);
 	const val = await promise_call("getCostPostMessage");
 	assert.equal(val.toNumber(), ethCostMsg);
     });

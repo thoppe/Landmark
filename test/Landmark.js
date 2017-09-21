@@ -1,5 +1,6 @@
 // Load the helper functions
-eval(require('fs').readFileSync('test/helper_funcs.js')+'');
+const helper = require('./helper_funcs.js');
+for (var key in helper) global[key] = helper[key];
 
 var default_limitLength = 720;
 
