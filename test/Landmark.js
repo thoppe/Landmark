@@ -96,11 +96,6 @@ contract('Landmark', function(accounts) {
 	assert(t0.toNumber() <= t2.toNumber(), "timestamps out of order");
     });
 
-    it("Get contract value", async function() {
-	const val = (await promise_call("getContractValue")).toNumber();
-	console.log("Current contract value", val);
-    });
-
     // *********************************************************************
     // Bounds checking
     // *********************************************************************
@@ -191,8 +186,9 @@ contract('Landmark', function(accounts) {
     // Payment methods (create new contract)
     // *********************************************************************
 
-    var ethCostMsg = 1337;
-    var ethCostPro = 927;
+    // TO DO: use better values
+    var ethCostMsg = 13370000000000000;
+    var ethCostPro = 9270000000000000;
 
     it("Create new contract, checks for diff address", async function() {
 	const A0 = await getContractAddress();
@@ -224,8 +220,8 @@ contract('Landmark', function(accounts) {
     });
 
     it("Check the cost of two previous posts", async function() {
-	const val = await promise_call("getContractValue");
-	assert.equal(val.toNumber(), ethCostPro + ethCostMsg);
+	const val = (await promise_call("getContractValue")).toNumber();	
+	assert.equal(val, ethCostPro + ethCostMsg);
     });
 
     it("Non-curator message cost change", function() {
@@ -239,5 +235,24 @@ contract('Landmark', function(accounts) {
     it("Try to post profile without ether with cost set", function() {
 	failExecute("postProfile", msg0);
     });
+
+    it("Try to withdraw fund not as curator", function() {
+	failExecute("withdrawValue", {from:accounts[1]});
+    });
+
+    
+    it("Withdraw funds", async function() {
+	const A0 = web3.eth.accounts[0];
+	const val0 = web3.eth.getBalance(A0).toNumber();
+
+	await promise_execute("withdrawValue");	
+	const val1 = web3.eth.getBalance(A0).toNumber();
+	//console.log(val1 - val0);
+	assert(val1 > val0);
+
+
+    });
+    
+    
     
 });

@@ -153,6 +153,14 @@ contract Landmark {
     costPostProfile = newcost;
   }
 
+  function withdrawValue() public checkCurator() returns (bool) {
+    if(this.balance > 0) {
+      // Only transfer if the balance is > 0
+      curator.transfer(this.balance);
+    }
+    return true;
+  }
+
   // ****************** Helper funcs   ******************
   
   function getPostLength(string message)
