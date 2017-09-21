@@ -10,17 +10,13 @@ contract('Landmark', function(accounts) {
     var ethCostMsg = 1337;
     var ethCostPro = 927;
 
-    /*
-    it("create new contract", async function() {
-	await promise_execute("postMessage", msg0);
-	const k1 = (await promise_call("getMessageCount")).toNumber();
-	console.log("PRE", k1);
+    
+    it("Create new contract, checks for diff address", async function() {
+	const A0 = await getContractAddress();
 	await createNewContract();
-	const k2 = (await promise_call("getMessageCount")).toNumber();
-	console.log("POST", k2);
-	assert.equal(k2, 0);
+	const A1 = await getContractAddress();
+	assert.notEqual(A0, A1);
     });
-    */
     
     it("Set post message cost", async function() {
 	await promise_execute("setCostPostMessage", ethCostMsg);
@@ -38,6 +34,7 @@ contract('Landmark', function(accounts) {
 	args = {from:accounts[0], value:ethCostMsg};
 	await promise_execute("postMessage", msg0, args);
     });
+
 
     it("Post a profile (and pay for it!)", async function() {
 	args = {from:accounts[0], value:ethCostPro};
@@ -60,13 +57,9 @@ contract('Landmark', function(accounts) {
     it("Try to post profile without ether with cost set", function() {
 	failExecute("postProfile", msg0);
     });
-
+    
     it("Non-curator profile cost change", async function() {
-	failExecute("setCostProfileMessage", ethCostPro, {from:accounts[1]});
-    });
-
-    it("Non-curator profile cost change", function() {
-	failExecute("setCostProfileMessage", ethCostPro, {from:accounts[1]});
+	failExecute("setCostPostProfile", ethCostPro, {from:accounts[1]});
     });
 
 });

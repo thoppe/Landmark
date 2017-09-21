@@ -5,6 +5,13 @@ var LANDMARK_instance = LANDMARK.deployed();
 async function createNewContract() {
     const new_address = (await LANDMARK.new()).address;
     LANDMARK_instance = LANDMARK.at(new_address);
+
+}
+
+function getContractAddress() {
+    return LANDMARK_instance.then(function(instance) {
+	return instance.contract.address;
+    });
 }
 
 // Execute a function that writes to the chain
@@ -63,7 +70,9 @@ module.exports.fancyCount = fancyCount;
 
 module.exports.createNewContract = createNewContract;
 
-module.exports.LANDMARK = LANDMARK;
+//module.exports.LANDMARK = LANDMARK;
 module.exports.LANDMARK_instance = LANDMARK_instance;
+
+module.exports.getContractAddress = getContractAddress;
 
 
