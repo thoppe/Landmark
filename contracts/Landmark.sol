@@ -131,10 +131,11 @@ contract Landmark {
     isSiteOpen=false;
   }
 
-  function setCostPostMessage(uint newcost) public {
+  // ****************** Payment funcs  ******************
+
+  function setCostPostMessage(uint newcost) public checkCurator() {
     costPostMessage = newcost;
   }
-
 
   function setCostPostProfile(uint newcost) public checkCurator() {
     costPostProfile = newcost;

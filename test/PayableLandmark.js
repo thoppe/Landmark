@@ -18,6 +18,15 @@ contract('Landmark', function(accounts) {
 	assert.equal(val.toNumber(), ethCost);
 	await promise_execute("setCostPostProfile", 0)
     });
+    
+    it("Non-curator message cost change", function() {
+	testOPCodeFail("setCostPostMessage", ethCost, {from:accounts[1]});
+    });
 
+    it("Non-curator profile cost change", function() {
+	testOPCodeFail("setCostProfileMessage", ethCost, {from:accounts[1]});
+    });
+
+    
     
 });
