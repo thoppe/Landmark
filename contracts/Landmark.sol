@@ -11,6 +11,10 @@ contract Landmark {
   // Once a site is closed, it can never be reopened
   bool isSiteOpen = true;
 
+  // Costs are initially set to zero
+  uint costPostMessage = 0;
+  uint costPostProfile = 0;
+
   struct _postContent {
     string contents;
     address senderAddress;
@@ -69,6 +73,7 @@ contract Landmark {
     require(isSiteOpen); _;
   }
 
+
   // ****************** Getters        ******************
   
   function getMessageCount() public constant returns (uint) {
@@ -112,10 +117,26 @@ contract Landmark {
     return this.balance;
   }
 
+  function getCostPostMessage() public constant returns (uint) {
+    return costPostMessage;
+  }
+
+  function getCostPostProfile() public constant returns (uint) {
+    return costPostProfile;
+  }
+
   // ****************** Utility funcs  ******************
 
   function closeLandmarkSite() public checkCurator() {
     isSiteOpen=false;
+  }
+
+  function setCostPostMessage(uint newcost) public checkCurator() {
+    costPostMessage = newcost;
+  }
+
+  function setCostPostProfile(uint newcost) public checkCurator() {
+    costPostProfile = newcost;
   }
 
   // TO DO: Start contract payables soon
