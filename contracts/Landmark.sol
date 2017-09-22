@@ -2,6 +2,9 @@ pragma solidity ^0.4.4;
 
 contract Landmark {
 
+  // Hard-coded version number (increment on new public deploy)
+  uint versionNumber = 1;
+
   // Curator address fixed on contract creation
   address curator;
 
@@ -134,6 +137,10 @@ contract Landmark {
 
   function getCostPostProfile() public constant returns (uint) {
     return costPostProfile;
+  }
+
+  function getVersionNumber() public constant returns (uint) {
+    return versionNumber;
   }
 
   // ****************** Utility funcs  ******************

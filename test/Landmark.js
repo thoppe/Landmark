@@ -2,7 +2,8 @@
 const helper = require('./helper_funcs.js');
 for (var key in helper) global[key] = helper[key];
 
-var default_limitLength = 720;
+const default_limitLength = 720;
+const versionNumber = 1;
 
 contract('Landmark', function(accounts) {
     
@@ -47,6 +48,10 @@ contract('Landmark', function(accounts) {
     // *********************************************************************
     // Getters
     // *********************************************************************
+
+    it("Get version number", async function() {
+	assert.equal(await promise_call("getVersionNumber"), versionNumber);
+    });
 
     it("Get curator address", async function() {
 	const result = (await promise_call("getCuratorAddress"));
