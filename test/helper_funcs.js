@@ -8,6 +8,11 @@ async function createNewContract() {
 
 }
 
+function logGas(promise) {
+    //console.log(promise);
+    console.log(this);
+}
+
 function getContractAddress() {
     return LANDMARK_instance.then(function(instance) {
 	return instance.contract.address;
@@ -71,8 +76,9 @@ module.exports.fancyCount = fancyCount;
 module.exports.createNewContract = createNewContract;
 
 //module.exports.LANDMARK = LANDMARK;
-module.exports.LANDMARK_instance = LANDMARK_instance;
 
+module.exports.LANDMARK_instance = LANDMARK_instance;
 module.exports.getContractAddress = getContractAddress;
+module.exports.logGas = logGas;
 
 

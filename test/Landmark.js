@@ -17,9 +17,13 @@ contract('Landmark', function(accounts) {
     // Setters
     // *********************************************************************
     
-    it("Simple, single post", function() {
-	promise_execute("postMessage", msg0);
+    it("Simple, single post", async function() {
+	x = await promise_execute("postMessage", msg0);
+	//console.log(this.test.title);
+	logGas(x);
     });
+
+    /*
 
     it("Set profile", function() {
 	promise_execute("postProfile", profileMsg0);
@@ -136,7 +140,7 @@ contract('Landmark', function(accounts) {
     // Stress tests
     // *********************************************************************
 
-    /*
+    
     it("Stress test (long post)", async function() {
 	const k = (await promise_call("getLimitPostLength")).toNumber();
 	var msg='x'
@@ -160,7 +164,7 @@ contract('Landmark', function(accounts) {
 	    });
 	}
     });
-    */
+    
 
     
     // *********************************************************************
@@ -289,7 +293,7 @@ contract('Landmark', function(accounts) {
 	
 
     });
-    
+    */    
     
     
 });
