@@ -3,9 +3,8 @@ var LANDMARK_instance = LANDMARK.deployed();
 
 // Create a fresh instance of the contract
 async function createNewContract() {
-    const new_address = (await LANDMARK.new()).address;
-    LANDMARK_instance = LANDMARK.at(new_address);
-
+    var deploy = await LANDMARK.new()
+    LANDMARK_instance = LANDMARK.at(deploy.address);
 }
 
 transactionLog = [];

@@ -45,15 +45,12 @@ contract('Landmark', function(accounts) {
 	// Post a few extra messages
 	promise_execute("postMessage", msg2);
 	promise_execute("postMessage", msg3);
-	const x = await promise_call("getMessageCount");
-	assert.equal(x.toNumber(), 4);
-	//logGas(this.test.title, x);
+	const result = await promise_call("getMessageCount");
+	assert.equal(result.toNumber(), 4);
     });
 
     it("Get version number", async function() {
-	var x = assert.equal(await promise_call("getVersionNumber"),
-			     versionNumber);
-	//logGas(this.test.title, x);
+	assert.equal(await promise_call("getVersionNumber"), versionNumber);
     });
 
     it("Get curator address", async function() {
@@ -139,8 +136,8 @@ contract('Landmark', function(accounts) {
     // Stress tests
     // *********************************************************************
 
-    /*
-    it("Stress test (long post)", async function() {
+    
+    it("Stress test (longest post)", async function() {
 	const k = (await promise_call("getLimitPostLength")).toNumber();
 	var msg='x'
 
@@ -152,8 +149,11 @@ contract('Landmark', function(accounts) {
 	
 	console.log("Single post gasUsed per char", cost_single);
 	console.log("Multi  post gasUsed per char", cost_multi/k);
+
+	logGas(this.test.title, multi);	
     });
     
+    /*
     it("Stress test (N posts)", function() {
 	var N=200;
 	var promiseList = [];
@@ -183,8 +183,9 @@ contract('Landmark', function(accounts) {
     it("Shutdown and verify closed", async function() {
 	const curator = await promise_call("getCuratorAddress");
 	assert.equal(await promise_call("getIsSiteOpen"), true);
-	await promise_execute("closeLandmarkSite", {from:curator});
+	var x = await promise_execute("closeLandmarkSite", {from:curator});
 	assert.equal(await promise_call("getIsSiteOpen"), false);
+	logGas(this.test.title, x);
     });
 
     it("Post message on shutdown site", async function() {
@@ -201,8 +202,9 @@ contract('Landmark', function(accounts) {
 
     it("Set forwarding address", async function() {
 	const curator = await promise_call("getCuratorAddress");
-	await promise_execute("setForwardingAddress",
-			      fwdAddress, {from:curator});
+	var x = await promise_execute("setForwardingAddress",
+				      fwdAddress, {from:curator});
+	logGas(this.test.title, x);
     });
 
     it("Get forwarding address", async function() {
@@ -210,7 +212,6 @@ contract('Landmark', function(accounts) {
 					{from:accounts[1]});
 	assert.equal(fwdAddress, loc1);
     });
-    
     
 
     // *********************************************************************
@@ -220,33 +221,41 @@ contract('Landmark', function(accounts) {
     var ethCostMsg = web3.toWei(1);
     var ethCostPro = web3.toWei(2);
 
-    it("Create new contract, checks for diff address", async function() {
+    it("Deploy new contract", async function() {
 	const A0 = await getContractAddress();
-	await createNewContract();
+	var x = await createNewContract();
 	const A1 = await getContractAddress();
+
+	// Check to make sure addresses are now different
 	assert.notEqual(A0, A1);
+	
+	//logGas(this.test.title, x);
     });
     
     it("Set post message cost", async function() {
-	await promise_execute("setCostPostMessage", ethCostMsg);
+	const tx  = await promise_execute("setCostPostMessage", ethCostMsg);
 	const val = await promise_call("getCostPostMessage");
 	assert.equal(val.toNumber(), ethCostMsg);
+	logGas(this.test.title, tx);
     });
 
     it("Set post profile cost", async function() {
-	await promise_execute("setCostPostProfile", ethCostPro);
+	const tx  = await promise_execute("setCostPostProfile", ethCostPro);
 	const val = await promise_call("getCostPostProfile");
 	assert.equal(val.toNumber(), ethCostPro);
+	logGas(this.test.title, tx);
     });
 
     it("Post a message (and pay for it!)", async function() {
 	args = {from:accounts[0], value:ethCostMsg};
-	await promise_execute("postMessage", msg0, args);
+	const x = await promise_execute("postMessage", msg0, args);
+	logGas(this.test.title, x);
     });
 
     it("Post a profile (and pay for it!)", async function() {
 	args = {from:accounts[0], value:ethCostPro};
-	await promise_execute("postProfile", msg0, args);
+	const x = await promise_execute("postProfile", msg0, args);
+	logGas(this.test.title, x);
     });
 
     it("Check the cost of two previous posts", async function() {
@@ -277,7 +286,8 @@ contract('Landmark', function(accounts) {
 	const A0 = web3.eth.accounts[0];
 	const val0 = web3.eth.getBalance(A0).toNumber();
 
-	await promise_execute("withdrawValue");
+	var tx = await promise_execute("withdrawValue");
+	logGas(this.test.title, tx);
 
 	// ... and after the transfer
 	const val1 = web3.eth.getBalance(A0).toNumber();
@@ -289,8 +299,6 @@ contract('Landmark', function(accounts) {
 	const valPost = (await promise_call("getContractValue")).toNumber();
 	
 	assert.equal(0, Math.round(valPost));
-	
-
     });
     
 

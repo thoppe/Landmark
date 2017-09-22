@@ -6,5 +6,37 @@
   {
     "gasCost": 71720,
     "title": "Set profile"
+  },
+  {
+    "gasCost": 838286,
+    "title": "Stress test (longest post)"
+  },
+  {
+    "gasCost": 27143,
+    "title": "Shutdown and verify closed"
+  },
+  {
+    "gasCost": 43993,
+    "title": "Set forwarding address"
+  },
+  {
+    "gasCost": 42234,
+    "title": "Set post message cost"
+  },
+  {
+    "gasCost": 42696,
+    "title": "Set post profile cost"
+  },
+  {
+    "gasCost": 109903,
+    "title": "Post a message (and pay for it!)"
+  },
+  {
+    "gasCost": 68792,
+    "title": "Post a profile (and pay for it!)"
+  },
+  {
+    "gasCost": 30531,
+    "title": "Withdraw funds"
   }
 ]
