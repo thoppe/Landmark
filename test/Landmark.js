@@ -186,9 +186,8 @@ contract('Landmark', function(accounts) {
     // Payment methods (create new contract)
     // *********************************************************************
 
-    // TO DO: use better values
-    var ethCostMsg = 13370000000000000;
-    var ethCostPro = 9270000000000000;
+    var ethCostMsg = web3.toWei(1);
+    var ethCostPro = web3.toWei(2);
 
     it("Create new contract, checks for diff address", async function() {
 	const A0 = await getContractAddress();
@@ -220,8 +219,8 @@ contract('Landmark', function(accounts) {
     });
 
     it("Check the cost of two previous posts", async function() {
-	const val = (await promise_call("getContractValue")).toNumber();	
-	assert.equal(val, ethCostPro + ethCostMsg);
+	const val = (await promise_call("getContractValue")).toNumber();
+	assert.equal(web3.fromWei(val), 3);
     });
 
     it("Non-curator message cost change", function() {
@@ -242,14 +241,24 @@ contract('Landmark', function(accounts) {
 
     
     it("Withdraw funds", async function() {
+
+	// Measure the account balance before
 	const A0 = web3.eth.accounts[0];
 	const val0 = web3.eth.getBalance(A0).toNumber();
 
-	await promise_execute("withdrawValue");	
-	const val1 = web3.eth.getBalance(A0).toNumber();
-	//console.log(val1 - val0);
-	assert(val1 > val0);
+	await promise_execute("withdrawValue");
 
+	// ... and after the transfer
+	const val1 = web3.eth.getBalance(A0).toNumber();
+
+	// The difference (up to gas costs), should be 3
+	assert.equal(3, Math.round(web3.fromWei(val1-val0)));
+
+	// Everything should be moved (final amount left should be zero
+	const valPost = (await promise_call("getContractValue")).toNumber();
+	
+	assert.equal(0, Math.round(valPost));
+	
 
     });
     
