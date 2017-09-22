@@ -162,6 +162,11 @@ contract('Landmark', function(accounts) {
     // Shutdown 
     // *********************************************************************
 
+    var fwdAddress = accounts[7];
+
+    it("Set forwarding address early before closed", async function() {
+	failExecute("setForwardingAddress", fwdAddress);
+    });
     
     it("Try to have non-curator shutdown", function() {
 	failExecute("closeLandmarkSite", {from:accounts[1]});
@@ -181,6 +186,24 @@ contract('Landmark', function(accounts) {
     it("Post profile shutdown site", async function() {
 	failExecute("postProfile", msg0);
     });
+
+    it("Try to have non-curator to forwarding", function() {
+	failExecute("setForwardingAddress", fwdAddress, {from:accounts[1]});
+    });
+
+    it("Set forwarding address", async function() {
+	const curator = await promise_call("getCuratorAddress");
+	await promise_execute("setForwardingAddress",
+			      fwdAddress, {from:curator});
+    });
+
+    it("Get forwarding address", async function() {
+	const loc1 = await promise_call("getForwardingAddress",
+					{from:accounts[1]});
+	assert.equal(fwdAddress, loc1);
+    });
+    
+    
 
     // *********************************************************************
     // Payment methods (create new contract)

@@ -1,7 +1,5 @@
 pragma solidity ^0.4.4;
 
-// TO DO: Add withdraw function
-
 contract Landmark {
 
   // Curator address fixed on contract creation
@@ -12,6 +10,9 @@ contract Landmark {
 
   // Once a site is closed, it can never be reopened
   bool isSiteOpen = true;
+  
+  // Forwarding address can be set to new contract only AFTER closed
+  address forwardingAddress;
 
   // Costs are initially set to zero
   uint costPostMessage = 0;
@@ -85,8 +86,7 @@ contract Landmark {
     require(isSiteOpen); _;
   }
 
-
-  // ****************** Getters        ******************
+  // ****************** Public Getters ******************
   
   function getMessageCount() public constant returns (uint) {
     return Messages.length;
@@ -111,6 +111,10 @@ contract Landmark {
     return curator;
   }
 
+  function getForwardingAddress() public constant returns (address) {
+    return forwardingAddress;
+  }
+
   function getLimitPostLength() public constant returns (uint16) {
     return limitPostLength;
   }
@@ -122,11 +126,6 @@ contract Landmark {
   function getProfileContent(address target) checkValidProfile(target)
     public constant returns (string) {
     return Profiles[target].contents;
-  }
-
-  function getContractValue() public checkCurator()
-    constant returns (uint) {
-    return this.balance;
   }
 
   function getCostPostMessage() public constant returns (uint) {
@@ -142,8 +141,18 @@ contract Landmark {
   function closeLandmarkSite() public checkCurator() {
     isSiteOpen=false;
   }
-
+  
+  function setForwardingAddress(address target) public checkCurator() {
+    require(isSiteOpen==false);
+    forwardingAddress = target;
+  }
+  
   // ****************** Payment funcs  ******************
+  
+  function getContractValue() public checkCurator()
+    constant returns (uint) {
+    return this.balance;
+  }
 
   function setCostPostMessage(uint newcost) public checkCurator() {
     costPostMessage = newcost;
