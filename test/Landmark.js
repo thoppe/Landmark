@@ -1,4 +1,5 @@
 // Load the helper functions
+var fs = require('fs');
 const helper = require('./helper_funcs.js');
 for (var key in helper) global[key] = helper[key];
 
@@ -8,9 +9,9 @@ const versionNumber = 1;
 contract('Landmark', function(accounts) {
     
     var msg0 = "hello world!";
-    var msg1 = "is there a point?";
-    var msg2 = "this is the end.";
-    var msg3 = "LOL! 💩 Emoji in Landmark 😀😀😀";
+    var msg1 = "LOL! 💩 Emoji in Landmark 😀😀😀";
+    var msg2 = "is there a point?";
+    var msg3 = "this is the end.";
     var profileMsg0 = "I am who I say I am.";
 
     // *********************************************************************
@@ -18,31 +19,18 @@ contract('Landmark', function(accounts) {
     // *********************************************************************
     
     it("Simple, single post", async function() {
-	x = await promise_execute("postMessage", msg0);
-	//console.log(this.test.title);
-	logGas(x);
+	const x = await promise_execute("postMessage", msg0);
+	logGas(this.test.title, x);
     });
 
-    /*
-
-    it("Set profile", function() {
-	promise_execute("postProfile", profileMsg0);
+    it("Set profile", async function() {
+	const x = await promise_execute("postProfile", profileMsg0);
+	logGas(this.test.title, x);
     });
     
-    it("Check post count after posting a few more", async function() {
-	promise_execute("postMessage", msg1);
-	promise_execute("postMessage", msg2);
-	const result = (await promise_call("getMessageCount")).toNumber();
-	assert.equal(result, 3);
-    });
-
-    it("Post profile", function() {
-	promise_execute("postProfile", profileMsg0);
-    });
-
     it("Unicode characters in post", async function() {
 	await sleep(100);  // delay in posting to find timing differences
-	await promise_execute("postMessage", msg3);
+	await promise_execute("postMessage", msg1);
 	const idx  = (await promise_call("getMessageCount")) - 1;
 	const msgX = (await promise_call("getMessageContents",idx));
 	console.log("Emoji test:", msgX);
@@ -53,8 +41,19 @@ contract('Landmark', function(accounts) {
     // Getters
     // *********************************************************************
 
+    it("Check post count", async function() {
+	// Post a few extra messages
+	promise_execute("postMessage", msg2);
+	promise_execute("postMessage", msg3);
+	const x = await promise_call("getMessageCount");
+	assert.equal(x.toNumber(), 4);
+	//logGas(this.test.title, x);
+    });
+
     it("Get version number", async function() {
-	assert.equal(await promise_call("getVersionNumber"), versionNumber);
+	var x = assert.equal(await promise_call("getVersionNumber"),
+			     versionNumber);
+	//logGas(this.test.title, x);
     });
 
     it("Get curator address", async function() {
@@ -140,7 +139,7 @@ contract('Landmark', function(accounts) {
     // Stress tests
     // *********************************************************************
 
-    
+    /*
     it("Stress test (long post)", async function() {
 	const k = (await promise_call("getLimitPostLength")).toNumber();
 	var msg='x'
@@ -164,7 +163,7 @@ contract('Landmark', function(accounts) {
 	    });
 	}
     });
-    
+    */    
 
     
     // *********************************************************************
@@ -293,7 +292,12 @@ contract('Landmark', function(accounts) {
 	
 
     });
-    */    
+    
+
+    it("Save the gas costs to file (not a test)", function() {
+	var f_json = './test/gasCosts.json';
+	fs.writeFileSync(f_json, JSON.stringify(transactionLog,null,2));
+    });
     
     
 });

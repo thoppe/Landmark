@@ -8,9 +8,13 @@ async function createNewContract() {
 
 }
 
-function logGas(promise) {
-    //console.log(promise);
-    console.log(this);
+transactionLog = [];
+function logGas(title, ...transactions) {
+    var tx = {gasCost:0, title:title};
+    for (var i=0, len=transactions.length; i<len; i++) {
+	tx["gasCost"] += transactions[i].receipt.cumulativeGasUsed;
+    }
+    transactionLog.push(tx);
 }
 
 function getContractAddress() {
@@ -79,6 +83,9 @@ module.exports.createNewContract = createNewContract;
 
 module.exports.LANDMARK_instance = LANDMARK_instance;
 module.exports.getContractAddress = getContractAddress;
+
 module.exports.logGas = logGas;
+module.exports.transactionLog = transactionLog;
+
 
 
