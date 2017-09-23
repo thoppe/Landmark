@@ -17,9 +17,10 @@ contract Landmark {
   // Forwarding address can be set to new contract only AFTER closed
   address forwardingAddress;
 
-  // Costs are initially set to zero
-  uint costPostMessage = 0;
-  uint costPostProfile = 0;
+  // Posting/Profiles are free by default
+  bool permissionNeededToMessage;
+  bool permissionNeededToProfile;
+  uint costPrivilege;
 
   struct _postContent {
     string contents;
@@ -30,42 +31,70 @@ contract Landmark {
   struct _profileContent {
     string contents;
     uint timestamp;
+    bool isPrivileged;
   }
 
   _postContent[] Messages;  
   mapping (address => _profileContent) public Profiles;
 
-
   function Landmark() {
     curator = msg.sender;
+    grantPrivilege(curator);
   }
 
   
   // ****************** Post functions ******************
   
-  function postMessage(string message)
-    payable
-    checkLength(message)
-    checkIsOpen() public {
-
-    if(costPostMessage>0) {
-      require(msg.value >= costPostMessage);
-    }
-    Messages.push(_postContent(message, msg.sender, block.timestamp));
+  function postMessage(string text)
+    checkLength(text)
+    checkIsOpen()
+    checkPrivilegePostMessage()
+    public {
+    Messages.push(_postContent(text, msg.sender, block.timestamp));
   }
 
-  function postProfile(string message)
-    payable
-    checkLength(message)
-    checkIsOpen() public {
+  function postProfile(string text)
+    checkLength(text)
+    checkIsOpen()
+    checkPrivilegePostProfile()
+    public {
 
-    if(costPostProfile>0) {
-      require(msg.value >= costPostProfile);
-    }
-    Profiles[msg.sender] = _profileContent(message, block.timestamp);
+    Profiles[msg.sender] = _profileContent(text,
+					   block.timestamp,
+					   getIsPrivileged(msg.sender));
   }
+
+  function grantPrivilege(address target) checkCurator() public {
+    Profiles[target].isPrivileged = true;
+  }
+
+  function setPermissionProfile(bool value) checkCurator() public {
+    permissionNeededToProfile = value;
+  }
+
+  function setPermissionMessage(bool value) checkCurator() public {
+    permissionNeededToMessage = value;
+  }
+  
+
+  // For a free and open network, do not include this function
+  // function revokePrivilege(address target) checkCurator() public {
+  //  Profiles[target].isPrivileged = false;
+  // }
 
   // ****************** Validation funcs *****************
+
+  modifier checkPrivilegePostProfile() {
+    if(permissionNeededToProfile) 
+      require(Profiles[msg.sender].isPrivileged == true);
+    _;
+  }
+
+  modifier checkPrivilegePostMessage() {
+    if(permissionNeededToMessage) 
+      require(Profiles[msg.sender].isPrivileged == true);
+    _;
+  }
   
   modifier checkValidIndex(uint i) {
     require(i < getMessageCount());
@@ -77,8 +106,8 @@ contract Landmark {
     require(Profiles[target].timestamp>0); _;
   }
 
-  modifier checkLength(string message) {
-    require(getPostLength(message) <= limitPostLength); _;
+  modifier checkLength(string text) {
+    require(getPostLength(text) <= limitPostLength); _;
   }
 
   modifier checkCurator() {
@@ -125,18 +154,23 @@ contract Landmark {
   function getIsSiteOpen() public constant returns (bool) {
     return isSiteOpen;
   }
+
+  function getPermissionNeededToMessage() public constant returns (bool) {
+    return permissionNeededToMessage;
+  }
+
+  function getPermissionNeededToProfile() public constant returns (bool) {
+    return permissionNeededToProfile;
+  }
       
   function getProfileContent(address target) checkValidProfile(target)
     public constant returns (string) {
     return Profiles[target].contents;
   }
 
-  function getCostPostMessage() public constant returns (uint) {
-    return costPostMessage;
-  }
-
-  function getCostPostProfile() public constant returns (uint) {
-    return costPostProfile;
+  function getIsPrivileged (address target)
+    public constant returns (bool) {
+    return Profiles[target].isPrivileged;
   }
 
   function getVersionNumber() public constant returns (uint) {
@@ -156,19 +190,36 @@ contract Landmark {
   
   // ****************** Payment funcs  ******************
   
-  function getContractValue() public checkCurator()
+  function getContractValue() public 
     constant returns (uint) {
     return this.balance;
   }
 
-  function setCostPostMessage(uint newcost) public checkCurator() {
-    costPostMessage = newcost;
+  function getCostPrivilege() public constant returns (uint) {
+    return costPrivilege;
   }
 
-  function setCostPostProfile(uint newcost) public checkCurator() {
-    costPostProfile = newcost;
+  function purchasePrivilege() public payable checkIsOpen() {
+
+    // Require that the min cost has been paid
+    require(msg.value>=costPrivilege);
+
+    // Can't purchase twice!
+    require(Profiles[msg.sender].isPrivileged == false);
+
+    // Set the flag to true
+    Profiles[msg.sender].isPrivileged = true;
+
+    // Refund overpayment
+    if(msg.value > costPrivilege)
+      msg.sender.transfer(msg.value - costPrivilege);
+
   }
 
+  function setCostPrivilege(uint newcost) public checkCurator() {
+    costPrivilege = newcost;
+  }
+  
   function withdrawValue() public checkCurator() returns (bool) {
     if(this.balance > 0) {
       // Only transfer if the balance is > 0
@@ -179,11 +230,11 @@ contract Landmark {
 
   // ****************** Helper funcs   ******************
   
-  function getPostLength(string message)
+  function getPostLength(string text)
     public constant returns (uint length) {
     // This is complicated since unicode takes up a different amount of space
     uint i=0;
-    bytes memory string_rep = bytes(message);
+    bytes memory string_rep = bytes(text);
 	
     while (i<string_rep.length) {
       if (string_rep[i]>>7==0)

@@ -1,42 +1,46 @@
 [
   {
-    "gasCost": 109679,
+    "gasCost": 109924,
     "title": "Simple, single post"
   },
   {
-    "gasCost": 71720,
+    "gasCost": 77543,
     "title": "Set profile"
   },
   {
-    "gasCost": 838286,
+    "gasCost": 838531,
     "title": "Stress test (longest post)"
   },
   {
-    "gasCost": 27143,
+    "gasCost": 27231,
     "title": "Shutdown and verify closed"
   },
   {
-    "gasCost": 43993,
+    "gasCost": 44081,
     "title": "Set forwarding address"
   },
   {
+    "gasCost": 42630,
+    "title": "Set/Get privilege cost"
+  },
+  {
     "gasCost": 42234,
-    "title": "Set post message cost"
+    "title": "Set/Get permission to Message"
   },
   {
-    "gasCost": 42696,
-    "title": "Set post profile cost"
+    "gasCost": 27721,
+    "title": "Set/Get permission to Profile"
   },
   {
-    "gasCost": 109903,
-    "title": "Post a message (and pay for it!)"
+    "gasCost": 43746,
+    "title": "Curator grant privilege"
   },
   {
-    "gasCost": 68792,
-    "title": "Post a profile (and pay for it!)"
+    "gasCost": 51154,
+    "title": "Purchase privilege"
   },
   {
-    "gasCost": 30531,
+    "gasCost": 30597,
     "title": "Withdraw funds"
   }
 ]

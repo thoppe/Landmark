@@ -14,6 +14,11 @@ contract('Landmark', function(accounts) {
     var msg3 = "this is the end.";
     var profileMsg0 = "I am who I say I am.";
 
+    var privilegedUser0 = accounts[6];
+    var privilegedUser1 = accounts[7];
+    var privilegedUser2 = accounts[8];
+    var fwdAddress = accounts[9];
+
     // *********************************************************************
     // Setters
     // *********************************************************************
@@ -27,7 +32,7 @@ contract('Landmark', function(accounts) {
 	const x = await promise_execute("postProfile", profileMsg0);
 	logGas(this.test.title, x);
     });
-    
+
     it("Unicode characters in post", async function() {
 	await sleep(100);  // delay in posting to find timing differences
 	await promise_execute("postMessage", msg1);
@@ -35,7 +40,6 @@ contract('Landmark', function(accounts) {
 	const msgX = (await promise_call("getMessageContents",idx));
 	console.log("Emoji test:", msgX);
     });
-
 
     // *********************************************************************
     // Getters
@@ -51,11 +55,6 @@ contract('Landmark', function(accounts) {
 
     it("Get version number", async function() {
 	assert.equal(await promise_call("getVersionNumber"), versionNumber);
-    });
-
-    it("Get curator address", async function() {
-	const result = (await promise_call("getCuratorAddress"));
-	console.log("Curator address", result);
     });
 
     it("Get max post length", async function() {
@@ -79,14 +78,10 @@ contract('Landmark', function(accounts) {
 	assert.equal(result, msg1);
     });
 
-    it("Get post message cost", async function() {
-	const val = await promise_call("getCostPostMessage")
-	assert.equal(val.toNumber(), 0);
-    });
-
-    it("Get post profile cost", async function() {
-	const val = await promise_call("getCostPostProfile")
-	assert.equal(val.toNumber(), 0);
+    it("Get curator privilege", async function() {
+	const curator = await promise_call("getCuratorAddress");
+	const val = await promise_call("getIsPrivileged", curator);
+	assert.equal(val, true);
     });
 
     it("Get message sender address", async function() {
@@ -135,7 +130,6 @@ contract('Landmark', function(accounts) {
     // *********************************************************************
     // Stress tests
     // *********************************************************************
-
     
     it("Stress test (longest post)", async function() {
 	const k = (await promise_call("getLimitPostLength")).toNumber();
@@ -153,7 +147,7 @@ contract('Landmark', function(accounts) {
 	logGas(this.test.title, multi);	
     });
     
-    /*
+/*    
     it("Stress test (N posts)", function() {
 	var N=200;
 	var promiseList = [];
@@ -163,21 +157,19 @@ contract('Landmark', function(accounts) {
 	    });
 	}
     });
-    */    
-
-    
+        
+*/   
     // *********************************************************************
     // Shutdown 
     // *********************************************************************
-
-    var fwdAddress = accounts[7];
 
     it("Set forwarding address early before closed", async function() {
 	failExecute("setForwardingAddress", fwdAddress);
     });
     
-    it("Try to have non-curator shutdown", function() {
+    it("Non-curator shutdown or forwarding", function() {
 	failExecute("closeLandmarkSite", {from:accounts[1]});
+	failExecute("setForwardingAddress", fwdAddress, {from:accounts[1]});
     });
     
     it("Shutdown and verify closed", async function() {
@@ -196,10 +188,6 @@ contract('Landmark', function(accounts) {
 	failExecute("postProfile", msg0);
     });
 
-    it("Try to have non-curator to forwarding", function() {
-	failExecute("setForwardingAddress", fwdAddress, {from:accounts[1]});
-    });
-
     it("Set forwarding address", async function() {
 	const curator = await promise_call("getCuratorAddress");
 	var x = await promise_execute("setForwardingAddress",
@@ -213,13 +201,12 @@ contract('Landmark', function(accounts) {
 	assert.equal(fwdAddress, loc1);
     });
     
-
+   
     // *********************************************************************
     // Payment methods (create new contract)
     // *********************************************************************
 
-    var ethCostMsg = web3.toWei(1);
-    var ethCostPro = web3.toWei(2);
+    var ethCost = web3.toWei(.3);
 
     it("Deploy new contract", async function() {
 	const A0 = await getContractAddress();
@@ -228,57 +215,85 @@ contract('Landmark', function(accounts) {
 
 	// Check to make sure addresses are now different
 	assert.notEqual(A0, A1);
-	
-	//logGas(this.test.title, x);
     });
-    
-    it("Set post message cost", async function() {
-	const tx  = await promise_execute("setCostPostMessage", ethCostMsg);
-	const val = await promise_call("getCostPostMessage");
-	assert.equal(val.toNumber(), ethCostMsg);
-	logGas(this.test.title, tx);
-    });
-
-    it("Set post profile cost", async function() {
-	const tx  = await promise_execute("setCostPostProfile", ethCostPro);
-	const val = await promise_call("getCostPostProfile");
-	assert.equal(val.toNumber(), ethCostPro);
-	logGas(this.test.title, tx);
-    });
-
-    it("Post a message (and pay for it!)", async function() {
-	args = {from:accounts[0], value:ethCostMsg};
-	const x = await promise_execute("postMessage", msg0, args);
-	logGas(this.test.title, x);
-    });
-
-    it("Post a profile (and pay for it!)", async function() {
-	args = {from:accounts[0], value:ethCostPro};
-	const x = await promise_execute("postProfile", msg0, args);
-	logGas(this.test.title, x);
-    });
-
-    it("Check the cost of two previous posts", async function() {
-	const val = (await promise_call("getContractValue")).toNumber();
-	assert.equal(web3.fromWei(val), 3);
-    });
-
-    it("Non-curator message cost change", function() {
-	failExecute("setCostPostMessage", ethCostMsg, {from:accounts[1]});
-    });
-
-    it("Try to post message without ether with cost set", function() {
-	failExecute("postMessage", msg0);
-    });
-
-    it("Try to post profile without ether with cost set", function() {
-	failExecute("postProfile", msg0);
-    });
-
-    it("Try to withdraw fund not as curator", function() {
+        
+    it("Non curator set permissions/cost", async function() {
+	args = {from:accounts[1]};
+	failExecute("setPermissionProfile", true, args);
+	failExecute("setPermissionMessage", true, args);
+	failExecute("setCostPrivilege", ethCost, args);
+	failExecute("grantPrivilege", accounts[1], args);
 	failExecute("withdrawValue", {from:accounts[1]});
     });
 
+    it("Set/Get privilege cost", async function() {
+	const tx  = await promise_execute("setCostPrivilege", ethCost);
+	const val = await promise_call("getCostPrivilege");
+	assert.equal(val.toNumber(), ethCost);
+	logGas(this.test.title, tx);
+    });
+
+    it("Set/Get permission to Message", async function() {
+	const tx  = await promise_execute("setPermissionMessage", true);
+	assert.equal(true, await promise_call("getPermissionNeededToMessage"));
+	logGas(this.test.title, tx);
+    });
+
+    it("Set/Get permission to Profile", async function() {
+	const tx  = await promise_execute("setPermissionProfile", true);
+	assert.equal(true, await promise_call("getPermissionNeededToProfile"));
+	logGas(this.test.title, tx);
+    });
+
+    it("Try to post without permission", function() {
+	failExecute("postMessage", msg0, {from:privilegedUser0});
+	failExecute("postProfile", msg0, {from:privilegedUser0});
+    });
+
+    it("Curator grant privilege", async function() {
+	const x = await promise_execute("grantPrivilege", privilegedUser0);
+	logGas(this.test.title, x);
+    });
+
+    it("Post with granted permission", function() {
+	promise_execute("postMessage", msg0, {from:privilegedUser0});
+	promise_execute("postProfile", msg0, {from:privilegedUser0});
+    });
+    
+    it("Try to under-purchase privilege", async function() {
+	args = {from:privilegedUser1, value:ethCost/2};
+	failExecute("purchasePrivilege", args);
+
+	// Fails without any value too
+	failExecute("purchasePrivilege", {from:privilegedUser1});
+    });
+
+    it("Purchase privilege", async function() {
+	args = {from:privilegedUser1, value:ethCost*3};
+	const x = await promise_execute("purchasePrivilege", args);
+	logGas(this.test.title, x);
+
+	// Make sure overpayment was refunded
+	const val = (await promise_call("getContractValue")).toNumber();
+	assert.equal(ethCost, val);
+    });
+
+    it("Post with purchased permission", function() {
+	promise_execute("postMessage", msg0, {from:privilegedUser1});
+	promise_execute("postProfile", msg0, {from:privilegedUser1});
+    });
+
+    it("Try to purchase privilege twice", async function() {
+	args = {from:privilegedUser1, value:ethCost};
+	failExecute("purchasePrivilege", args);	
+    });
+
+    it("Shutdown and try to purchase", async function() {
+	args = {from:privilegedUser2, value:ethCost};
+	const curator = await promise_call("getCuratorAddress");
+	await promise_execute("closeLandmarkSite", {from:curator});
+	failExecute("purchasePrivilege", args);
+    });
     
     it("Withdraw funds", async function() {
 
@@ -292,12 +307,13 @@ contract('Landmark', function(accounts) {
 	// ... and after the transfer
 	const val1 = web3.eth.getBalance(A0).toNumber();
 
-	// The difference (up to gas costs), should be 3
-	assert.equal(3, Math.round(web3.fromWei(val1-val0)));
+	// The difference (up to gas costs)
+	var delta = Math.round(web3.fromWei(val1-val0)*1e2)/1e2;
+	assert.equal(delta, web3.fromWei(ethCost));
 
 	// Everything should be moved (final amount left should be zero
 	const valPost = (await promise_call("getContractValue")).toNumber();
-	
+
 	assert.equal(0, Math.round(valPost));
     });
     
@@ -306,6 +322,6 @@ contract('Landmark', function(accounts) {
 	var f_json = './test/gasCosts.json';
 	fs.writeFileSync(f_json, JSON.stringify(transactionLog,null,2));
     });
-    
+
     
 });
