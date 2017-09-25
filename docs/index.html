@@ -1,1 +1,126 @@
-<h1>Landmark</h1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>VEX</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-toggle.min.css" rel="stylesheet">
+    
+  </head>
+
+  <body>
+
+    <div style="background-image: linear-gradient(to bottom,#563d7c 0,#6f5499 100%); color:white; width:100%;">
+      <div class="container">
+	<h1 style="font-size:600%">Landmark</h1> 
+	<p class="lead" style="color:#cdbfe3">
+	  Decentralized, permanent, and uncensorable communication</p>	
+    </div>
+    </div>
+
+    <div class="help-block"></div>
+
+    <div class="container">
+
+      <div class="row">
+
+	<div class="col-xs-4">
+	  <input type="number" class="form-control"
+		 id="data_x" value="3">
+	</div>
+
+	<div class="col-xs-4">
+	  <input type="number" class="form-control"
+		 id="data_y" value="7">
+	</div>
+
+	<div class="col-xs-4">
+	  <label class="checkbox-inline">
+	    <input id="mainnet" checked
+		   data-on="Live"
+		   data-off="Test"
+		   data-onstyle="danger"
+		   data-toggle="toggle"
+		   type="checkbox">
+	  </label>
+	</div>
+	 
+      </div>
+    </div>
+    
+    <div class="help-block"></div>
+
+    <div class="container control-group">
+      
+      <button class="btn btn-group btn-process-add"
+	      type="button" data-id="0">Add</button>
+
+      <button class="btn btn-group btn-process-subtract"
+	      type="button" data-id="0">Subtract</button>
+
+      <button class="btn btn-group btn-process-multiply"
+	      type="button" data-id="0">Multiply</button>
+
+    </div>
+    
+
+    <div class="container">
+      <h1 id="result">No result calculated yet</h1>
+      
+
+      <table class="table table-striped">
+	<tbody>
+	  <tr>
+	    <td>Contract hash:</td>
+	    <td><a id="contractHash"></a></td>
+          </tr>
+	  <tr>
+	    <td>Transaction hash:</td>
+	    <td><a id="transactionHash"></a></td>
+	  </tr>
+
+	  <tr>
+	    <td>Block Number:</td>
+	    <td><a id="blockNumber"></a></td>
+	  </tr>
+
+	  <tr>
+	    <td>Gas Used</td>
+	    <td id="gasUsed"></td>
+	  </tr>
+	</tbody>
+      </table>
+    </div>
+
+
+    <div id="errorbox"
+	 style="display:none"
+	 class="container alert alert-danger" role="alert">
+    </div>
+
+    <footer class="bd-footer text-muted">
+      <div class="container">
+	<a href="https://github.com/thoppe/ethereum_Landmark">
+	  https://github.com/thoppe/ethereum_Landmark</a>
+	<br>Created by
+	<a href="https://twitter.com/metasemantic?lang=en">@metasemantic</a>
+      </div>
+    </footer>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-toggle.min.js"></script>
+
+    <script src="js/web3.min.js"></script>
+
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/app.js"></script>
+
+  </body>
+</html>
