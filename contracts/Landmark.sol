@@ -204,6 +204,9 @@ contract Landmark {
     // Require that the min cost has been paid
     require(msg.value>=costPrivilege);
 
+    // Can't purchase if there is no cost
+    require(costPrivilege>0);
+
     // Can't purchase twice!
     require(Profiles[msg.sender].isPrivileged == false);
 

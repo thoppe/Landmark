@@ -226,6 +226,11 @@ contract('Landmark', function(accounts) {
 	failExecute("withdrawValue", {from:accounts[1]});
     });
 
+    it("Try purchase permission befroe cost is set", function() {
+	var args = {from:privilegedUser1, value:ethCost};
+	failExecute("purchasePrivilege", args);
+    });
+
     it("Set/Get privilege cost", async function() {
 	const tx  = await promise_execute("setCostPrivilege", ethCost);
 	const val = await promise_call("getCostPrivilege");
