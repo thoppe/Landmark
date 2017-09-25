@@ -48,11 +48,12 @@ App = {
 
 	// Load the contract data from file
 	$.getJSON(f_deployed_contract, function(data) {
-	    App.contracts.LANDMARK = TruffleContract(data);
-	    App.contracts.LANDMARK.setProvider(App.web3Provider);
+	    App.contracts.Landmark = TruffleContract(data);
+	    App.contracts.Landmark.setProvider(App.web3Provider);	    
 	});
 
 	App.checkNetworkStatus();
+	App.loadAccountInfo();
 	return App.bindEvents();
     },
 
@@ -60,23 +61,36 @@ App = {
 
 	var toggle = $("#mainnet").prop('checked');
 	if (toggle) {
-	    return App.contracts.LANDMARK.at(mainchain_address);
+	    return App.contracts.Landmark.at(mainchain_address);
 	}
 	else {
-	    return App.contracts.LANDMARK.deployed();
+	    return App.contracts.Landmark.deployed();
 	}
     },
 
-    checkNetworkStatus: function() {
+    checkNetworkStatus: async function() {
+
+	web3.eth.getAccounts(async function(error, accounts) {
+    	    let vex = await App.getContractDeploy();
+	    $('#contractHash').text(vex.address)
+    		.attr('href', ESUrl+"/address/"+vex.address);
+	    console.log(vex);
+
+	});
+
+    },
+    loadAccountInfo: function() {
+
 	web3.eth.getAccounts(function(error, accounts) {
-	    App.getContractDeploy().then(function(vex) {
-		$('#contractHash').text(vex.address)
-    		    .attr('href', ESUrl+"/address/"+vex.address);
-		console.log(vex);
-	    }).catch(function(err) {
-		report_error(err.message);
+	    let acc0 = accounts[0];
+	    $('#accountHash').text(acc0)
+	    
+	    web3.eth.getBalance(acc0, function(error, val) {
+		let eth = web3.fromWei(val.toNumber());
+		$('#accountBalance').text(eth + " ether");
 	    });
 	});
+
     },
 
     bindEvents: function() {
@@ -90,6 +104,8 @@ App = {
 	});
 
     },
+
+    /*
 
     processButtonAdd: function() {
 	App.processButton("network_add");
@@ -112,16 +128,16 @@ App = {
 
 	web3.eth.getAccounts(function(error, accounts) {
 
-	    /*
+	    
             // Call the easy way without costing anything
-	    App.getContractDeploy().then(function(vex) {
-		return vex.add.call(x,y);
-	    }).then(function(result) {
-		update_result(result);
-	    }).catch(function(err) {
-		report_error(err.message);
-	    });
-	    */
+	    //App.getContractDeploy().then(function(vex) {
+	    //		return vex.add.call(x,y);
+	    //	    }).then(function(result) {
+	    //		update_result(result);
+	    //	    }).catch(function(err) {
+	    ///		report_error(err.message);
+	    //	    });
+	    
 	    
 	    App.getContractDeploy().then(function(vex) {
 		$('#result').text("Contract executing...");
@@ -134,10 +150,8 @@ App = {
 	    
 	    
 	});
-
-	
-    },
-
+     },
+*/
 };
 
 $(function() {
