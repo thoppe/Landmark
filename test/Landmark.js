@@ -26,6 +26,7 @@ contract('Landmark', function(accounts) {
     it("Simple, single post", async function() {
 	const x = await promise_execute("postMessage", msg0);
 	logGas(this.test.title, x);
+	console.log("Contract address", await getContractAddress());
     });
 
     it("Set profile", async function() {

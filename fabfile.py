@@ -5,5 +5,6 @@ def dev():
     local("testrpc --seed 2048")
 
 def serve():
+    local("truffle deploy")
     local("cp -rf build docs/")
     local("npm run dev")

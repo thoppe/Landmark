@@ -3,6 +3,11 @@ var f_deployed_contract = './build/contracts/Landmark.json';
 //var mainchain_address = '0x';
 var ESUrl = "https://etherscan.io"
 
+//require("truffle-contract");
+//require("truffle-contracts");
+//var LANDMARK = artifacts.require("./Landmark.sol");
+
+/*
 function update_result(res) {
     $('#result').text(res.logs[0].args._value);
     $('#transactionHash').text(res.receipt.transactionHash)
@@ -12,6 +17,7 @@ function update_result(res) {
     $('#gasUsed').text(res.receipt.gasUsed);
     console.log("Result was", res.logs[0].args._value);
 };
+*/
 
 function report_error(x) {
     $('#errorbox').show().append(x);
@@ -68,8 +74,17 @@ App = {
 	}
     },
 
-    checkNetworkStatus: async function() {
-
+    checkNetworkStatus:  function() {
+	web3.eth.getAccounts(function(error, accounts) {
+	    App.getContractDeploy().then(function(vex) {
+		$('#contractHash').text(vex.address)
+    		    .attr('href', ESUrl+"/address/"+vex.address);
+		console.log(vex);
+	    }).catch(function(err) {
+		report_error(err.message);
+	    });
+	});
+	/*
 	web3.eth.getAccounts(async function(error, accounts) {
     	    let vex = await App.getContractDeploy();
 	    $('#contractHash').text(vex.address)
@@ -77,32 +92,55 @@ App = {
 	    console.log(vex);
 
 	});
-
+	*/
     },
+    
     loadAccountInfo: function() {
-
 	web3.eth.getAccounts(function(error, accounts) {
-	    let acc0 = accounts[0];
+	    var acc0 = accounts[0];
 	    $('#accountHash').text(acc0)
 	    
 	    web3.eth.getBalance(acc0, function(error, val) {
 		let eth = web3.fromWei(val.toNumber());
 		$('#accountBalance').text(eth + " ether");
 	    });
-	});
+	});	
+    },
 
+    loadPostInfo: function() {
+	web3.eth.getAccounts(function(error, accounts) {
+
+            // Call the easy way without costing anything
+	    App.getContractDeploy().then(function(vex) {
+		return vex.getMessageCount.call();
+	    }).then(function(result) {
+		console.log(result.toNumber());
+
+	    }).catch(function(err) {
+		report_error(err.message);
+	    });
+
+	});	
     },
 
     bindEvents: function() {
-	$(document).on('click', '.btn-process-add', App.processButtonAdd);
-	$(document).on('click', '.btn-process-multiply', App.processButtonMul);
-	$(document).on('click', '.btn-process-subtract', App.processButtonSub);
-
+	//$(document).on('click', '.btn-process-add', App.processButtonAdd);
+	$(document).on('click', '.btn-process-post', App.processButtonPost);
+	
 	$('#mainnet').change(function() {
 	    $('#errorbox').empty().hide();
 	    App.checkNetworkStatus();
 	});
 
+
+	App.loadPostInfo();
+    },
+
+    processButtonPost: function() {
+	const text = $('#marktext').val();
+	
+	console.log("hello", text);
+	//App.processButton("network_add");
     },
 
     /*
