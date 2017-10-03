@@ -7,17 +7,17 @@ var ESUrl = "https://etherscan.io"
 //require("truffle-contracts");
 //var LANDMARK = artifacts.require("./Landmark.sol");
 
-/*
+
 function update_result(res) {
-    $('#result').text(res.logs[0].args._value);
-    $('#transactionHash').text(res.receipt.transactionHash)
-    	.attr('href', ESUrl+"/tx/"+res.receipt.transactionHash);
-    $('#blockNumber').text(res.receipt.blockNumber)
-	.attr('href', ESUrl+"/block/"+res.receipt.blockNumber);
-    $('#gasUsed').text(res.receipt.gasUsed);
-    console.log("Result was", res.logs[0].args._value);
+    let data = res.receipt;
+    //$('#result').text(res.logs[0].args._value);
+    $('#transactionHash').text(data.transactionHash)
+    	.attr('href', ESUrl+"/tx/"+data.transactionHash);
+    $('#blockNumber').text(data.blockNumber)
+	.attr('href', ESUrl+"/block/"+data.blockNumber);
+    $('#gasUsed').text(data.gasUsed);
 };
-*/
+
 
 function report_error(x) {
     $('#errorbox').show().append(x);
@@ -114,6 +114,8 @@ App = {
 	    App.getContractDeploy().then(function(vex) {
 		return vex.getMessageCount.call();
 	    }).then(function(result) {
+
+		$('#postCount').text(result.toNumber());
 		console.log(result.toNumber());
 
 	    }).catch(function(err) {
@@ -124,7 +126,6 @@ App = {
     },
 
     bindEvents: function() {
-	//$(document).on('click', '.btn-process-add', App.processButtonAdd);
 	$(document).on('click', '.btn-process-post', App.processButtonPost);
 	
 	$('#mainnet').change(function() {
@@ -138,8 +139,25 @@ App = {
 
     processButtonPost: function() {
 	const text = $('#marktext').val();
+	if(!text) return false;
 	
 	console.log("hello", text);
+	
+	web3.eth.getAccounts(function(error, accounts) {
+
+	    App.getContractDeploy().then(function(cx) {
+		console.log("Posting with", text);
+		return cx.postMessage(text);
+	    }).then(function(result) {
+		console.log("Post complete!", result);
+		update_result(result);
+	    }).catch(function(err) {
+		report_error(err.message);
+	    });
+	    
+	    
+	});
+
 	//App.processButton("network_add");
     },
 
