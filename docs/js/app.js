@@ -40,14 +40,14 @@ function setAccountBalance(result) {
     $('#accountBalance').text(eth + " ether");
 }
 
-
-
 function setMessageContents(result, n) {
-    console.log(result);
+    let label = 'LandmarkPost'+n;
+    if($('#'+label).length)
+	return false;
     
     let body = $("#marks").find('tbody');
     let td = $("<td>").text(result);
-    let tr = $("<tr>").attr('id', 'LandmarkPost'+n);
+    let tr = $("<tr>").attr('id', label);
     body.append(tr.append(td));
 }
 
@@ -127,6 +127,7 @@ App = {
 
 	App.LandmarkCall("getVersionNumber", {"then":setVersionNumber});
 	App.LandmarkCall("getMessageCount", {"then":setPostCount});
+	App.LandmarkCall("getMessageContents", {"then":setMessageContents}, 0);
 	App.LandmarkCall("getMessageContents", {"then":setMessageContents}, 0);
     },
 
