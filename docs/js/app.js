@@ -35,7 +35,7 @@ function getPostCount() {
     console.log(n);
 }
 
-function setVersionInfo(result) {
+function setVersionNumber(result) {
     $('#versiontag').text(", version "+ result.toNumber());
 }
 
@@ -43,11 +43,31 @@ function setPostCount(result) {
     $('#postCount').text(result.toNumber());
 }
 
-/*
-function setNetworkStatus(result)
-$('#contractHash').text(vex.address)
-    		    .attr('href', ESUrl+"/address/"+vex.address);
-*/
+function setAccountHash(accounts) {
+    $('#accountHash').text(accounts[0])
+}
+
+function setContractHash(accounts, LM) {
+    $('#contractHash').text(LM.address)
+    	.attr('href', ESUrl+"/address/"+LM.address);
+}
+
+function setAccountBalance(result) {
+    let eth = web3.fromWei(result.toNumber());
+    $('#accountBalance').text(eth + " ether");
+}
+
+
+
+function setMessageContents(result, n) {
+    console.log(result);
+    
+    let body = $("#marks").find('tbody');
+    let td = $("<td>").text(result);
+    let tr = $("<tr>").attr('id', 'LandmarkPost'+n);
+    body.append(tr.append(td));
+}
+
 
 App = {
     web3Provider: null,
@@ -82,89 +102,61 @@ App = {
 	    App.contracts.Landmark.setProvider(App.web3Provider);	    
 	});
 
-	App.checkNetworkStatus();
+	App.LandmarkCall(null, {"pre":setContractHash});
 	App.loadAccountInfo();
 	return App.bindEvents();
     },
 
     
-    LandmarkCall: function(funcName, thenFunc, ...args) {
+    LandmarkCall: function(funcname, callFuncs={}, ...args) {
+	// Helper function, will run calls on network and then
+	// run "pre" and "then" functions afterwards
+	
 	web3.eth.getAccounts(function(error, accounts) {
 	    App.getContractDeploy().then(function(LM) {
-		return LM[funcName].call(...args);
-	    }).then(function(result) {
-		thenFunc(result);
+		if (callFuncs["pre"] != null)
+		    callFuncs["pre"](accounts, LM, ...args);
+		if (funcname != null) 
+		    return LM[funcname].call(...args);
 	    }).catch(function(err) {
 		report_error(err.message);
-	    });
+	    }).then(function(result) {
+		if (callFuncs["then"] != null)
+		    callFuncs["then"](result, ...args);
+	    }).catch(function(err) {
+		report_error(err.message);
 
-	});
+	    })
+	})
     },
 
 
     getContractDeploy: function() {	
 	return App.contracts.Landmark.deployed();
     },
-
-    checkNetworkStatus:  function() {
-	web3.eth.getAccounts(function(error, accounts) {
-	    App.getContractDeploy().then(function(vex) {
-		$('#contractHash').text(vex.address)
-    		    .attr('href', ESUrl+"/address/"+vex.address);
-	    }).catch(function(err) {
-		report_error(err.message);
-	    });
-	});
-
-    },
-    
-    loadAccountInfo: function() {
-	web3.eth.getAccounts(function(error, accounts) {
-	    var acc0 = accounts[0];
-	    $('#accountHash').text(acc0)
-	    
-	    web3.eth.getBalance(acc0, function(error, val) {
-		let eth = web3.fromWei(val.toNumber());
-		$('#accountBalance').text(eth + " ether");
-	    });
-	});	
-    },
-
-    loadPost: function(n) {
-	web3.eth.getAccounts(function(error, accounts) {
-            // Call the easy way without costing anything
-	    App.getContractDeploy().then(function(vex) {
-		return vex.getMessageContents.call(n);
-	    }).then(function(result) {
-		addPostInfo(result,n);
-	    }).catch(function(err) {
-		report_error(err.message);
-	    });
-
-	});	
-    },
-
+  
     bindEvents: function() {
 	$(document).on('click', '.btn-process-post', App.processButtonPost);
 	
 	$('#mainnet').change(function() {
 	    $('#errorbox').empty().hide();
-	    App.checkNetworkStatus();
 	});
 
-	App.LandmarkCall("getVersionNumber", setVersionInfo);
-	App.LandmarkCall("getMessageCount", setPostCount);
-	//App.loadAllPosts();
-	App.loadPost(0);
+	App.LandmarkCall("getVersionNumber", {"then":setVersionNumber});
+	App.LandmarkCall("getMessageCount", {"then":setPostCount});
+	App.LandmarkCall("getMessageContents", {"then":setMessageContents}, 0);
     },
-    /*
-    loadAllPosts: async function() {
-	await App.loadPostInfo();
-	await getPostCount();
 
+    loadAccountInfo: function() {
+	web3.eth.getAccounts(function(error, accounts) {
+	    setAccountHash(accounts);
+	    
+	    web3.eth.getBalance(accounts[0], function(error, val) {
+		setAccountBalance(val);
+	    });
+	});	
     },
-    */
-    
+
     processButtonPost: function() {
 	const text = $('#marktext').val();
 	if(!text) return false;
@@ -177,7 +169,7 @@ App = {
 	    }).then(async function(result) {
 		console.log("Post complete!", result);
 		update_result(result);
-		await App.loadPostInfo();
+		App.LandmarkCall("getMessageCount", {"then":setPostCount});
 	    }).catch(function(err) {
 		report_error(err.message);
 	    });
