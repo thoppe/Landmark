@@ -3,6 +3,7 @@ var f_deployed_contract = './build/contracts/Landmark.json';
 //var mainchain_address = '0x';
 var ESUrl = "https://etherscan.io"
 
+const updateInterval = 1000;
 
 function update_result(res) {
     let data = res.receipt;
@@ -46,15 +47,27 @@ function setMessageContents(result, n) {
 	return false;
     
     let body = $("#marks").find('tbody');
-    let td = $("<td>").text(result);
     let tr = $("<tr>").attr('id', label);
-    body.append(tr.append(td));
+    let td2 = $("<td>").text(result).addClass("messageText");
+    let td1 = $("<td>").addClass("messageSender");
+    let td0 = $("<td>").text("["+(n+1)+"]").addClass("messageNumber");
+    body.append(tr.append(td0, td1, td2));
 }
+
+function setMessageAddress(result, n) {
+    let post = $('#LandmarkPost'+n);
+    if(post.length == 0)
+	return false;
+    post.find(".messageSender").text(result);
+    
+}
+
 
 
 App = {
     web3Provider: null,
     contracts: {},
+    updater: null,
 
     init: function() {
 	return App.initWeb3();
@@ -114,7 +127,7 @@ App = {
     },
 
 
-    getContractDeploy: function() {	
+    getContractDeploy: function() {
 	return App.contracts.Landmark.deployed();
     },
   
@@ -127,8 +140,33 @@ App = {
 
 	App.LandmarkCall("getVersionNumber", {"then":setVersionNumber});
 	App.LandmarkCall("getMessageCount", {"then":setPostCount});
-	App.LandmarkCall("getMessageContents", {"then":setMessageContents}, 0);
-	App.LandmarkCall("getMessageContents", {"then":setMessageContents}, 0);
+
+	App.loadAllPosts();
+	updater = setInterval(App.loadAllPosts, updateInterval);
+    },
+
+    loadAllPosts: function () {
+	App.LandmarkCall("getMessageCount", {"then":setPostCount});
+	
+	try {
+	    var n = parseInt($("#postCount").text());
+	}
+	catch (err) {
+	    // Perhaps we aren't ready yet...
+	    return false;
+	}
+
+	for (i = 0; i < n; i++) {
+	    App.LandmarkCall("getMessageContents",
+			     {"then":setMessageContents}, i);	    
+	}
+
+	for (i = 0; i < n; i++) {
+	    App.LandmarkCall("getMessageAddress",
+			     {"then":setMessageAddress}, i);	    
+	}
+
+	
     },
 
     loadAccountInfo: function() {
@@ -154,9 +192,11 @@ App = {
 		console.log("Post complete!", result);
 		update_result(result);
 
+		/*
 		setTimeout(function(){
 		    App.LandmarkCall("getMessageCount", {"then":setPostCount});
 		},2000);
+		*/
 		
 	    }).catch(function(err) {
 		report_error(err.message);
