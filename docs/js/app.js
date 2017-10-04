@@ -3,14 +3,9 @@ var f_deployed_contract = './build/contracts/Landmark.json';
 //var mainchain_address = '0x';
 var ESUrl = "https://etherscan.io"
 
-//require("truffle-contract");
-//require("truffle-contracts");
-//var LANDMARK = artifacts.require("./Landmark.sol");
-
 
 function update_result(res) {
     let data = res.receipt;
-    //$('#result').text(res.logs[0].args._value);
     $('#transactionHash').text(data.transactionHash)
     	.attr('href', ESUrl+"/tx/"+data.transactionHash);
     $('#blockNumber').text(data.blockNumber)
@@ -21,18 +16,6 @@ function update_result(res) {
 function report_error(x) {
     $('#errorbox').show().append(x);
     console.log(x);
-}
-
-function addPostInfo(text, n=0) {
-    let body = $("#marks").find('tbody');
-    let td = $("<td>").text(text);
-    let tr = $("<tr>").attr('id', 'LandmarkPost'+n);
-    body.append(tr.append(td));
-}
-
-function getPostCount() {
-    let n = $("#postCount").text();
-    console.log(n);
 }
 
 function setVersionNumber(result) {
@@ -169,7 +152,11 @@ App = {
 	    }).then(async function(result) {
 		console.log("Post complete!", result);
 		update_result(result);
-		App.LandmarkCall("getMessageCount", {"then":setPostCount});
+
+		setTimeout(function(){
+		    App.LandmarkCall("getMessageCount", {"then":setPostCount});
+		},2000);
+		
 	    }).catch(function(err) {
 		report_error(err.message);
 	    });
