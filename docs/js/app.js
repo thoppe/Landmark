@@ -114,10 +114,24 @@ App = {
 	    App.getContractDeploy().then(function(vex) {
 		return vex.getMessageCount.call();
 	    }).then(function(result) {
-
 		$('#postCount').text(result.toNumber());
 		console.log(result.toNumber());
+	    }).catch(function(err) {
+		report_error(err.message);
+	    });
 
+	});	
+    },
+
+    loadVersionInfo: function() {
+	web3.eth.getAccounts(function(error, accounts) {
+
+            // Call the easy way without costing anything
+	    App.getContractDeploy().then(function(vex) {
+		return vex.getVersionNumber.call();
+	    }).then(function(result) {
+		$('#versiontag').text(", version "+ result.toNumber());
+		console.log(result.toNumber());
 	    }).catch(function(err) {
 		report_error(err.message);
 	    });
@@ -133,8 +147,9 @@ App = {
 	    App.checkNetworkStatus();
 	});
 
-
-	App.loadPostInfo();
+	App.loadPostInfo();	
+	App.loadVersionInfo();
+	
     },
 
     processButtonPost: function() {
@@ -148,66 +163,19 @@ App = {
 	    App.getContractDeploy().then(function(cx) {
 		console.log("Posting with", text);
 		return cx.postMessage(text);
-	    }).then(function(result) {
+	    }).then(async function(result) {
 		console.log("Post complete!", result);
 		update_result(result);
+		await App.loadPostInfo();
 	    }).catch(function(err) {
 		report_error(err.message);
 	    });
-	    
-	    
+
 	});
 
-	//App.processButton("network_add");
+
     },
 
-    /*
-
-    processButtonAdd: function() {
-	App.processButton("network_add");
-    },
-
-    processButtonSub: function() {
-	App.processButton("network_subtract");
-    },
-
-    processButtonMul: function() {
-	App.processButton("network_multiply");
-    },
-
-    
-    processButton: function(func_name) {
-
-	var x = parseInt($("#data_x").val());
-	var y = parseInt($("#data_y").val());
-	console.log("Button pressed with",x,y);
-
-	web3.eth.getAccounts(function(error, accounts) {
-
-	    
-            // Call the easy way without costing anything
-	    //App.getContractDeploy().then(function(vex) {
-	    //		return vex.add.call(x,y);
-	    //	    }).then(function(result) {
-	    //		update_result(result);
-	    //	    }).catch(function(err) {
-	    ///		report_error(err.message);
-	    //	    });
-	    
-	    
-	    App.getContractDeploy().then(function(vex) {
-		$('#result').text("Contract executing...");
-		return vex[func_name](x,y);
-	    }).then(function(result) {
-		update_result(result);
-	    }).catch(function(err) {
-		report_error(err.message);
-	    });
-	    
-	    
-	});
-     },
-*/
 };
 
 $(function() {
