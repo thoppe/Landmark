@@ -18,12 +18,36 @@ function update_result(res) {
     $('#gasUsed').text(data.gasUsed);
 };
 
-
 function report_error(x) {
     $('#errorbox').show().append(x);
     console.log(x);
 }
 
+function addPostInfo(text, n=0) {
+    let body = $("#marks").find('tbody');
+    let td = $("<td>").text(text);
+    let tr = $("<tr>").attr('id', 'LandmarkPost'+n);
+    body.append(tr.append(td));
+}
+
+function getPostCount() {
+    let n = $("#postCount").text();
+    console.log(n);
+}
+
+function setVersionInfo(result) {
+    $('#versiontag').text(", version "+ result.toNumber());
+}
+
+function setPostCount(result) {
+    $('#postCount').text(result.toNumber());
+}
+
+/*
+function setNetworkStatus(result)
+$('#contractHash').text(vex.address)
+    		    .attr('href', ESUrl+"/address/"+vex.address);
+*/
 
 App = {
     web3Provider: null,
@@ -63,15 +87,23 @@ App = {
 	return App.bindEvents();
     },
 
-    getContractDeploy: function() {
+    
+    LandmarkCall: function(funcName, thenFunc, ...args) {
+	web3.eth.getAccounts(function(error, accounts) {
+	    App.getContractDeploy().then(function(LM) {
+		return LM[funcName].call(...args);
+	    }).then(function(result) {
+		thenFunc(result);
+	    }).catch(function(err) {
+		report_error(err.message);
+	    });
 
-	var toggle = $("#mainnet").prop('checked');
-	if (toggle) {
-	    return App.contracts.Landmark.at(mainchain_address);
-	}
-	else {
-	    return App.contracts.Landmark.deployed();
-	}
+	});
+    },
+
+
+    getContractDeploy: function() {	
+	return App.contracts.Landmark.deployed();
     },
 
     checkNetworkStatus:  function() {
@@ -79,20 +111,11 @@ App = {
 	    App.getContractDeploy().then(function(vex) {
 		$('#contractHash').text(vex.address)
     		    .attr('href', ESUrl+"/address/"+vex.address);
-		console.log(vex);
 	    }).catch(function(err) {
 		report_error(err.message);
 	    });
 	});
-	/*
-	web3.eth.getAccounts(async function(error, accounts) {
-    	    let vex = await App.getContractDeploy();
-	    $('#contractHash').text(vex.address)
-    		.attr('href', ESUrl+"/address/"+vex.address);
-	    console.log(vex);
 
-	});
-	*/
     },
     
     loadAccountInfo: function() {
@@ -107,31 +130,13 @@ App = {
 	});	
     },
 
-    loadPostInfo: function() {
+    loadPost: function(n) {
 	web3.eth.getAccounts(function(error, accounts) {
-
             // Call the easy way without costing anything
 	    App.getContractDeploy().then(function(vex) {
-		return vex.getMessageCount.call();
+		return vex.getMessageContents.call(n);
 	    }).then(function(result) {
-		$('#postCount').text(result.toNumber());
-		console.log(result.toNumber());
-	    }).catch(function(err) {
-		report_error(err.message);
-	    });
-
-	});	
-    },
-
-    loadVersionInfo: function() {
-	web3.eth.getAccounts(function(error, accounts) {
-
-            // Call the easy way without costing anything
-	    App.getContractDeploy().then(function(vex) {
-		return vex.getVersionNumber.call();
-	    }).then(function(result) {
-		$('#versiontag').text(", version "+ result.toNumber());
-		console.log(result.toNumber());
+		addPostInfo(result,n);
 	    }).catch(function(err) {
 		report_error(err.message);
 	    });
@@ -147,16 +152,22 @@ App = {
 	    App.checkNetworkStatus();
 	});
 
-	App.loadPostInfo();	
-	App.loadVersionInfo();
-	
+	App.LandmarkCall("getVersionNumber", setVersionInfo);
+	App.LandmarkCall("getMessageCount", setPostCount);
+	//App.loadAllPosts();
+	App.loadPost(0);
     },
+    /*
+    loadAllPosts: async function() {
+	await App.loadPostInfo();
+	await getPostCount();
 
+    },
+    */
+    
     processButtonPost: function() {
 	const text = $('#marktext').val();
 	if(!text) return false;
-	
-	console.log("hello", text);
 	
 	web3.eth.getAccounts(function(error, accounts) {
 
