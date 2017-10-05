@@ -15,7 +15,7 @@ function update_result(res) {
 };
 
 function report_error(x) {
-    $('#errorbox').show().append(x);
+    $('#errorbox').show().append(x+"<br>");
     console.log(x);
 }
 
@@ -191,12 +191,7 @@ App = {
 	    }).then(async function(result) {
 		console.log("Post complete!", result);
 		update_result(result);
-
-		/*
-		setTimeout(function(){
-		    App.LandmarkCall("getMessageCount", {"then":setPostCount});
-		},2000);
-		*/
+		$('#errorbox').empty().hide();
 		
 	    }).catch(function(err) {
 		report_error(err.message);
