@@ -200,6 +200,7 @@ App = {
 		console.log("Post complete!", result);
 		update_result(result);
 		$('#errorbox').empty().hide();
+		$('#marktext').val("");
 		
 	    }).catch(function(err) {
 		report_error(err.message);

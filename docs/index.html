@@ -30,17 +30,45 @@
 
     <div class="container">
       
-      <div class="form-group">
-	<label for="marktext"></label>
-	<textarea id="marktext" rows="3"
-		  placeholder="Set your mark here"
-		  class="form-control input-lg"
-		  type="text"></textarea>
-      </div>
 
+
+     
+        <!-- Modal -->
+  <div class="modal fade" id="PostModal" role="dialog">
+    <div class="modal-dialog">
       
-      <button class="btn btn-group btn-process-post"
-	      type="button" data-id="0">Post</button>
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Post to the Landmark</h4>
+        </div>
+	<div class="form-group modal-body">
+	  <label for="marktext"></label>
+	  <textarea id="marktext" rows="3"
+		    placeholder="Set your mark here"
+		    class="form-control input-lg"
+		    type="text"></textarea>
+	</div>
+	
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default btn-process-post"
+		  data-dismiss="modal">
+	    Post
+	  </button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+      
+  <button class="btn btn-group"
+	  type="button" data-id="0" data-toggle="modal"
+	  data-target="#PostModal">
+    <i class="fa fa-terminal" aria-hidden="true"></i>
+    &nbsp;
+    Post
+  </button>
+
 
     </div>
 
