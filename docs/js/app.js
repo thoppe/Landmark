@@ -48,17 +48,25 @@ function setMessageContents(result, n) {
     
     let body = $("#marks").find('tbody');
     let tr = $("<tr>").attr('id', label);
+    let td3 = $('<td><a><i class="fa fa-user" aria-hidden="true"></i></a></td>');
+    td3.addClass("messageAddress");
+    
     let td2 = $("<td>").text(result).addClass("messageText");
-    let td1 = $("<td>").addClass("messageSender");
     let td0 = $("<td>").text("["+(n+1)+"]").addClass("messageNumber");
-    body.append(tr.append(td0, td1, td2));
+    body.append(tr.append(td0, td3, td2));
 }
 
 function setMessageAddress(result, n) {
     let post = $('#LandmarkPost'+n);
     if(post.length == 0)
 	return false;
-    post.find(".messageSender").text(result);
+
+    let url = ESUrl + '/address/' + result;
+    
+    post.find(".messageAddress").find('a')
+	.attr("title",result)
+	.attr("href",url);
+    
     
 }
 
