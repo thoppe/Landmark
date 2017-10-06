@@ -19,10 +19,20 @@
     font-style: normal;
 }
 
-body {
-    color: #333;
+.headerGradient {
+    /*background-image: linear-gradient(to bottom,#563d7c 0,#6f5499 100%);*/
+				     
+background: #005C97;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #363795, #005C97);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #363795, #005C97); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+    width:100%;
 }
+
 .lead h1 {
+    color:white;
+
     font-family:"Tiemposheadline";
     line-height: 80%; 
 }
@@ -60,4 +70,9 @@ body {
     text-overflow: ellipsis;
     display: inline-block;
     max-width: 100%;
+}
+
+body {
+    color: #333;
+    background-color:white;
 }
