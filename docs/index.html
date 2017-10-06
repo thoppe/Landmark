@@ -17,26 +17,52 @@
 
   <body>
 
+
     <div style="background-image: linear-gradient(to bottom,#563d7c 0,#6f5499 100%); color:white; width:100%;">
-      <div class="container lead">
-	<h1>Landmark</h1>
-
-	<h4>
-	  <a id="contractHash">Landmark address not found (click to set)</a>
-	  </h3>
-
-	<p><a id="contractHash"></a></p>
-    </div>
-    </div>
-    
-    <div class="help-block"></div>
-
-    <div class="container">
       
+      <div class="container lead">
+
+	<div class="page-header tight-header">
 
 
-     
-        <!-- Modal -->
+	  <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+	    <div class="btn-group" role="group" aria-label="First group">
+    	      <h1>Landmark</h1>      
+	      <h4>
+		<a id="contractHash">Landmark address not found (click to set)</a>	      </h4>
+	      <p><a id="contractHash"></a></p>
+	    </div>
+	    <div class="input-group pull-right">
+    	      <button class="btn btn-primary pull-right"
+		      type="button" data-toggle="modal"
+		      data-target="#PostModal">
+		<i class="fa fa-plus-circle" aria-hidden="true"></i>
+		&nbsp;
+		Post
+	      </button>
+	    </div>
+	  </div>
+	  
+	  
+	</div>
+	
+	
+      </div>
+
+
+
+
+    </div>
+</div>
+
+<div class="help-block"></div>
+
+<div class="container">
+  
+
+
+  
+  <!-- Modal -->
   <div class="modal fade" id="PostModal" role="dialog">
     <div class="modal-dialog">
       
@@ -54,7 +80,7 @@
 	</div>
 	
         <div class="modal-footer">
-          <button type="button" class="btn btn-default btn-process-post"
+          <button type="button" class="btn btn-process-post"
 		  data-dismiss="modal">
 	    Post
 	  </button>
@@ -63,106 +89,99 @@
       
     </div>
   </div>
+
+
+
+</div>
+
+<div class="help-block"></div>
+
+
+<div class="container">
+
+  <table class="table table-striped"  id="marks">
+    <thead>
+      <tr>
+	<th style="width: 4%"></th>
+	<th style="width: 4%"></th>
+	<th style="width: 92%"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    </tbody>
+  </table>
+</div>
+
+
+<div class="container">
+
+  <table class="table table-striped">
+    <tbody>
+      <tr>
+	<td>Account hash:</td>
+	<td id="accountHash"></td>
+      </tr>
+
+
+      <tr>
+	<td>Account balance:</td>
+	<td id="accountBalance"></td>
+      </tr>
       
-  <button class="btn btn-group"
-	  type="button" data-id="0" data-toggle="modal"
-	  data-target="#PostModal">
-    <i class="fa fa-terminal" aria-hidden="true"></i>
-    &nbsp;
-    Post
-  </button>
+      <tr>
+	<td>Total posts:</td>
+	<td id="postCount">Unknown</td>
+      </tr>
 
 
-    </div>
+      
+      <tr>
+	<td>Transaction hash:</td>
+	<td><a id="transactionHash"></a></td>
+      </tr>
 
-    <div class="help-block"></div>
+      <tr>
+	<td>Block Number:</td>
+	<td><a id="blockNumber"></a></td>
+      </tr>
 
-
-    <div class="container">
-
-      <table class="table table-striped"  id="marks">
-	<thead>
-	  <tr>
-	    <th style="width: 4%"></th>
-	    <th style="width: 4%"></th>
-	    <th style="width: 92%"></th>
-	  </tr>
-	</thead>
-
-      <tbody>
-      </tbody>
-    </table>
-    </div>
+      <tr>
+	<td>Gas Used</td>
+	<td id="gasUsed"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 
-    <div class="container">
+<div id="errorbox"
+     style="display:none"
+     class="container alert alert-danger" role="alert">
+</div>
 
-      <table class="table table-striped">
-	<tbody>
-	  <tr>
-	    <td>Account hash:</td>
-	    <td id="accountHash"></td>
-          </tr>
-
-
-  	  <tr>
-	    <td>Account balance:</td>
-	    <td id="accountBalance"></td>
-          </tr>
- 
-	  <tr>
-	    <td>Total posts:</td>
-	    <td id="postCount">Unknown</td>
-	  </tr>
+<footer class="bd-footer text-muted">
+  <div class="container">
+    <a href="https://github.com/thoppe/ethereum_Landmark">
+      Landmark</a>
+    <span id="versiontag"></span>
+    <span>Decentralized, permanent, and uncensorable communication</span>
+    <br>
+    <a href="https://twitter.com/metasemantic?lang=en">@metasemantic</a>
+  </div>
+</footer>
 
 
-	  
-	  <tr>
-	    <td>Transaction hash:</td>
-	    <td><a id="transactionHash"></a></td>
-	  </tr>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
-	  <tr>
-	    <td>Block Number:</td>
-	    <td><a id="blockNumber"></a></td>
-	  </tr>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-toggle.min.js"></script>
 
-	  <tr>
-	    <td>Gas Used</td>
-	    <td id="gasUsed"></td>
-	  </tr>
-	</tbody>
-      </table>
-    </div>
+<script src="js/web3.min.js"></script>
 
+<script src="js/truffle-contract.js"></script>
+<script src="js/app.js"></script>
 
-    <div id="errorbox"
-	 style="display:none"
-	 class="container alert alert-danger" role="alert">
-    </div>
-
-    <footer class="bd-footer text-muted">
-      <div class="container">
-	<a href="https://github.com/thoppe/ethereum_Landmark">
-	  Landmark</a>
-	<span id="versiontag"></span>
-	<span>Decentralized, permanent, and uncensorable communication</span>
-	<br>
-	<a href="https://twitter.com/metasemantic?lang=en">@metasemantic</a>
-      </div>
-    </footer>
-
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/bootstrap-toggle.min.js"></script>
-
-    <script src="js/web3.min.js"></script>
-
-    <script src="js/truffle-contract.js"></script>
-    <script src="js/app.js"></script>
-
-  </body>
+</body>
 </html>

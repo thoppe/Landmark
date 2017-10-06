@@ -19,7 +19,9 @@
     font-style: normal;
 }
 
-
+body {
+    color: #333;
+}
 .lead h1 {
     font-family:"Tiemposheadline";
     line-height: 80%; 
@@ -32,3 +34,9 @@
 .container {
     font-family:"Apercu light";
 }
+
+
+.tight-header {
+    margin:0;
+}
+
