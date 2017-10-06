@@ -35,8 +35,15 @@ body {
     font-family:"Apercu light";
 }
 
-
 .tight-header {
     margin:0;
+}
+
+.no-vertical {
+    line-height:100%;
+    margin-top:0;
+    margin-bottom:0;
+    padding-top:0;
+    padding-bottom:0;
 }
 

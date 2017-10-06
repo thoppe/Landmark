@@ -5,18 +5,27 @@ var ESUrl = "https://etherscan.io"
 
 const updateInterval = 1000;
 
-function update_result(res) {
-    let data = res.receipt;
-    $('#transactionHash').text(data.transactionHash)
-    	.attr('href', ESUrl+"/tx/"+data.transactionHash);
-    $('#blockNumber').text(data.blockNumber)
-	.attr('href', ESUrl+"/block/"+data.blockNumber);
-    $('#gasUsed').text(data.gasUsed);
-};
+const closeButtonHTML = '<button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span>';
+const infoButtonHTML = `<div>
+Post successful: "<span class="infoPostMessage"></span>" <br>
+Transaction Hash: <a class="alert-link infoTransactionHash">HASH</a> <br>
+Block Number: <a class="alert-link infoBlockNumber">BLOCK</a> <br>
+Gas Used: <span class="infoGasUsed">GAS</span> <br>
+`
 
-function report_error(x) {
-    $('#errorbox').show().append(x+"<br>");
+function statusError(x, statusType="danger", clickToRemove=true) {
+    // Alert types: 
+    // primary secondary success danger warning info light dark
+    
+    let div = $('<div>').addClass("alert alert-"+statusType).text(x);
+    if (clickToRemove)
+	div.addClass("alert-dismissible").attr("data-dismiss","alert");
+
+    div.append($(closeButtonHTML));
+
+    $('#errorbox').append(div);
     console.log(x);
+    return div
 }
 
 function setVersionNumber(result) {
@@ -97,7 +106,7 @@ App = {
     initContract: function() {	
 	
 	web3.eth.getAccounts(function(error, accounts) {
-	    if (error) { report_error(error); }
+	    if (error) { statusError(error); }
 	});
 
 	// Load the contract data from file
@@ -123,12 +132,12 @@ App = {
 		if (funcname != null) 
 		    return LM[funcname].call(...args);
 	    }).catch(function(err) {
-		report_error(err.message);
+		statusError(err.message);
 	    }).then(function(result) {
 		if (callFuncs["then"] != null)
 		    callFuncs["then"](result, ...args);
 	    }).catch(function(err) {
-		report_error(err.message);
+		statusError(err.message);
 
 	    })
 	})
@@ -158,6 +167,9 @@ App = {
 	
 	try {
 	    var n = parseInt($("#postCount").text());
+	    
+	    // Remove status message
+	    if(n>0) $('#noMarksFound').remove();
 	}
 	catch (err) {
 	    // Perhaps we aren't ready yet...
@@ -173,6 +185,8 @@ App = {
 	    App.LandmarkCall("getMessageAddress",
 			     {"then":setMessageAddress}, i);	    
 	}
+
+
 
 	
     },
@@ -194,16 +208,37 @@ App = {
 	web3.eth.getAccounts(function(error, accounts) {
 
 	    App.getContractDeploy().then(function(cx) {
-		console.log("Posting with", text);
+		console.log("Attemping to post", text);
+		box = statusError("Attemping to post '"+text+"'", "warning")
+		    .addClass("post-attempt-box");
+		
 		return cx.postMessage(text);
 	    }).then(async function(result) {
 		console.log("Post complete!", result);
-		update_result(result);
-		$('#errorbox').empty().hide();
+		box = statusError("", "success", false);
+		$('.post-attempt-box').remove();
+
+		let info=$(infoButtonHTML);
+
+		res = result.receipt;
+
+		info.find(".infoPostMessage").text(text);
+		info.find(".infoTransactionHash")
+		    .text(res.transactionHash)
+		    .attr('href', ESUrl+"/tx/"+res.transactionHash);
+		info.find(".infoBlockNumber")
+		    .text(res.blockNumber)
+		    .attr('href', ESUrl+"/block/"+res.blockNumber);
+		info.find(".infoGasUsed")
+		    .text(res.gasUsed);
+				
+		box.append(info);		
+
+		// Clear the results
 		$('#marktext').val("");
 		
 	    }).catch(function(err) {
-		report_error(err.message);
+		statusError(err.message);
 	    });
 
 	});
@@ -217,4 +252,11 @@ $(function() {
     $(window).load(function() {
 	App.init();
     });
+
+    /*
+    statusError("test", "warning");
+    statusError("test", "info");
+    statusError("xztest", "success");
+    statusError("xztest", "danger");
+    */
 });
