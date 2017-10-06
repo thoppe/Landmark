@@ -20,7 +20,7 @@ function report_error(x) {
 }
 
 function setVersionNumber(result) {
-    $('#versiontag').text(", version "+ result.toNumber());
+    $('#versiontag').text(" (v"+result.toNumber()+") ");
 }
 
 function setPostCount(result) {
