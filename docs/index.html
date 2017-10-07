@@ -7,17 +7,56 @@
     <title>Landmark: A Blockchain Social Network</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrap-toggle.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/font-awesome.min.css">
-
     <link rel="stylesheet" href="css/Landmark.css">
 
     
   </head>
 
+  
+
   <body>
 
 
+  <nav class="navbar navbar-default">
+    <div class="container">
+
+      <div class="navbar-header navbar-left">
+	<div class="navbar-brand logo">Landmark</div>
+	<p class="navbar-text">
+	  <a class="" id="contractHash" >
+	    Landmark address not found (click to set)</a>
+	</p>
+      </div>
+
+      <div class="navbar-right">
+	<p class="navbar-text">
+	  <a class="navbar-link" data-toggle="modal" data-target="#PostModal">
+	    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+	    &nbsp; Post
+	  </a>
+	</p>
+      </div>
+
+<!---
+      <button class="btn btn-primary navbar-btn navbar-right"
+	      type="button" data-toggle="modal"
+	      data-target="#PostModal">
+	<i class="fa fa-plus-circle" aria-hidden="true"></i>
+	&nbsp;
+	Post
+      </button>
+--->
+      
+      
+      <!--/.nav-collapse -->
+    </div>
+    <!--/.container -->
+  </nav>
+
+      
+
+<!---
     <div class="headerGradient">
       
       <div class="container lead">
@@ -25,12 +64,15 @@
 	<div class="page-header tight-header">
 
 
-	  <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+	  <div class="btn-toolbar justify-content-between"
+	       role="toolbar" aria-label="Toolbar with button groups">
 	    <div class="btn-group" role="group" aria-label="First group">
     	      <h1>Landmark</h1>      
 	      <h4>
-		<a id="contractHash">Landmark address not found (click to set)</a>	      </h4>
-	      <p><a id="contractHash"></a></p>
+		<a id="contractHash" class="ellipsis">
+		  Landmark address not found (click to set)</a>
+	      </h4>
+	      
 	    </div>
 	    <div class="input-group pull-right">
     	      <button class="btn btn-primary pull-right"
@@ -52,6 +94,8 @@
     </div>
 </div>
 
+--->
+
 <div class="container no-vertical">
   <div id="errorbox">
   </div>
@@ -61,8 +105,8 @@
 <div class="container">
 
   <table class="table table-striped"  id="marks">
-    <h3 id="noMarksFound" style="">
-      Empty Landmark (possibly still loading)</h3>
+    <h3 id="noMarksFound" class="text-muted">
+      Looking for marks...</h3>
     <thead>
       <tr>
 	<th style="width: 4%"></th>
@@ -83,7 +127,7 @@
     <tbody>
       <tr>
 	<td>Account hash:</td>
-	<td id="accountHash"></td>
+	<td class="ellipsis" id="accountHash"></td>
       </tr>
 
 
@@ -103,11 +147,11 @@
 
 
 
-<!-- Modal -->
+
 <div class="modal fade" id="PostModal" role="dialog">
   <div class="modal-dialog">
     
-    <!-- Modal content-->
+    
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Post to the Landmark</h4>
@@ -145,15 +189,15 @@
   </div>
 </footer>
 
-<!-- jquery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
+<script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 
 <script src="js/web3.min.js"></script>
-
 <script src="js/truffle-contract.js"></script>
+
 <script src="js/app.js"></script>
+
 
 </body>
 </html>

@@ -170,6 +170,9 @@ App = {
 	    
 	    // Remove status message
 	    if(n>0) $('#noMarksFound').remove();
+	    else if(n==0)
+		$('#noMarksFound').text("Empty Landmark")
+		.removeClass("text-muted");
 	}
 	catch (err) {
 	    // Perhaps we aren't ready yet...
@@ -249,7 +252,7 @@ App = {
 };
 
 $(function() {
-    $(window).load(function() {
+    $(window).on('load', function() {
 	App.init();
     });
 

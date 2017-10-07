@@ -30,20 +30,22 @@ background: linear-gradient(to right, #363795, #005C97); /* W3C, IE 10+/ Edge, F
     width:100%;
 }
 
-.lead h1 {
+
+nav {
+    font-family:"Apercu light";
+    font-size:100%;
+    padding-top:.15em;
+    padding-bottom:.15em;
+    line-height: 35px;
+}
+
+
+nav .logo {
+    font-size:xx-large;
     color:white;
-
     font-family:"Tiemposheadline";
-    line-height: 80%; 
 }
 
-.lead p {
-    font-family:"Apercu light";
-}
-
-.container {
-    font-family:"Apercu light";
-}
 
 .tight-header {
     margin:0;
@@ -57,20 +59,6 @@ background: linear-gradient(to right, #363795, #005C97); /* W3C, IE 10+/ Edge, F
     padding-bottom:0;
 }
 
-.infoTransactionHash {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
-    max-width: 100%;
-}
-.contractHash {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
-    max-width: 100%;
-}
 
 body {
     color: #333;
