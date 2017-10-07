@@ -34,9 +34,11 @@ background: linear-gradient(to right, #363795, #005C97); /* W3C, IE 10+/ Edge, F
 nav {
     font-family:"Apercu light";
     font-size:100%;
-    padding-top:.15em;
-    padding-bottom:.15em;
-    line-height: 35px;
+
+    /*    line-height: 35px;*/
+    line-height:30px;
+    margin-top:0;
+    margin-bottom:0;
 }
 
 
