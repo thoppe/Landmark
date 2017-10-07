@@ -26,9 +26,10 @@
       </div>
 
       <p class="navbar-text">
-	<a class="" id="contractHash" >
-	  Landmark address not found (click to set)</a>
-	</p>
+	<a class="" id="contractHash"
+	   data-toggle="modal" data-target="#AddressChangeModal">
+	  Landmark not found at address (click to set)</a>
+      </p>
       
 
       <div class="navbar-right">
@@ -96,12 +97,21 @@
 </div>
 
 
+<footer class="bd-footer text-muted">
+  <div class="container">
+    <a href="https://github.com/thoppe/ethereum_Landmark">
+      Landmark</a>
+    <span id="versiontag"></span>
+    <span>is a decentralized, permanent, and uncensorable tool for communication</span>
+    <br>
+    <a href="https://twitter.com/metasemantic?lang=en">@metasemantic</a>
+  </div>
+</footer>
 
 
 <div class="modal fade" id="PostModal" role="dialog">
   <div class="modal-dialog">
-    
-    
+        
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Post to the Landmark</h4>
@@ -127,17 +137,35 @@
 
 
 
-
-<footer class="bd-footer text-muted">
-  <div class="container">
-    <a href="https://github.com/thoppe/ethereum_Landmark">
-      Landmark</a>
-    <span id="versiontag"></span>
-    <span>is a decentralized, permanent, and uncensorable tool for communication</span>
-    <br>
-    <a href="https://twitter.com/metasemantic?lang=en">@metasemantic</a>
+<div class="modal fade" id="AddressChangeModal" role="dialog">
+  <div class="modal-dialog">
+        
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Change Landmark location</h4>
+      </div>
+      <div class="form-group modal-body">
+	<label for="modalAddressText"></label>
+	<input id="modalAddressText"
+		  placeholder=""
+		  class="form-control input-lg"
+		  type="text"></input>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-process-post"
+		data-dismiss="modal">
+	  Change
+	</button>
+      </div>
+    </div>
+    
   </div>
-</footer>
+</div>
+
+
+
+
 
 
 <script src="js/jquery-3.2.1.min.js"></script>

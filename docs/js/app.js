@@ -1,7 +1,9 @@
 var provider_url = 'http://localhost:8545';
 var f_deployed_contract = './build/contracts/Landmark.json';
-//var mainchain_address = '0x';
 var ESUrl = "https://etherscan.io"
+
+var contract_address = "0x90a9b125b6e4b22ecb139819778dc01d1339ef5c"
+var contract_deploy = null;
 
 const updateInterval = 1000;
 
@@ -42,7 +44,9 @@ function setAccountHash(accounts) {
 
 function setContractHash(accounts, LM) {
     $('#contractHash').text(LM.address)
-    	.attr('href', ESUrl+"/address/"+LM.address);
+
+    // For now, don't link to etherscan
+    // 	.attr('href', ESUrl+"/address/"+LM.address);
 }
 
 function setAccountBalance(result) {
@@ -112,9 +116,9 @@ App = {
 	// Load the contract data from file
 	$.getJSON(f_deployed_contract, function(data) {
 	    App.contracts.Landmark = TruffleContract(data);
-	    App.contracts.Landmark.setProvider(App.web3Provider);	    
+	    App.contracts.Landmark.setProvider(App.web3Provider);
 	});
-
+	
 	App.LandmarkCall(null, {"pre":setContractHash});
 	App.loadAccountInfo();
 	return App.bindEvents();
@@ -143,9 +147,12 @@ App = {
 	})
     },
 
-
     getContractDeploy: function() {
-	return App.contracts.Landmark.deployed();
+	if(contract_deploy == null) {
+	    contract_deploy = App.contracts.Landmark.deployed();
+	    //contract_deploy = App.contracts.Landmark.at(contract_address);
+	}
+	return contract_deploy;
     },
   
     bindEvents: function() {
@@ -160,6 +167,8 @@ App = {
 
 	App.loadAllPosts();
 	updater = setInterval(App.loadAllPosts, updateInterval);
+
+	$("#modalAddressText").val(contract_address);
     },
 
     loadAllPosts: function () {
