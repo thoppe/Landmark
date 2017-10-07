@@ -4,6 +4,7 @@ var ESUrl = "https://etherscan.io"
 
 var contract_address = "0x90a9b125b6e4b22ecb139819778dc01d1339ef5c"
 var contract_deploy = null;
+var contract_deploy2 = null;
 
 const updateInterval = 1000;
 
@@ -34,8 +35,8 @@ function setVersionNumber(result) {
     $('#versiontag').text(" (v"+result.toNumber()+") ");
 }
 
-function setPostCount(result) {
-    $('#postCount').text(result.toNumber());
+function setPostCount(n) {
+    $('#postCount').text(n);
 }
 
 function setAccountHash(accounts) {
@@ -54,19 +55,25 @@ function setAccountBalance(result) {
     $('#accountBalance').text(eth + " ether");
 }
 
+function doesMessageRowExist(n) {
+    return $('#LandmarkPost'+n).length > 0
+}
+
 function setMessageContents(result, n) {
     let label = 'LandmarkPost'+n;
-    if($('#'+label).length)
-	return false;
+
+    if (doesMessageRowExist(n)) return false;
     
     let body = $("#marks").find('tbody');
     let tr = $("<tr>").attr('id', label);
-    let td3 = $('<td><a><i class="fa fa-user" aria-hidden="true"></i></a></td>');
-    td3.addClass("messageAddress");
+    
+    let td0 = $("<td>").text("["+(n+1)+"]").addClass("messageNumber");
+    let td1 = $('<td><a><i class="fa fa-user" aria-hidden="true"></i></a></td>');
+    td1.addClass("messageAddress");
     
     let td2 = $("<td>").text(result).addClass("messageText");
-    let td0 = $("<td>").text("["+(n+1)+"]").addClass("messageNumber");
-    body.append(tr.append(td0, td3, td2));
+    
+    body.append(tr.append(td0, td1, td2));
 }
 
 function setMessageAddress(result, n) {
@@ -147,11 +154,30 @@ App = {
 	})
     },
 
-    getContractDeploy: function() {
+    LandmarkCall2: async function(funcname, ...args) {
+	if (contract_deploy2 == null) {
+	    return null;
+	}
+	
+	var result = null;
+	
+	try {
+	    result = await contract_deploy2[funcname].call(...args);
+	    return result;
+	}
+	catch (err) {
+	    statusError(err.message);
+	}
+	
+    },
+
+    getContractDeploy: async function() {
+
 	if(contract_deploy == null) {
 	    contract_deploy = App.contracts.Landmark.deployed();
-	    //contract_deploy = App.contracts.Landmark.at(contract_address);
+	    contract_deploy2 = App.contracts.Landmark.at(contract_address);
 	}
+	
 	return contract_deploy;
     },
   
@@ -171,11 +197,11 @@ App = {
 	$("#modalAddressText").val(contract_address);
     },
 
-    loadAllPosts: function () {
-	App.LandmarkCall("getMessageCount", {"then":setPostCount});
+    loadAllPosts: async function () {
+	var n = parseInt(await App.LandmarkCall2("getMessageCount"));
+	setPostCount(n);
 	
 	try {
-	    var n = parseInt($("#postCount").text());
 	    
 	    // Remove status message
 	    if(n>0) $('#noMarksFound').remove();
@@ -189,16 +215,14 @@ App = {
 	}
 
 	for (i = 0; i < n; i++) {
-	    App.LandmarkCall("getMessageContents",
-			     {"then":setMessageContents}, i);	    
+	    if (doesMessageRowExist(i))
+		continue;
+	    
+	    let msg = await App.LandmarkCall2("getMessageContents", i);
+	    let address = await App.LandmarkCall2("getMessageAddress", i);
+	    setMessageContents(msg, i);
+	    setMessageAddress(address, i);
 	}
-
-	for (i = 0; i < n; i++) {
-	    App.LandmarkCall("getMessageAddress",
-			     {"then":setMessageAddress}, i);	    
-	}
-
-
 
 	
     },
