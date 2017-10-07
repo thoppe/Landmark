@@ -27,7 +27,6 @@ function statusError(x, statusType="danger", clickToRemove=true) {
     div.append($(closeButtonHTML));
 
     $('#errorbox').append(div);
-    console.log(x);
     return div
 }
 
@@ -131,37 +130,9 @@ App = {
     },
 
     
-    LandmarkCall: function(funcname, callFuncs={}, ...args) {
-	// Helper function, will run calls on network and then
-	// run "pre" and "then" functions afterwards
-	
-	web3.eth.getAccounts(function(error, accounts) {
-	    App.getContractDeploy().then(function(LM) {
-		if (callFuncs["pre"] != null)
-		    callFuncs["pre"](accounts, LM, ...args);
-		if (funcname != null) 
-		    return LM[funcname].call(...args);
-	    }).catch(function(err) {
-		statusError(err.message);
-	    }).then(function(result) {
-		if (callFuncs["then"] != null)
-		    callFuncs["then"](result, ...args);
-	    }).catch(function(err) {
-		statusError(err.message);
-
-	    })
-	})
-    },
-
     LandmarkCall2: async function(funcname, ...args) {
-
 	await App.getContractDeploy2();
-	
-	if (contract_deploy2 == null) {
-	    console.log("shouldn't be here...");
-	    return null;
-	}
-	
+
 	try {
 	    return  (await contract_deploy2[funcname].call(...args));
 	}
@@ -172,15 +143,6 @@ App = {
 
     getContractDeploy2: async function() {
 	contract_deploy2 = App.contracts.Landmark.at(contract_address);
-    },
-
-    getContractDeploy: async function() {
-
-	if(contract_deploy == null) {
-	    contract_deploy = App.contracts.Landmark.deployed();
-	}
-	
-	return contract_deploy;
     },
   
     bindEvents: function() {
@@ -254,7 +216,8 @@ App = {
 	
 	web3.eth.getAccounts(function(error, accounts) {
 
-	    App.getContractDeploy().then(function(cx) {
+	    //App.getContractDeploy().then(function(cx) {
+	    contract_deploy2.then(function(cx) {
 		console.log("Attemping to post", text);
 		box = statusError("Attemping to post '"+text+"'", "warning")
 		    .addClass("post-attempt-box");
