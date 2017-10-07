@@ -31,8 +31,8 @@ function statusError(x, statusType="danger", clickToRemove=true) {
     return div
 }
 
-function setVersionNumber(result) {
-    $('#versiontag').text(" (v"+result.toNumber()+") ");
+function setVersionNumber(n) {
+    $('#versiontag').text(" (v"+n+") ");
 }
 
 function setPostCount(n) {
@@ -43,8 +43,8 @@ function setAccountHash(accounts) {
     $('#accountHash').text(accounts[0])
 }
 
-function setContractHash(accounts, LM) {
-    $('#contractHash').text(LM.address)
+function setContractHash(address) {
+    $('#contractHash').text(address)
 
     // For now, don't link to etherscan
     // 	.attr('href', ESUrl+"/address/"+LM.address);
@@ -124,11 +124,10 @@ App = {
 	$.getJSON(f_deployed_contract, function(data) {
 	    App.contracts.Landmark = TruffleContract(data);
 	    App.contracts.Landmark.setProvider(App.web3Provider);
+	    
+	    return App.bindEvents();
 	});
-	
-	App.LandmarkCall(null, {"pre":setContractHash});
-	App.loadAccountInfo();
-	return App.bindEvents();
+
     },
 
     
@@ -155,27 +154,30 @@ App = {
     },
 
     LandmarkCall2: async function(funcname, ...args) {
+
+	await App.getContractDeploy2();
+	
 	if (contract_deploy2 == null) {
+	    console.log("shouldn't be here...");
 	    return null;
 	}
 	
-	var result = null;
-	
 	try {
-	    result = await contract_deploy2[funcname].call(...args);
-	    return result;
+	    return  (await contract_deploy2[funcname].call(...args));
 	}
 	catch (err) {
 	    statusError(err.message);
 	}
-	
+    },
+
+    getContractDeploy2: async function() {
+	contract_deploy2 = App.contracts.Landmark.at(contract_address);
     },
 
     getContractDeploy: async function() {
 
 	if(contract_deploy == null) {
 	    contract_deploy = App.contracts.Landmark.deployed();
-	    contract_deploy2 = App.contracts.Landmark.at(contract_address);
 	}
 	
 	return contract_deploy;
@@ -188,13 +190,22 @@ App = {
 	    $('#errorbox').empty().hide();
 	});
 
-	App.LandmarkCall("getVersionNumber", {"then":setVersionNumber});
-	App.LandmarkCall("getMessageCount", {"then":setPostCount});
+	return App.setInfo();
+    },
+
+    setInfo: async function () {
+
+	var vn = parseInt(await App.LandmarkCall2("getVersionNumber"));
+	setVersionNumber(vn);
 
 	App.loadAllPosts();
 	updater = setInterval(App.loadAllPosts, updateInterval);
 
+
 	$("#modalAddressText").val(contract_address);
+	setContractHash(contract_deploy2.address);
+	App.loadAccountInfo();
+
     },
 
     loadAllPosts: async function () {
