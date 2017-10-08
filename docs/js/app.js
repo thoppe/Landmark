@@ -169,6 +169,17 @@ App = {
 	updater = setInterval(App.loadAllPosts, updateInterval);
 
 	$("#modalAddressText").val(contract_address);
+
+	$('#marktext').keydown(function (event) {
+	    if ((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey){
+		App.processButtonPost();
+	    }
+	});
+
+	$('#PostModal').on('shown.bs.modal', function () {
+	    $('#marktext').focus();
+	});
+
     },
 
     loadAllPosts: function () {
