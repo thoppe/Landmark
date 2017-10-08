@@ -63,6 +63,11 @@ nav .logo {
     text-decoration: none;
 }
 
+.messageNumber {
+    font-family:monospace;
+    font-size:80%;
+}
+
 
 body {
     color: #333;
