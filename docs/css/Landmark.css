@@ -59,9 +59,14 @@ nav .logo {
     padding-bottom:0;
 }
 
+.no-underline:hover {
+    text-decoration: none;
+}
+
 
 body {
     color: #333;
     background-color:white;
     font-family:"Apercu light";
 }
+
