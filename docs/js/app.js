@@ -148,11 +148,13 @@ App = {
   
     bindEvents: function() {
 	$(document).on('click', '.btn-process-post', App.processButtonPost);
-	
-	$('#mainnet').change(function() {
-	    $('#errorbox').empty().hide();
-	});
 
+	$('#AdminModal').on('shown.bs.modal', function (e) {
+	    App.processAdminInfo();
+	})
+
+	$(document).on('click', '.btn-process-post', App.processButtonPost);
+	
 	return App.setInfo();
     },
 
@@ -270,7 +272,26 @@ App = {
 
 	});
 
+    },
 
+    processAdminInfo: async function() {
+
+	const Cadr = await App.LandmarkCall2("getCuratorAddress");
+	const isOpen = await App.LandmarkCall2("getIsSiteOpen");
+	const n = parseInt(await App.LandmarkCall2("getLimitPostLength"));
+
+	let Fadr = await App.LandmarkCall2("getForwardingAddress");
+	// An empty address is returned when nothing is set
+	if(Fadr == "0x0000000000000000000000000000000000000000")
+	    Fadr = "";
+
+	$("#siteinfoCuratorAddress").text(Cadr);
+	$("#siteinfoForwardingAddress").text(Fadr);
+
+	$("#siteinfoIsOpen").text(isOpen);
+	$("#siteinfoMaxPostLength").text(n);
+	
+	
     },
 
 };
