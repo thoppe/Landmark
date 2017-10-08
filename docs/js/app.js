@@ -3,7 +3,9 @@ var f_deployed_contract = './build/contracts/Landmark.json';
 var ESUrl = "https://etherscan.io"
 
 var contract_address = "0x90a9b125b6e4b22ecb139819778dc01d1339ef5c"
+
 var contract_deploy = null;
+var contract_deploy2 = null;
 
 const updateInterval = 1000;
 
@@ -26,24 +28,23 @@ function statusError(x, statusType="danger", clickToRemove=true) {
     div.append($(closeButtonHTML));
 
     $('#errorbox').append(div);
-    console.log(x);
     return div
 }
 
-function setVersionNumber(result) {
-    $('#versiontag').text(" (v"+result.toNumber()+") ");
+function setVersionNumber(n) {
+    $('#versiontag').text(" (v"+n+") ");
 }
 
-function setPostCount(result) {
-    $('#postCount').text(result.toNumber());
+function setPostCount(n) {
+    $('#postCount').text(n);
 }
 
 function setAccountHash(accounts) {
     $('#accountHash').text(accounts[0])
 }
 
-function setContractHash(accounts, LM) {
-    $('#contractHash').text(LM.address)
+function setContractHash(address) {
+    $('#contractHash').text(address)
 
     // For now, don't link to etherscan
     // 	.attr('href', ESUrl+"/address/"+LM.address);
@@ -54,19 +55,25 @@ function setAccountBalance(result) {
     $('#accountBalance').text(eth + " ether");
 }
 
+function doesMessageRowExist(n) {
+    return $('#LandmarkPost'+n).length > 0
+}
+
 function setMessageContents(result, n) {
     let label = 'LandmarkPost'+n;
-    if($('#'+label).length)
-	return false;
+
+    if (doesMessageRowExist(n)) return false;
     
     let body = $("#marks").find('tbody');
     let tr = $("<tr>").attr('id', label);
-    let td3 = $('<td><a><i class="fa fa-user" aria-hidden="true"></i></a></td>');
-    td3.addClass("messageAddress");
+    
+    let td0 = $("<td>").text("["+(n+1)+"]").addClass("messageNumber");
+    let td1 = $('<td><a><i class="fa fa-user" aria-hidden="true"></i></a></td>');
+    td1.addClass("messageAddress");
     
     let td2 = $("<td>").text(result).addClass("messageText");
-    let td0 = $("<td>").text("["+(n+1)+"]").addClass("messageNumber");
-    body.append(tr.append(td0, td3, td2));
+    
+    body.append(tr.append(td0, td1, td2));
 }
 
 function setMessageAddress(result, n) {
@@ -117,42 +124,26 @@ App = {
 	$.getJSON(f_deployed_contract, function(data) {
 	    App.contracts.Landmark = TruffleContract(data);
 	    App.contracts.Landmark.setProvider(App.web3Provider);
+	    
+	    return App.bindEvents();
 	});
-	
-	App.LandmarkCall(null, {"pre":setContractHash});
-	App.loadAccountInfo();
-	return App.bindEvents();
+
     },
 
     
-    LandmarkCall: function(funcname, callFuncs={}, ...args) {
-	// Helper function, will run calls on network and then
-	// run "pre" and "then" functions afterwards
-	
-	web3.eth.getAccounts(function(error, accounts) {
-	    App.getContractDeploy().then(function(LM) {
-		if (callFuncs["pre"] != null)
-		    callFuncs["pre"](accounts, LM, ...args);
-		if (funcname != null) 
-		    return LM[funcname].call(...args);
-	    }).catch(function(err) {
-		statusError(err.message);
-	    }).then(function(result) {
-		if (callFuncs["then"] != null)
-		    callFuncs["then"](result, ...args);
-	    }).catch(function(err) {
-		statusError(err.message);
+    LandmarkCall2: async function(funcname, ...args) {
+	await App.getContractDeploy2();
 
-	    })
-	})
+	try {
+	    return  (await contract_deploy2[funcname].call(...args));
+	}
+	catch (err) {
+	    statusError(err.message);
+	}
     },
 
-    getContractDeploy: function() {
-	if(contract_deploy == null) {
-	    contract_deploy = App.contracts.Landmark.deployed();
-	    //contract_deploy = App.contracts.Landmark.at(contract_address);
-	}
-	return contract_deploy;
+    getContractDeploy2: async function() {
+	contract_deploy2 = App.contracts.Landmark.at(contract_address);
     },
   
     bindEvents: function() {
@@ -162,11 +153,17 @@ App = {
 	    $('#errorbox').empty().hide();
 	});
 
-	App.LandmarkCall("getVersionNumber", {"then":setVersionNumber});
-	App.LandmarkCall("getMessageCount", {"then":setPostCount});
+	return App.setInfo();
+    },
+
+    setInfo: async function () {
+
+	var vn = parseInt(await App.LandmarkCall2("getVersionNumber"));
+	setVersionNumber(vn);
 
 	App.loadAllPosts();
 	updater = setInterval(App.loadAllPosts, updateInterval);
+
 
 	$("#modalAddressText").val(contract_address);
 
@@ -180,13 +177,16 @@ App = {
 	    $('#marktext').focus();
 	});
 
+	setContractHash(contract_deploy2.address);
+	App.loadAccountInfo();
+
     },
 
-    loadAllPosts: function () {
-	App.LandmarkCall("getMessageCount", {"then":setPostCount});
+    loadAllPosts: async function () {
+	var n = parseInt(await App.LandmarkCall2("getMessageCount"));
+	setPostCount(n);
 	
 	try {
-	    var n = parseInt($("#postCount").text());
 	    
 	    // Remove status message
 	    if(n>0) $('#noMarksFound').remove();
@@ -200,16 +200,14 @@ App = {
 	}
 
 	for (i = 0; i < n; i++) {
-	    App.LandmarkCall("getMessageContents",
-			     {"then":setMessageContents}, i);	    
+	    if (doesMessageRowExist(i))
+		continue;
+	    
+	    let msg = await App.LandmarkCall2("getMessageContents", i);
+	    let address = await App.LandmarkCall2("getMessageAddress", i);
+	    setMessageContents(msg, i);
+	    setMessageAddress(address, i);
 	}
-
-	for (i = 0; i < n; i++) {
-	    App.LandmarkCall("getMessageAddress",
-			     {"then":setMessageAddress}, i);	    
-	}
-
-
 
 	
     },
@@ -227,14 +225,20 @@ App = {
     processButtonPost: function() {
 	const text = $('#marktext').val();
 	if(!text) return false;
+
+	// Show the status of the post attempt
+	console.log("Attemping to post", text);
+	box = statusError("Attemping to post '"+text+"'", "warning")
+	    .addClass("post-attempt-box");
+
+	// Hide the modal since we are showing status
+	$("#PostModal").modal("hide");
 	
 	web3.eth.getAccounts(function(error, accounts) {
 
-	    App.getContractDeploy().then(function(cx) {
-		console.log("Attemping to post", text);
-		box = statusError("Attemping to post '"+text+"'", "warning")
-		    .addClass("post-attempt-box");
-		
+	    //App.getContractDeploy().then(function(cx) {
+	    contract_deploy2.then(function(cx) {
+
 		return cx.postMessage(text);
 	    }).then(async function(result) {
 		console.log("Post complete!", result);
