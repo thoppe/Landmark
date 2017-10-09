@@ -5,7 +5,6 @@ var ESUrl = "https://etherscan.io"
 var contract_address = "0x90a9b125b6e4b22ecb139819778dc01d1339ef5c"
 
 var contract_deploy = null;
-var contract_deploy2 = null;
 
 const updateInterval = 1000;
 
@@ -150,19 +149,19 @@ App = {
     },
 
     
-    LandmarkCall2: async function(funcname, ...args) {
-	await App.getContractDeploy2();
+    LandmarkCall: async function(funcname, ...args) {
+	await App.getContractDeploy();
 
 	try {
-	    return  (await contract_deploy2[funcname].call(...args));
+	    return  (await contract_deploy[funcname].call(...args));
 	}
 	catch (err) {
 	    statusError(err.message);
 	}
     },
 
-    getContractDeploy2: async function() {
-	contract_deploy2 = App.contracts.Landmark.at(contract_address);
+    getContractDeploy: async function() {
+	contract_deploy = App.contracts.Landmark.at(contract_address);
     },
   
     bindEvents: function() {
@@ -178,7 +177,7 @@ App = {
 
     setInfo: async function () {
 
-	var vn = parseInt(await App.LandmarkCall2("getVersionNumber"));
+	var vn = parseInt(await App.LandmarkCall("getVersionNumber"));
 	setVersionNumber(vn);
 
 	App.loadAllPosts();
@@ -201,13 +200,13 @@ App = {
 	    $('#modalAddressText').focus().select();
 	});
 
-	setContractHash(contract_deploy2.address);
+	setContractHash(contract_deploy.address);
 	App.loadAccountInfo();
 
     },
 
     loadAllPosts: async function () {
-	var n = parseInt(await App.LandmarkCall2("getMessageCount"));
+	var n = parseInt(await App.LandmarkCall("getMessageCount"));
 	setPostCount(n);
 	
 	try {
@@ -227,9 +226,9 @@ App = {
 	    if (doesMessageRowExist(i))
 		continue;
 	    
-	    let msg = await App.LandmarkCall2("getMessageContents", i);
-	    let address = await App.LandmarkCall2("getMessageAddress", i);
-	    let date = await App.LandmarkCall2("getMessageTimestamp", i);
+	    let msg = await App.LandmarkCall("getMessageContents", i);
+	    let address = await App.LandmarkCall("getMessageAddress", i);
+	    let date = await App.LandmarkCall("getMessageTimestamp", i);
 	    setMessageContents(msg, i);
 	    setMessageAddress(address, i);
 	    setMessageDate(date, i);
@@ -257,7 +256,7 @@ App = {
 
 	
 	web3.eth.getAccounts(function(error, accounts) {
-	    contract_deploy2.then(function(cx) {
+	    contract_deploy.then(function(cx) {
 		return cx.closeLandmarkSite();
 	    }).then(async function(result) {
 		box = statusError("<strong>Site closed forever</strong>", "info")
@@ -283,8 +282,7 @@ App = {
 	
 	web3.eth.getAccounts(function(error, accounts) {
 
-	    //App.getContractDeploy().then(function(cx) {
-	    contract_deploy2.then(function(cx) {
+	    contract_deploy.then(function(cx) {
 
 		return cx.postMessage(text);
 	    }).then(async function(result) {
@@ -321,11 +319,11 @@ App = {
 
     processAdminInfo: async function() {
 
-	const Cadr = await App.LandmarkCall2("getCuratorAddress");
-	const isOpen = await App.LandmarkCall2("getIsSiteOpen");
-	const n = parseInt(await App.LandmarkCall2("getLimitPostLength"));
+	const Cadr = await App.LandmarkCall("getCuratorAddress");
+	const isOpen = await App.LandmarkCall("getIsSiteOpen");
+	const n = parseInt(await App.LandmarkCall("getLimitPostLength"));
 
-	let Fadr = await App.LandmarkCall2("getForwardingAddress");
+	let Fadr = await App.LandmarkCall("getForwardingAddress");
 	// An empty address is returned when nothing is set
 	if(Fadr == "0x0000000000000000000000000000000000000000")
 	    Fadr = "";

@@ -39,11 +39,15 @@ nav {
     margin-bottom:0;
 }
 
+nav a {
+    cursor: pointer;
+}
 
 nav .logo {
     font-size:xx-large;
     color:white;
     font-family:"Tiemposheadline";
+    cursor: default;
 }
 
 

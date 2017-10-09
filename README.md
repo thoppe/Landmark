@@ -25,7 +25,9 @@ This creates a master test account with the follow public/private keys
 
 Which you can import into MetaMask to test the DApp.
 
-### Roadmap
+### Roadmap for front end
 
-+ [ ] Build frontend to make it a proper DApp
++ [ ] Change address
++ [ ] Curator msg post
++ [ ] Curator msg display
 + [ ] Deploy to main chain
