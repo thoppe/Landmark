@@ -22,7 +22,7 @@ function statusError(x, statusType="danger", clickToRemove=true) {
     // Alert types: 
     // primary secondary success danger warning info light dark
     
-    let div = $('<div>').addClass("alert alert-"+statusType).text(x);
+    let div = $('<div>').addClass("alert alert-"+statusType).html(x);
     if (clickToRemove)
 	div.addClass("alert-dismissible").attr("data-dismiss","alert");
 
@@ -167,12 +167,11 @@ App = {
   
     bindEvents: function() {
 	$(document).on('click', '.btn-process-post', App.processButtonPost);
+	$(document).on('click', '.btn-process-closesite', App.processButtonCloseSite);
 
 	$('#AdminModal').on('shown.bs.modal', function (e) {
 	    App.processAdminInfo();
 	})
-
-	$(document).on('click', '.btn-process-post', App.processButtonPost);
 	
 	return App.setInfo();
     },
@@ -249,6 +248,29 @@ App = {
 	});	
     },
 
+    processButtonCloseSite: function() {
+	box = statusError("<strong>Attemping to close the site forever!</strong>")
+	    .addClass("post-attempt-box");
+
+	// Hide the modal since we are showing status
+	$("#AdminModal").modal("hide");
+
+	
+	web3.eth.getAccounts(function(error, accounts) {
+	    contract_deploy2.then(function(cx) {
+		return cx.closeLandmarkSite();
+	    }).then(async function(result) {
+		box = statusError("<strong>Site closed forever</strong>", "info")
+		    .addClass("post-attempt-box");
+
+	    }).catch(function(err) {
+		statusError(err.message);
+	    });
+
+	})
+
+    },
+
     processButtonPost: function() {
 	const text = $('#marktext').val();
 	if(!text) return false;
@@ -258,8 +280,6 @@ App = {
 	box = statusError("Attemping to post '"+text+"'", "warning")
 	    .addClass("post-attempt-box");
 
-	// Hide the modal since we are showing status
-	$("#PostModal").modal("hide");
 	
 	web3.eth.getAccounts(function(error, accounts) {
 
