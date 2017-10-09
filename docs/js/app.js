@@ -280,15 +280,20 @@ App = {
 	const text = $('#marktext').val();
 	if(!text) return false;
 
-
+	// Check to see if this is a curator post
 	const is_curator_post = $("#curatorNote").is(':visible');
-	console.log("DO SOMETHING", is_curator_post);
-	
-	
+
+	// Hide the modal at this point
+	$("#PostModal").modal("hide");
 
 	// Show the status of the post attempt
-	console.log("Attemping to post", text);
-	box = statusError("Attemping to post '"+text+"'", "warning")
+	msg = "Attemping to post '"+text+"'"
+
+	if (is_curator_post)
+	    msg += " to the profile";
+	
+	console.log(msg)
+	box = statusError(msg, "warning")
 	    .addClass("post-attempt-box");
 
 	
@@ -296,7 +301,11 @@ App = {
 
 	    contract_deploy.then(function(cx) {
 
-		return cx.postMessage(text);
+		if(is_curator_post) 
+		    return cx.postProfile(text);
+		else
+		    return cx.postMessage(text);
+		
 	    }).then(async function(result) {
 		console.log("Post complete!", result);
 		box = statusError("", "success", false);
