@@ -68,6 +68,12 @@ nav .logo {
     font-size:80%;
 }
 
+.messageDate {
+
+}
+.messageText {
+    white-space: pre;
+}
 
 body {
     color: #333;

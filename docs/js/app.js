@@ -68,13 +68,19 @@ function setMessageContents(result, n) {
     let body = $("#marks").find('tbody');
     let tr = $("<tr>").attr('id', label);
     
-    let td0 = $("<td>").text("["+(n+1)+"]").addClass("messageNumber");
-    let td1 = $('<td><a><i class="fa fa-user" aria-hidden="true"></i></a></td>');
-    td1.addClass("messageAddress");
+    let td_num = $("<td>").text("["+(n+1)+"]").addClass("messageNumber");
+
+    let td_adr = $('<td><a><i class="fa fa-user" aria-hidden="true"></i></a></td>');
+    td_adr.addClass("messageAddress");
     
-    let td2 = $("<td>").text(result).addClass("messageText");
+
+    let td_text = $("<td>").text(result).addClass("messageText");
+
+    let date = $('<div><em></em></div>');
+    date.find('em').addClass("messageDate text-muted small");
+    td_text.append(date);
     
-    body.append(tr.append(td0, td1, td2));
+    body.append(tr.append(td_num, td_adr, td_text));
 }
 
 function setMessageAddress(result, n) {
@@ -86,9 +92,21 @@ function setMessageAddress(result, n) {
     
     post.find(".messageAddress").find('a')
 	.attr("title",result)
-	.attr("href",url);
+	.attr("href",url);   
+}
+
+function setMessageDate(result, n) {
+    let timestamp = result.toNumber();
+    let datetime = new Date(timestamp*1000);
+    console.log(datetime);
     
-    
+    let post = $('#LandmarkPost'+n);
+    if(post.length == 0)
+	return false;
+
+    post.find(".messageDate")
+	.attr("title",datetime)
+	.text(datetime);
 }
 
 
@@ -212,8 +230,10 @@ App = {
 	    
 	    let msg = await App.LandmarkCall2("getMessageContents", i);
 	    let address = await App.LandmarkCall2("getMessageAddress", i);
+	    let date = await App.LandmarkCall2("getMessageTimestamp", i);
 	    setMessageContents(msg, i);
 	    setMessageAddress(address, i);
+	    setMessageDate(date, i);
 	}
 
 	
