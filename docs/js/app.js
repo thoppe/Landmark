@@ -165,12 +165,14 @@ App = {
     },
   
     bindEvents: function() {
-	$(document).on('click', '.btn-process-post', App.processButtonPost);
-	$(document).on('click', '.btn-process-closesite', App.processButtonCloseSite);
+	$(document).on('click', '.btn-process-post',
+		       App.processButtonPost);
+	$(document).on('click', '.btn-process-closesite',
+		       App.processButtonCloseSite);
+	
+	$(document).on('click', '.btn-process-curatormsg',
+		       App.processButtonCuratorMsg);
 
-	$('#AdminModal').on('shown.bs.modal', function (e) {
-	    App.processAdminInfo();
-	})
 	
 	return App.setInfo();
     },
@@ -199,6 +201,10 @@ App = {
 	$('#AddressChangeModal').on('shown.bs.modal', function () {
 	    $('#modalAddressText').focus().select();
 	});
+
+	$('#AdminModal').on('shown.bs.modal', function (e) {
+	    App.processAdminInfo();
+	})
 
 	setContractHash(contract_deploy.address);
 	App.loadAccountInfo();
@@ -274,6 +280,12 @@ App = {
 	const text = $('#marktext').val();
 	if(!text) return false;
 
+
+	const is_curator_post = $("#curatorNote").is(':visible');
+	console.log("DO SOMETHING", is_curator_post);
+	
+	
+
 	// Show the status of the post attempt
 	console.log("Attemping to post", text);
 	box = statusError("Attemping to post '"+text+"'", "warning")
@@ -336,6 +348,18 @@ App = {
 	
 	
     },
+
+    processButtonCuratorMsg: function() {
+	
+	// Hide the modal since we are showing status
+	$("#AdminModal").modal("hide");
+
+	// Modify the post modal
+	$("#curatorNote").show();
+	$("#PostModal").modal('show'); 
+
+    },
+
 
 };
 

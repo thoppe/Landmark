@@ -79,6 +79,10 @@ nav .logo {
     white-space: pre;
 }
 
+#curatorNote {
+    display:none;
+}
+
 body {
     color: #333;
     background-color:white;
