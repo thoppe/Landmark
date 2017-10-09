@@ -9,7 +9,8 @@ var contract_deploy2 = null;
 
 const updateInterval = 1000;
 
-const closeButtonHTML = '<button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span>';
+const closeButtonHTML = `<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>`;
 const infoButtonHTML = `<div>
 Post successful: "<span class="infoPostMessage"></span>" <br>
 Transaction Hash: <a class="alert-link infoTransactionHash">HASH</a> <br>
@@ -177,6 +178,10 @@ App = {
 
 	$('#PostModal').on('shown.bs.modal', function () {
 	    $('#marktext').focus();
+	});
+
+	$('#AddressChangeModal').on('shown.bs.modal', function () {
+	    $('#modalAddressText').focus().select();
 	});
 
 	setContractHash(contract_deploy2.address);

@@ -30,9 +30,10 @@
 	   data-toggle="modal" data-target="#AddressChangeModal">
 	  Landmark not found at address (click to set)</a>
       </p>
-      
 
+      	<div class="input-group">
       <div class="navbar-right">
+
 	<p class="navbar-text">
 	  <a class="navbar-link no-underline"
 	     data-toggle="modal" data-target="#PostModal">
@@ -48,7 +49,8 @@
 	    &nbsp; Admin
 	  </a>
 	</p>
-	
+
+	</div>
       </div>
 
 <!---
@@ -120,7 +122,7 @@
 </footer>
 
 
-<div class="modal fade" id="PostModal" role="dialog">
+<div class="modal fade" id="PostModal" role="dialog" tabindex="-1">
   <div class="modal-dialog">
         
     <div class="modal-content">
@@ -148,7 +150,7 @@
 
 
 
-<div class="modal fade" id="AddressChangeModal" role="dialog">
+<div class="modal fade" id="AddressChangeModal" role="dialog" tabindex="-1">
   <div class="modal-dialog">
         
     <div class="modal-content">
@@ -158,9 +160,10 @@
       <div class="form-group modal-body">
 	<label for="modalAddressText"></label>
 	<input id="modalAddressText"
-		  placeholder=""
-		  class="form-control input-lg"
-		  type="text"></input>
+	       spellcheck="false"
+	       placeholder=""
+	       class="form-control input-lg"
+	       type="text"></input>
       </div>
       
       <div class="modal-footer">
@@ -175,7 +178,7 @@
 </div>
 
 
-<div class="modal fade" id="AdminModal" role="dialog">
+<div class="modal fade" id="AdminModal" role="dialog" tabindex="-1">
   <div class="modal-dialog">
         
     <div class="modal-content">
