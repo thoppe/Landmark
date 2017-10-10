@@ -28,6 +28,5 @@ Which you can import into MetaMask to test the DApp.
 ### Roadmap for front end
 
 + [ ] Change address
-+ [ ] Curator msg post
-+ [ ] Curator msg display
++ [ ] error and msg order
 + [ ] Deploy to main chain
