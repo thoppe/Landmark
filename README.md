@@ -28,5 +28,4 @@ Which you can import into MetaMask to test the DApp.
 ### Roadmap for front end
 
 + [ ] Change address
-+ [ ] error and msg order
 + [ ] Deploy to main chain

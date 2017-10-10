@@ -27,7 +27,7 @@ function statusError(x, statusType="danger", clickToRemove=true) {
 
     div.append($(closeButtonHTML));
 
-    $('#errorbox').append(div);
+    $('#errorbox').prepend(div);
     return div
 }
 
@@ -79,7 +79,7 @@ function setMessageContents(result, n) {
     date.find('em').addClass("messageDate text-muted small");
     td_text.append(date);
     
-    body.append(tr.append(td_num, td_adr, td_text));
+    body.prepend(tr.append(td_num, td_adr, td_text));
 }
 
 function setMessageAddress(result, n) {
