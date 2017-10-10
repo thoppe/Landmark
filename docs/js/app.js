@@ -59,6 +59,7 @@ function doesMessageRowExist(n) {
     return $('#LandmarkPost'+n).length > 0
 }
 
+
 function setMessageContents(result, n) {
     let label = 'LandmarkPost'+n;
 
@@ -106,6 +107,20 @@ function setMessageDate(result, n) {
     post.find(".messageDate")
 	.attr("title",datetime)
 	.text(datetime);
+}
+
+var isAddress = function (address) {
+    // function isAddress(address) {
+        if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
+        // check if it has the basic requirements of an address
+        return false;
+	} else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
+        // If it's all small caps or all all caps, return "true
+        return true;
+    } else {
+        // Otherwise check each case
+        return isChecksumAddress(address);
+    }
 }
 
 
@@ -169,9 +184,10 @@ App = {
 		       App.processButtonPost);
 	$(document).on('click', '.btn-process-closesite',
 		       App.processButtonCloseSite);
-	
 	$(document).on('click', '.btn-process-curatormsg',
 		       App.processButtonCuratorMsg);
+	$(document).on('click', '.btn-process-change-address',
+		       App.processButtonChangeAddress);
 
 	
 	return App.setInfo();
@@ -369,7 +385,6 @@ App = {
 	$("#siteinfoIsOpen").text(isOpen);
 	$("#siteinfoMaxPostLength").text(n);
 	
-	
     },
 
     processButtonCuratorMsg: function() {
@@ -381,6 +396,19 @@ App = {
 	$("#curatorNote").show();
 	$("#PostModal").modal('show'); 
 
+    },
+
+    processButtonChangeAddress: function() {
+
+	const address = $('#modalAddressText').val();
+	if(!address) return false;
+
+	if(!isAddress(address)) {
+	    msg = address + " is not a valid ethereum address. A valid address must be 42 hexidecimal characters long and begin with 0x"
+	    statusError(msg);
+	    return false;
+	}
+	console.log("Change address here");
     },
 
 
