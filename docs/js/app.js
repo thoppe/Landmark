@@ -179,8 +179,10 @@ App = {
 
     setInfo: async function () {
 
-	var vn = parseInt(await App.LandmarkCall("getVersionNumber"));
+	const vn = parseInt(await App.LandmarkCall("getVersionNumber"));
 	setVersionNumber(vn);
+
+	App.loadCuratorMessage();
 
 	App.loadAllPosts();
 	updater = setInterval(App.loadAllPosts, updateInterval);
@@ -211,12 +213,24 @@ App = {
 
     },
 
+    loadCuratorMessage: async function() {
+
+	const cAdr = await App.LandmarkCall("getCuratorAddress");
+
+	if(await App.LandmarkCall("checkValidProfile", cAdr)) {
+	    const cMsg = await App.LandmarkCall("getProfileContent", cAdr);
+	    $("#curatorMessage").show();
+	    $("#curatorMessageText").text(cMsg);
+	}
+
+
+    },
+
     loadAllPosts: async function () {
 	var n = parseInt(await App.LandmarkCall("getMessageCount"));
 	setPostCount(n);
 	
-	try {
-	    
+	try {	    
 	    // Remove status message
 	    if(n>0) $('#noMarksFound').remove();
 	    else if(n==0)

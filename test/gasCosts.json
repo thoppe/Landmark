@@ -28,7 +28,7 @@
     "title": "Set/Get permission to Message"
   },
   {
-    "gasCost": 27721,
+    "gasCost": 27743,
     "title": "Set/Get permission to Profile"
   },
   {
@@ -36,7 +36,7 @@
     "title": "Curator grant privilege"
   },
   {
-    "gasCost": 51380,
+    "gasCost": 51402,
     "title": "Purchase privilege"
   },
   {

@@ -83,6 +83,10 @@ nav .logo {
     display:none;
 }
 
+#curatorMessage {
+    display:none;
+}
+
 body {
     color: #333;
     background-color:white;

@@ -101,11 +101,6 @@ contract Landmark {
     require(i >= 0); _;
   }
 
-  modifier checkValidProfile(address target) {
-    // Timestamp will be set to non-zero if profile ever set
-    require(Profiles[target].timestamp>0); _;
-  }
-
   modifier checkLength(string text) {
     require(getPostLength(text) <= limitPostLength); _;
   }
@@ -163,8 +158,9 @@ contract Landmark {
     return permissionNeededToProfile;
   }
       
-  function getProfileContent(address target) checkValidProfile(target)
+  function getProfileContent(address target)
     public constant returns (string) {
+    require(checkValidProfile(target));
     return Profiles[target].contents;
   }
 
@@ -176,6 +172,12 @@ contract Landmark {
   function getVersionNumber() public constant returns (uint) {
     return versionNumber;
   }
+
+  function checkValidProfile(address target) public constant returns (bool) {
+    return Profiles[target].timestamp > 0;
+  }
+
+
 
   // ****************** Utility funcs  ******************
 
