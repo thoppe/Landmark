@@ -2,8 +2,8 @@ var provider_url = 'http://localhost:8545';
 var f_deployed_contract = './build/contracts/Landmark.json';
 var ESUrl = "https://etherscan.io"
 
+// Default/Starting contract address
 var contract_address = "0x90a9b125b6e4b22ecb139819778dc01d1339ef5c"
-
 var contract_deploy = null;
 
 const updateInterval = 1000;
@@ -114,7 +114,8 @@ var isAddress = function (address) {
         if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
         // check if it has the basic requirements of an address
         return false;
-	} else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
+	} else if (/^(0x)?[0-9a-f]{40}$/.test(address) ||
+		   /^(0x)?[0-9A-F]{40}$/.test(address)) {
         // If it's all small caps or all all caps, return "true
         return true;
     } else {
@@ -193,8 +194,34 @@ App = {
 	return App.setInfo();
     },
 
+    
+    checkIfContractDeployed: async function () {
+
+	await App.getContractDeploy();
+	var x = await contract_deploy["getVersionNumber"].call();
+	if(parseInt(x) == 0) {
+	    $('#noMarksFound').text("Landmark not found at this address.")
+		.removeClass("text-muted");
+	    return false;
+	}
+	return true;
+
+    },
+
     setInfo: async function () {
 
+	setContractHash(contract_address);
+	$("#modalAddressText").val(contract_address);
+	
+	$('#AddressChangeModal').on('shown.bs.modal', function () {
+	    $('#modalAddressText').focus().select();
+	});
+
+	// Break if address is not found
+	if(! await App.checkIfContractDeployed() ) {
+	    return false;
+	}
+	
 	const vn = parseInt(await App.LandmarkCall("getVersionNumber"));
 	setVersionNumber(vn);
 
@@ -203,8 +230,6 @@ App = {
 	App.loadAllPosts();
 	updater = setInterval(App.loadAllPosts, updateInterval);
 
-
-	$("#modalAddressText").val(contract_address);
 
 	$('#marktext').keydown(function (event) {
 	    if ((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey){
@@ -216,15 +241,10 @@ App = {
 	    $('#marktext').focus();
 	});
 
-	$('#AddressChangeModal').on('shown.bs.modal', function () {
-	    $('#modalAddressText').focus().select();
-	});
-
 	$('#AdminModal').on('shown.bs.modal', function (e) {
 	    App.processAdminInfo();
 	})
 
-	setContractHash(contract_deploy.address);
 	App.loadAccountInfo();
 
     },
@@ -408,7 +428,16 @@ App = {
 	    statusError(msg);
 	    return false;
 	}
-	console.log("Change address here");
+
+	// Hide the modal at this point
+	$("#modalAddressText").modal("hide");
+
+	contract_address = address;
+	contract_deploy = null;
+
+	App.getContractDeploy();
+	App.setInfo();
+
     },
 
 
