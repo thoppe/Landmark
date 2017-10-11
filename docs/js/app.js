@@ -22,7 +22,7 @@ function statusError(x, statusType="danger", clickToRemove=true) {
     // Alert types: 
     // primary secondary success danger warning info light dark
     
-    let div = $('<div>').addClass("alert alert-"+statusType).html(x);
+    let div = $('<div>').addClass("alert alert-"+statusType).text(x);
     if (clickToRemove)
 	div.addClass("alert-dismissible").attr("data-dismiss","alert");
 
