@@ -14,6 +14,20 @@ If you build one, let us know and we'll list it here!
 
 ### Development
 
+** ropsten ** (localhost)
+
+https://ethereum.stackexchange.com/questions/23338/deployment-of-a-functioning-contract-testrpc-to-ropsten-with-truffle-geth
+
+Public account: `0xB5694153edAc5d5F669Bc4afB6cE4c0866C53511`
+
+       geth account import roth.key (export metamask key)
+       
+       geth --fast --cache=1048 --testnet --rpc --rpcapi "eth,net,web3" --rpccorsdomain '*' --rpcaddr localhost --rpcport 8545
+
+
+
+** testnet ** (localhost)
+
 Start the testrpc with the following seed to keep the accounts in sync
 
     testrpc --seed 2048
