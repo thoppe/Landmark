@@ -3,6 +3,7 @@ var f_deployed_contract = './build/contracts/Landmark.json';
 var ESUrl = "https://etherscan.io"
 
 // Default/Starting contract address
+//var contract_address = "0x90a9b125b6e4b22ecb139819778dc01d1339ef5c"
 var contract_address = "0x90a9b125b6e4b22ecb139819778dc01d1339ef5c"
 var contract_deploy = null;
 
@@ -66,7 +67,7 @@ function setMessageContents(result, n) {
     if (doesMessageRowExist(n)) return false;
     
     let body = $("#marks").find('tbody');
-    let tr = $("<tr>").attr('id', label);
+    let tr = $("<tr>").attr('id', label).addClass("LandmarkPostRow");
     
     let td_num = $("<td>").text("["+(n+1)+"]").addClass("messageNumber");
 
@@ -196,14 +197,20 @@ App = {
 
     
     checkIfContractDeployed: async function () {
-
+	
 	await App.getContractDeploy();
+
 	var x = await contract_deploy["getVersionNumber"].call();
 	if(parseInt(x) == 0) {
-	    $('#noMarksFound').text("Landmark not found at this address.")
-		.removeClass("text-muted");
+	    $('#statusNotFound').show();
+	    $('#statusLooking').hide();
+	    $("#statusEmpty").hide();
+	    $('#navbar-isSiteUsable').hide();
 	    return false;
 	}
+
+	
+	
 	return true;
 
     },
@@ -245,7 +252,6 @@ App = {
 	    App.processAdminInfo();
 	})
 
-	App.loadAccountInfo();
 
     },
 
@@ -263,20 +269,31 @@ App = {
     },
 
     loadAllPosts: async function () {
+
+	if(! await App.checkIfContractDeployed() ) {
+	    return false;
+	}
+	
 	var n = parseInt(await App.LandmarkCall("getMessageCount"));
 	setPostCount(n);
-	
-	try {	    
-	    // Remove status message
-	    if(n>0) $('#noMarksFound').remove();
-	    else if(n==0)
-		$('#noMarksFound').text("Empty Landmark")
-		.removeClass("text-muted");
+
+	try {
+	    if(n==0) {
+		$('#statusNotFound').hide();
+		$('#statusLooking').hide();
+		$("#statusEmpty").show();
+		return true;
+	    }
 	}
 	catch (err) {
 	    // Perhaps we aren't ready yet...
 	    return false;
 	}
+
+	$('#statusNotFound').hide();
+	$('#statusLooking').hide();
+	$("#statusEmpty").hide();
+
 
 	for (i = 0; i < n; i++) {
 	    if (doesMessageRowExist(i))
@@ -404,6 +421,8 @@ App = {
 
 	$("#siteinfoIsOpen").text(isOpen);
 	$("#siteinfoMaxPostLength").text(n);
+
+	App.loadAccountInfo();
 	
     },
 
@@ -424,7 +443,10 @@ App = {
 	if(!address) return false;
 
 	if(!isAddress(address)) {
-	    msg = address + " is not a valid ethereum address. A valid address must be 42 hexidecimal characters long and begin with 0x"
+	    msg = (address + " is not a valid ethereum address. " +
+		   +"A valid address must be 42 hexidecimal characters long and "+
+		   "begin with 0x");
+	    
 	    statusError(msg);
 	    return false;
 	}
@@ -434,6 +456,14 @@ App = {
 
 	contract_address = address;
 	contract_deploy = null;
+
+	// Reset the text
+	$('.LandmarkPostRow').find('*').each(function() {
+	    this.remove();
+	});
+
+	// Allow the user to interact
+	$('#navbar-isSiteUsable').show();
 
 	App.getContractDeploy();
 	App.setInfo();

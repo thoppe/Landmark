@@ -93,3 +93,9 @@ body {
     font-family:"Apercu light";
 }
 
+#statusNotFound {
+    display:none;
+}
+#statusEmpty {
+    display:none;
+}
