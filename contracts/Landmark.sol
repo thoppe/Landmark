@@ -9,7 +9,7 @@ contract Landmark {
   address curator;
 
   // Post length hard-coded and fixed on contract creation
-  uint16 limitPostLength = 720;
+  uint16 limitPostLength = 496;
 
   // Once a site is closed, it can never be reopened
   bool isSiteOpen = true;

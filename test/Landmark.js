@@ -3,7 +3,7 @@ var fs = require('fs');
 const helper = require('./helper_funcs.js');
 for (var key in helper) global[key] = helper[key];
 
-const default_limitLength = 720;
+const default_limitLength = 496;
 const versionNumber = 1;
 
 contract('Landmark', function(accounts) {
