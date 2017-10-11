@@ -2,7 +2,7 @@
 _social media on the blockchain_
 
 Landmark is a social network implemented as a smart-contract for ethereum.
-It is completely decentralized, permanent, and uncensorable form of communication as long as ethereum exists.
+It is completely decentralized, permanent, and uncensorable form of communication for as long as ethereum exists.
 When you _mark_, the message is etched into the blockchain forever.
 
 The canonical address is
