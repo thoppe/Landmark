@@ -146,21 +146,23 @@
       <div class="modal-header">
         <h4 class="modal-title">Change Landmark location</h4>
       </div>
-      <div class="form-group modal-body">
+      <form class="form-group modal-body">
 	<label for="modalAddressText"></label>
 	<input id="modalAddressText"
 	       spellcheck="false"
 	       placeholder=""
 	       class="form-control input-lg"
 	       type="text"></input>
-      </div>
+
+	<div class="modal-footer">
+          <input type="submit" class="btn btn-process-change-address"
+		  data-dismiss="modal" value="Change">
+	  </input>
+	</div>
+	
+      </form>
       
-      <div class="modal-footer">
-        <button type="button" class="btn btn-process-change-address"
-		data-dismiss="modal">
-	  Change
-	</button>
-      </div>
+
     </div>
     
   </div>
