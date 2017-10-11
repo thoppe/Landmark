@@ -224,6 +224,8 @@ App = {
 	    $('#modalAddressText').focus().select();
 	});
 
+	$("#accountNetwork").text(web3.version.network);
+
 	// Break if address is not found
 	if(! await App.checkIfContractDeployed() ) {
 	    return false;
@@ -250,7 +252,7 @@ App = {
 
 	$('#AdminModal').on('shown.bs.modal', function (e) {
 	    App.processAdminInfo();
-	})
+	});
 
 
     },
