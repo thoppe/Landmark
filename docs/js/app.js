@@ -44,6 +44,16 @@ function statusError(x, statusType="danger", clickToRemove=true) {
     return div
 }
 
+function getESUrl() {
+
+    if(contract_network == 3)
+	subdomain = "ropsten."
+    else
+	subdomain = ""
+
+    return "https://" + subdomain + "etherscan.io/";
+}
+
 function setVersionNumber(n) {
     $('#versiontag').text(" (v"+n+") ");
 }
@@ -53,14 +63,16 @@ function setPostCount(n) {
 }
 
 function setAccountHash(accounts) {
+   
     $('#accountHash').text(accounts[0])
+	.attr('href', getESUrl() + "address/"+accounts[0]);
 }
 
 function setContractHash(address) {
     $('#contractHash').text(address);
 
-    // For now, don't link to etherscan
-    // 	.attr('href', ESUrl+"/address/"+LM.address);
+    $('#adminContractHash').text(address)
+    	.attr('href', getESUrl() + "address/"+address);
 }
 
 function setAccountBalance(result) {

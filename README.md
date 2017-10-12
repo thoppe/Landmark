@@ -33,7 +33,8 @@ https://faucet.metamask.io/
     # Sync the ropsten so you have a local node running
     geth --fast --cache=1048 --testnet --rpc --rpcapi "eth,net,web3" --rpccorsdomain '*' --rpcaddr localhost --rpcport 8545 --unlock "0xb5694153edac5d5f669bc4afb6ce4c0866c53511"
 
-
+    # After sync migrate the contract
+    truffle migrate --network ropsten
 
 ** testnet ** (localhost)
 
