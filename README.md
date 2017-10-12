@@ -18,6 +18,8 @@ If you build one, let us know and we'll list it here!
 
 https://ethereum.stackexchange.com/questions/23338/deployment-of-a-functioning-contract-testrpc-to-ropsten-with-truffle-geth
 
+https://github.com/transmute-industries/ropsten-example
+
 For testing ONLY, create an account and save the key to `roth.key`.
 
 + Public account: `0xb5694153edac5d5f669bc4afb6ce4c0866c53511`
@@ -31,7 +33,7 @@ https://faucet.metamask.io/
     geth --testnet account import roth.key
 
     # Sync the ropsten so you have a local node running
-    geth --fast --cache=1048 --testnet --rpc --rpcapi "eth,net,web3" --rpccorsdomain '*' --rpcaddr localhost --rpcport 8545 --unlock "0xb5694153edac5d5f669bc4afb6ce4c0866c53511"
+    geth --fast --cache=1048 --testnet --rpc --rpcapi "eth,net,web3,personal" --rpccorsdomain '*' --rpcaddr localhost --rpcport 8545 --unlock "0xb5694153edac5d5f669bc4afb6ce4c0866c53511"
 
     # After sync migrate the contract
     truffle migrate --network ropsten
