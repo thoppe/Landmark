@@ -2,8 +2,9 @@ var provider_url = 'http://localhost:8545';
 var f_deployed_contract = './build/contracts/Landmark.json';
 var ESUrl = "https://etherscan.io"
 
+var FLAG_hidenavbar = false;
+
 // Default/Starting contract address
-//var contract_address = "0x90a9b125b6e4b22ecb139819778dc01d1339ef5c"
 const default_contract_address = {
 
     // Use 0 as the local testnet fallback
@@ -231,11 +232,12 @@ App = {
 	    $('#statusNotFound').show();
 	    $('#statusLooking').hide();
 	    $("#statusEmpty").hide();
-	    $('#navbar-isSiteUsable').hide();
+
+	    if(FLAG_hidenavbar)
+		$('#navbar-isSiteUsable').hide();
+	    
 	    return false;
 	}
-
-	
 	
 	return true;
 
@@ -253,6 +255,14 @@ App = {
 	});
 
 	$("#accountNetwork").text(web3.version.network);
+	
+	$('#PostModal').on('shown.bs.modal', function () {
+	    $('#marktext').focus();
+	});
+
+	$('#AdminModal').on('shown.bs.modal', function (e) {
+	    App.processAdminInfo();
+	});
 
 	// Break if address is not found
 	if(! await App.checkIfContractDeployed() ) {
@@ -272,14 +282,6 @@ App = {
 	    if ((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey){
 		App.processButtonPost();
 	    }
-	});
-
-	$('#PostModal').on('shown.bs.modal', function () {
-	    $('#marktext').focus();
-	});
-
-	$('#AdminModal').on('shown.bs.modal', function (e) {
-	    App.processAdminInfo();
 	});
 
 
@@ -351,12 +353,10 @@ App = {
     },
 
     processButtonCloseSite: function() {
-	box = statusError("<strong>Attemping to close the site forever!</strong>")
-	    .addClass("post-attempt-box");
+	box = statusError("<strong>Attemping to close the site forever!</strong>").addClass("post-attempt-box");
 
 	// Hide the modal since we are showing status
 	$("#AdminModal").modal("hide");
-
 	
 	web3.eth.getAccounts(function(error, accounts) {
 	    contract_deploy.then(function(cx) {
@@ -437,6 +437,13 @@ App = {
 
     processAdminInfo: async function() {
 
+	App.loadAccountInfo();
+
+	// Break if address is not found
+	if(! await App.checkIfContractDeployed() ) {
+	    return false;
+	}
+
 	const Cadr = await App.LandmarkCall("getCuratorAddress");
 	const isOpen = await App.LandmarkCall("getIsSiteOpen");
 	const n = parseInt(await App.LandmarkCall("getLimitPostLength"));
@@ -452,8 +459,6 @@ App = {
 	$("#siteinfoIsOpen").text(isOpen);
 	$("#siteinfoMaxPostLength").text(n);
 
-	App.loadAccountInfo();
-	
     },
 
     processButtonCuratorMsg: function() {
