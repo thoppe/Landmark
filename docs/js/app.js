@@ -4,7 +4,17 @@ var ESUrl = "https://etherscan.io"
 
 // Default/Starting contract address
 //var contract_address = "0x90a9b125b6e4b22ecb139819778dc01d1339ef5c"
-var contract_address = "0x90a9b125b6e4b22ecb139819778dc01d1339ef5c"
+const default_contract_address = {
+
+    // Use 0 as the local testnet fallback
+    0:" 0x90a9b125b6e4b22ecb139819778dc01d1339ef5c",
+
+    // Ropsten
+    3: "0xae10ae10ae10ae10ae10ae10ae10ae10ae10ae10",
+}
+var used_default_address = false;
+
+var contract_address = null;
 var contract_deploy = null;
 var contract_network = null;
 
@@ -46,7 +56,7 @@ function setAccountHash(accounts) {
 }
 
 function setContractHash(address) {
-    $('#contractHash').text(address)
+    $('#contractHash').text(address);
 
     // For now, don't link to etherscan
     // 	.attr('href', ESUrl+"/address/"+LM.address);
@@ -100,7 +110,6 @@ function setMessageAddress(result, n) {
 function setMessageDate(result, n) {
     let timestamp = result.toNumber();
     let datetime = new Date(timestamp*1000);
-    console.log(datetime);
     
     let post = $('#LandmarkPost'+n);
     if(post.length == 0)
@@ -179,9 +188,23 @@ App = {
     },
 
     getContractDeploy: async function() {
+
+	if(!used_default_address) {
+	    // Get the network version
+	    contract_network = await web3.version.network;
+
+	    // Load the default address if we know it
+	    if(contract_network in default_contract_address) {
+		contract_address = default_contract_address[contract_network];
+	    }
+	    // Otherwise, assume we are on testnet
+	    else {
+		contract_address = default_contract_address[0];
+	    }
+	    used_default_address = true;
+	}
+
 	contract_deploy  = App.contracts.Landmark.at(contract_address);
-	contract_network = await web3.version.network;
-	console.log(contract_network);
     },
   
     bindEvents: function() {
@@ -219,6 +242,8 @@ App = {
     },
 
     setInfo: async function () {
+
+	await App.getContractDeploy();
 
 	setContractHash(contract_address);
 	$("#modalAddressText").val(contract_address);
@@ -449,8 +474,8 @@ App = {
 
 	if(!isAddress(address)) {
 	    msg = (address + " is not a valid ethereum address. " +
-		   +"A valid address must be 42 hexidecimal characters long and "+
-		   "begin with 0x");
+		   +"A valid address must be 42 hexidecimal characters long "+
+		   "and begin with 0x");
 	    
 	    statusError(msg);
 	    return false;
