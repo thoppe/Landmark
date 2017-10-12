@@ -6,6 +6,7 @@ var ESUrl = "https://etherscan.io"
 //var contract_address = "0x90a9b125b6e4b22ecb139819778dc01d1339ef5c"
 var contract_address = "0x90a9b125b6e4b22ecb139819778dc01d1339ef5c"
 var contract_deploy = null;
+var contract_network = null;
 
 const updateInterval = 1000;
 
@@ -178,7 +179,9 @@ App = {
     },
 
     getContractDeploy: async function() {
-	contract_deploy = App.contracts.Landmark.at(contract_address);
+	contract_deploy  = App.contracts.Landmark.at(contract_address);
+	contract_network = await web3.version.network;
+	console.log(contract_network);
     },
   
     bindEvents: function() {

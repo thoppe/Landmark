@@ -18,11 +18,20 @@ If you build one, let us know and we'll list it here!
 
 https://ethereum.stackexchange.com/questions/23338/deployment-of-a-functioning-contract-testrpc-to-ropsten-with-truffle-geth
 
-Public account: `0xB5694153edAc5d5F669Bc4afB6cE4c0866C53511`
+For testing ONLY, create an account and save the key to `roth.key`.
 
-       geth account import roth.key (export metamask key)
-       
-       geth --fast --cache=1048 --testnet --rpc --rpcapi "eth,net,web3" --rpccorsdomain '*' --rpcaddr localhost --rpcport 8545
++ Public account: `0xb5694153edac5d5f669bc4afb6ce4c0866c53511`
++ Private key: `2a47b2de5e56206632db329d634259fdb2188183de67f7d5aca69992fd18e951`
+
+Request some ether if there isn't any in the account
+https://faucet.metamask.io/
+
+
+    # Create a local wallet
+    geth --testnet account import roth.key
+
+    # Sync the ropsten so you have a local node running
+    geth --fast --cache=1048 --testnet --rpc --rpcapi "eth,net,web3" --rpccorsdomain '*' --rpcaddr localhost --rpcport 8545 --unlock "0xb5694153edac5d5f669bc4afb6ce4c0866c53511"
 
 
 
