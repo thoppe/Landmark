@@ -43,11 +43,15 @@ nav a {
     cursor: pointer;
 }
 
-nav .logo {
+.navbar-brand.logo{
     font-size:xx-large;
-    color:white;
     font-family:"Tiemposheadline";
     cursor: default;
+    color:white;
+}
+
+.navbar-brand.logo:hover{
+    color:white;
 }
 
 
