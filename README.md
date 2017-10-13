@@ -28,6 +28,10 @@ For testing ONLY, create an account and save the key to `roth.key`.
 Request some ether if there isn't any in the account
 https://faucet.metamask.io/
 
+    # Use parity to sync the ropsten network
+    parity --chain ropsten
+
+
 
     # Create a local wallet
     geth --testnet account import roth.key
