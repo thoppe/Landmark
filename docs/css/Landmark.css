@@ -103,3 +103,8 @@ body {
 #statusEmpty {
     display:none;
 }
+
+.messageAddress a {
+    color: inherit;
+    padding-left: 0.5em;
+}

@@ -1,6 +1,5 @@
 var provider_url = 'http://localhost:8545';
 var f_deployed_contract = './build/contracts/Landmark.json';
-var ESUrl = "https://etherscan.io"
 
 var FLAG_hidenavbar = false;
 
@@ -50,7 +49,7 @@ function getESUrl() {
 	subdomain = "ropsten."
     else
 	subdomain = ""
-
+    
     return "https://" + subdomain + "etherscan.io/";
 }
 
@@ -84,28 +83,28 @@ function doesMessageRowExist(n) {
     return $('#LandmarkPost'+n).length > 0
 }
 
+const messageTemplateHTML = `<tr class="LandmarkPostRow"><td class="messageNumber"></td>
+<td class="messageTextCol">
+ <div class="messageText"></div>
+ <div class="text-muted small">
+   <span class="messageDate font-italic"></span>
+   <span class="messageAddress"><a><i class="fa fa-user" aria-hidden="true"></i></a></span>
+ </div>
+</td></tr>`
+
 
 function setMessageContents(result, n) {
     let label = 'LandmarkPost'+n;
 
     if (doesMessageRowExist(n)) return false;
-    
-    let body = $("#marks").find('tbody');
-    let tr = $("<tr>").attr('id', label).addClass("LandmarkPostRow");
-    
-    let td_num = $("<td>").text("["+(n+1)+"]").addClass("messageNumber");
+  
+    let post = $(messageTemplateHTML);
 
-    let td_adr = $('<td><a><i class="fa fa-user" aria-hidden="true"></i></a></td>');
-    td_adr.addClass("messageAddress");
-    
+    post.attr('id', label);
+    post.find('.messageNumber').text("["+(n+1)+"]");
+    post.find('.messageText').text(result);
 
-    let td_text = $("<td>").text(result).addClass("messageText");
-
-    let date = $('<div><em></em></div>');
-    date.find('em').addClass("messageDate text-muted small");
-    td_text.append(date);
-    
-    body.prepend(tr.append(td_num, td_adr, td_text));
+    $("#marks").find('tbody').prepend(post);
 }
 
 function setMessageAddress(result, n) {
@@ -113,7 +112,7 @@ function setMessageAddress(result, n) {
     if(post.length == 0)
 	return false;
 
-    let url = ESUrl + '/address/' + result;
+    let url = getESUrl() + 'address/' + result;
     
     post.find(".messageAddress").find('a')
 	.attr("title",result)
@@ -427,10 +426,10 @@ App = {
 		info.find(".infoPostMessage").text(text);
 		info.find(".infoTransactionHash")
 		    .text(res.transactionHash)
-		    .attr('href', ESUrl+"/tx/"+res.transactionHash);
+		    .attr('href', getESUrl()+"tx/"+res.transactionHash);
 		info.find(".infoBlockNumber")
 		    .text(res.blockNumber)
-		    .attr('href', ESUrl+"/block/"+res.blockNumber);
+		    .attr('href', getESUrl()+"block/"+res.blockNumber);
 		info.find(".infoGasUsed")
 		    .text(res.gasUsed);
 				
