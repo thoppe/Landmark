@@ -11,7 +11,7 @@ const default_contract_address = {
     0:" 0x90a9b125b6e4b22ecb139819778dc01d1339ef5c",
 
     // Ropsten
-    3: "0xae10ae10ae10ae10ae10ae10ae10ae10ae10ae10",
+    3: "0x90a9b125b6e4b22eCB139819778Dc01D1339ef5C",
 }
 var used_default_address = false;
 
