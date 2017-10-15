@@ -5,8 +5,6 @@ contract Landmark {
   // Hard-coded version number (increment on new public deploy)
   uint versionNumber = 1;
 
-  uint tmp = 3;
-
   // Curator address fixed on contract creation
   address curator;
 
