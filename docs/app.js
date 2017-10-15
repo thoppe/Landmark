@@ -1,4 +1,4 @@
-var provider_url = 'http://localhost:8548';
+var provider_url = 'http://localhost:8545';
 var f_deployed_contract = './build/contracts/Landmark.json';
 
 var FLAG_hidenavbar = false;
@@ -7,8 +7,8 @@ var FLAG_hidenavbar = false;
 const default_contract_address = {
 
     // Use 0 as the local testnet fallback
-    0:" 0x90a9b125b6e4b22ecb139819778dc01d1339ef5c",
-
+    0: "0x90a9b125b6e4b22ecb139819778dc01d1339ef5c",
+        
     // Ropsten
     3: "0x90a9b125b6e4b22eCB139819778Dc01D1339ef5C",
 }
@@ -213,13 +213,10 @@ App = {
 	    else {
 		contract_address = default_contract_address[0];
 	    }
-	    console.log(contract_network,contract_address);
-
 	    used_default_address = true;
 	}
 
-	console.log(App.contracts.Landmark.at);
-	contract_deploy  = await App.contracts.Landmark.at(contract_address);
+	contract_deploy  = App.contracts.Landmark.at(contract_address);
     },
   
     bindEvents: function() {
@@ -303,10 +300,9 @@ App = {
 
     loadCuratorMessage: async function() {
 
-	const cAdr = await App.LandmarkCall("getCuratorAddress");
+	const cMsg = await App.LandmarkCall("getCuratorMessage");
 
-	if(await App.LandmarkCall("checkValidProfile", cAdr)) {
-	    const cMsg = await App.LandmarkCall("getProfileContent", cAdr);
+	if(cMsg) {
 	    $("#curatorMessage").show();
 	    $("#curatorMessageText").text(cMsg);
 	}
@@ -367,7 +363,7 @@ App = {
     },
 
     processButtonCloseSite: function() {
-	box = statusError("<strong>Attemping to close the site forever!</strong>").addClass("post-attempt-box");
+	box = statusError("WARNING: Attemping to close the site forever!").addClass("post-attempt-box");
 
 	// Hide the modal since we are showing status
 	$("#AdminModal").modal("hide");
@@ -376,7 +372,7 @@ App = {
 	    contract_deploy.then(function(cx) {
 		return cx.closeLandmarkSite();
 	    }).then(async function(result) {
-		box = statusError("<strong>Site closed forever</strong>", "info")
+		box = statusError("Site closed forever.", "info")
 		    .addClass("post-attempt-box");
 
 	    }).catch(function(err) {
@@ -387,7 +383,7 @@ App = {
 
     },
 
-    processButtonPost: function() {
+    processButtonPost: async function() {
 	const text = $('#marktext').val();
 	if(!text) return false;
 
@@ -401,20 +397,27 @@ App = {
 	msg = "Attemping to post '"+text+"'"
 
 	if (is_curator_post)
-	    msg += " to the profile";
+	    msg += " to the curator message";
 	
 	console.log(msg)
 	box = statusError(msg, "warning")
 	    .addClass("post-attempt-box");
 
+	if(!is_curator_post) {
+	    if(!(await App.LandmarkCall("getIsSiteOpen"))) {
+		let msg = "Landmark site closed. No further posting allowed."
+		statusError(msg, "info");
+		return false;
+	    }
+	}
 	
 	web3.eth.getAccounts(function(error, accounts) {
 
 	    contract_deploy.then(function(cx) {
 
 		if(is_curator_post) 
-		    return cx.postProfile(text);
-		else
+		    return cx.postCuratorMessage(text);
+		else 
 		    return cx.postMessage(text);
 		
 	    }).then(async function(result) {
@@ -527,10 +530,4 @@ $(function() {
 	App.init();
     });
 
-    /*
-    statusError("test", "warning");
-    statusError("test", "info");
-    statusError("xztest", "success");
-    statusError("xztest", "danger");
-    */
 });
