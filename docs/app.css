@@ -2,19 +2,19 @@
     font-family: 'Tiemposheadline';
     font-style:  normal;
     font-weight: 400;
-    src: url(TiemposHeadline-Medium.woff) format('woff');
+    src: url(fonts/TiemposHeadline-Medium.woff) format('woff');
 }
 
 @font-face {
     font-family: 'Apercu medium';
-    src: url(apercu_medium-webfont.woff) format('woff');
+    src: url(fonts/apercu_medium-webfont.woff) format('woff');
     font-weight: 400;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Apercu light';
-    src: url(apercu_light-webfont.woff) format('woff');
+    src: url(fonts/apercu_light-webfont.woff) format('woff');
     font-weight: 400;
     font-style: normal;
 }
