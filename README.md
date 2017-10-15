@@ -1,4 +1,4 @@
-# [Landmark](https://thoppe.github.io/ethereum_Landmark/)
+# [Landmark](https://thoppe.github.io/Landmark/)
 _social media on the blockchain_
 
 Landmark is a social network implemented as a smart-contract for ethereum.
