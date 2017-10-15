@@ -11,7 +11,7 @@ The canonical address is
 
 The current test address on the ropsten network is
 
-    0x90a9b125b6e4b22eCB139819778Dc01D1339ef5C
+    0xA334472B88830Dac9BD4d800e4366e9Ce584631a
 
 But you can build your own "Landmark" by deploying it to the blockchain.
 If you build one, let us know and we'll list it here!
@@ -45,3 +45,6 @@ This creates a master test account with the follow public/private keys
      2a47b2de5e56206632db329d634259fdb2188183de67f7d5aca69992fd18e951
 
 Which you can import into MetaMask to test the DApp.
+`truffle deploy` will push the contract out to the address:
+
+     0x90a9b125b6e4b22ecb139819778dc01d1339ef5c
