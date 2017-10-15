@@ -10,7 +10,7 @@ const default_contract_address = {
     0: "0x90a9b125b6e4b22ecb139819778dc01d1339ef5c",
         
     // Ropsten
-    3: "0x90a9b125b6e4b22eCB139819778Dc01D1339ef5C",
+    3: "0xA334472B88830Dac9BD4d800e4366e9Ce584631a",
 }
 var used_default_address = false;
 
@@ -143,7 +143,8 @@ var isAddress = function (address) {
         return true;
     } else {
         // Otherwise check each case
-        return isChecksumAddress(address);
+        //return isChecksumAddress(address);
+	return true;
     }
 }
 
@@ -496,7 +497,7 @@ App = {
 
 	if(!isAddress(address)) {
 	    msg = (address + " is not a valid ethereum address. " +
-		   +"A valid address must be 42 hexidecimal characters long "+
+		   "A valid address must be 42 hexidecimal characters long "+
 		   "and begin with 0x");
 	    
 	    statusError(msg);
