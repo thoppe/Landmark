@@ -1,0 +1,21 @@
+{
+  "name": "landmark",
+  "homepage": "https://github.com/thoppe/Landmark",
+  "authors": [
+    "@metasemantic"
+  ],
+  "description": "",
+  "main": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "truffle-contract": "*",
+    "web3": "^0.19.0"
+  }
+}

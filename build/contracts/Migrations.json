@@ -811,7 +811,13 @@
     "name": "SourceUnit",
     "src": "0:513:1"
   },
-  "networks": {},
+  "networks": {
+    "1508038606495": {
+      "events": {},
+      "links": {},
+      "address": "0x20bee4c7d2dcbf39712063e31c41195f52fa3a6b"
+    }
+  },
   "schemaVersion": "1.0.0",
-  "updatedAt": "2017-10-15T03:30:20.394Z"
+  "updatedAt": "2017-10-15T03:36:57.655Z"
 }
