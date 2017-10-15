@@ -1,4 +1,4 @@
-var provider_url = 'http://localhost:8545';
+var provider_url = 'http://localhost:8548';
 var f_deployed_contract = './build/contracts/Landmark.json';
 
 var FLAG_hidenavbar = false;
@@ -213,10 +213,13 @@ App = {
 	    else {
 		contract_address = default_contract_address[0];
 	    }
+	    console.log(contract_network,contract_address);
+
 	    used_default_address = true;
 	}
 
-	contract_deploy  = App.contracts.Landmark.at(contract_address);
+	console.log(App.contracts.Landmark.at);
+	contract_deploy  = await App.contracts.Landmark.at(contract_address);
     },
   
     bindEvents: function() {

@@ -1,9 +1,11 @@
-pragma solidity ^0.4.15;
+pragma solidity ^0.4.17;
 
 contract Landmark {
 
   // Hard-coded version number (increment on new public deploy)
   uint versionNumber = 1;
+
+  uint tmp = 3;
 
   // Curator address fixed on contract creation
   address curator;
@@ -37,7 +39,7 @@ contract Landmark {
   _postContent[] Messages;  
   mapping (address => _profileContent) public Profiles;
 
-  function Landmark() {
+  function Landmark() public {
     curator = msg.sender;
     grantPrivilege(curator);
   }
@@ -236,7 +238,7 @@ contract Landmark {
   // ****************** Helper funcs   ******************
   
   function getPostLength(string text)
-    public constant returns (uint length) {
+    public pure returns (uint length) {
     // This is complicated since unicode takes up a different amount of space
     uint i=0;
     bytes memory string_rep = bytes(text);
@@ -251,7 +253,6 @@ contract Landmark {
       else if (string_rep[i]>>3==0x1E)
 	i+=4;
       else
-	 
 	i+=1; //For safety
       length++;
     }
