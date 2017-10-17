@@ -8,6 +8,9 @@ const default_contract_address = {
 
     // Use 0 as the local testnet fallback
     0: "0x90a9b125b6e4b22ecb139819778dc01d1339ef5c",
+
+    // Mainnet
+    1: "0xD38e005a28fae8D8c4238444BC08E7Da83902310",
         
     // Ropsten
     3: "0xA334472B88830Dac9BD4d800e4366e9Ce584631a",

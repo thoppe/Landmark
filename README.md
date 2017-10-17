@@ -7,11 +7,11 @@ When you _mark_, the message is etched into the blockchain forever.
 
 The canonical address is
 
-    0x00000000000000000000000000000
+[`0xD38e005a28fae8D8c4238444BC08E7Da83902310`](https://etherscan.io/address/0xd38e005a28fae8d8c4238444bc08e7da83902310)
 
 The current test address on the ropsten network is
 
-    0xA334472B88830Dac9BD4d800e4366e9Ce584631a
+[`0xA334472B88830Dac9BD4d800e4366e9Ce584631a`](https://ropsten.etherscan.io/address/0xa334472b88830dac9bd4d800e4366e9ce584631a)
 
 But you can build your own "Landmark" by deploying it to the blockchain.
 If you build one, let us know and we'll list it here!
