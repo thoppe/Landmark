@@ -10,7 +10,8 @@ const default_contract_address = {
     0: "0x90a9b125b6e4b22ecb139819778dc01d1339ef5c",
 
     // Mainnet
-    1: "0xD38e005a28fae8D8c4238444BC08E7Da83902310",
+    //1: "0xD38e005a28fae8D8c4238444BC08E7Da83902310",
+    1: "0x1B11aC23fbB37B1F943c2b36a566fc77f64BB8a9",
         
     // Ropsten
     3: "0xA334472B88830Dac9BD4d800e4366e9Ce584631a",
@@ -314,6 +315,15 @@ App = {
 
     },
 
+    loadPost: async function(i) {
+	const msg = await App.LandmarkCall("getMessageContents", i);
+	const address = await App.LandmarkCall("getMessageAddress", i);
+	const date = await App.LandmarkCall("getMessageTimestamp", i);
+	setMessageContents(msg, i);
+	setMessageAddress(address, i);
+	setMessageDate(date, i);
+    },
+
     loadAllPosts: async function () {
 
 	if(! await App.checkIfContractDeployed() ) {
@@ -344,13 +354,9 @@ App = {
 	for (i = 0; i < n; i++) {
 	    if (doesMessageRowExist(i))
 		continue;
-	    
-	    let msg = await App.LandmarkCall("getMessageContents", i);
-	    let address = await App.LandmarkCall("getMessageAddress", i);
-	    let date = await App.LandmarkCall("getMessageTimestamp", i);
-	    setMessageContents(msg, i);
-	    setMessageAddress(address, i);
-	    setMessageDate(date, i);
+
+	    await App.loadPost(i);
+
 	}
 
 	

@@ -9,7 +9,7 @@ The canonical address is
 
 [`0xD38e005a28fae8D8c4238444BC08E7Da83902310`](https://etherscan.io/address/0xd38e005a28fae8d8c4238444bc08e7da83902310)
 
-A memorial Landmark built for the victims of the Las Vegas shooting on Oct 1, 2017 can be found here
+A memorial Landmark built for the [victims of the Las Vegas](https://www.nytimes.com/2017/10/02/us/vegas-victims-names.html) shooting on Oct 1, 2017 can be found here
 
 [`0x1B11aC23fbB37B1F943c2b36a566fc77f64BB8a9`](https://etherscan.io/address/0x1B11aC23fbB37B1F943c2b36a566fc77f64BB8a9)
 
