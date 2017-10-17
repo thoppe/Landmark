@@ -24,7 +24,7 @@ var contract_address = null;
 var contract_deploy = null;
 var contract_network = null;
 
-const updateInterval = 1000;
+const updateInterval = 1500;
 
 const closeButtonHTML = `<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 <span aria-hidden="true">&times;</span>`;
@@ -86,7 +86,7 @@ function setAccountBalance(result) {
 }
 
 function getMessageTD(n) {
-    return $('[data-nonce="'+n+'"]')
+    return $('[data-nonce='+n+']')
 }
 
 function doesMessageRowExist(n) {
@@ -366,15 +366,29 @@ App = {
 	$("#statusEmpty").hide();
 
 
+	hasLoadedNewPost = false;
+	
 	for (i = 0; i < n; i++) {
 	    if (doesMessageRowExist(i))
-		continue;
-	    
+		continue;    
 	    App.loadPost(i);
-
+	    hasLoadedNewPost = true;
 	}
 
+	if(hasLoadedNewPost) 
+	    setTimeout(App.sortPosts, 1000);
+
+    },
+
+    sortPosts: function() {
 	
+	var loadedPosts = $(".LandmarkPostRow").get();
+	
+	loadedPosts.sort(function(a, b){
+	    return $(b).data("nonce")-$(a).data("nonce");
+	});
+
+	$("tbody").empty().html(loadedPosts);
     },
 
     loadAccountInfo: function() {
@@ -388,7 +402,8 @@ App = {
     },
 
     processButtonCloseSite: function() {
-	box = statusError("WARNING: Attemping to close the site forever!").addClass("post-attempt-box");
+	box = statusError("WARNING: Attemping to close the site forever!");
+	box.addClass("post-attempt-box");
 
 	// Hide the modal since we are showing status
 	$("#AdminModal").modal("hide");
