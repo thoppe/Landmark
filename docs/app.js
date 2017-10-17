@@ -2,8 +2,8 @@ var provider_url = 'http://localhost:8545';
 var f_deployed_contract = './build/contracts/Landmark.json';
 
 var FLAG_hidenavbar = false;
-var FLAG_showDates = true;
-var FLAG_showPostID= true;
+var FLAG_showDates = false;
+var FLAG_showPostID= false;
 
 // Default/Starting contract address
 const default_contract_address = {

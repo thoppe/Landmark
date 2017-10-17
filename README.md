@@ -9,13 +9,11 @@ The canonical address is
 
 [`0xD38e005a28fae8D8c4238444BC08E7Da83902310`](https://etherscan.io/address/0xd38e005a28fae8d8c4238444bc08e7da83902310)
 
-A memorial Landmark built for the [victims of the Las Vegas](https://www.nytimes.com/2017/10/02/us/vegas-victims-names.html) shooting on Oct 1, 2017 can be found here
+A memorial Landmark built for the [victims of the Las Vegas shooting on Oct 1, 2017](https://www.nytimes.com/2017/10/02/us/vegas-victims-names.html) can be found here
 
 [`0x1B11aC23fbB37B1F943c2b36a566fc77f64BB8a9`](https://etherscan.io/address/0x1B11aC23fbB37B1F943c2b36a566fc77f64BB8a9)
 
-A test address on the ropsten network is
-
-[`0xA334472B88830Dac9BD4d800e4366e9Ce584631a`](https://ropsten.etherscan.io/address/0xa334472b88830dac9bd4d800e4366e9ce584631a)
+The Landmark is closed, and you can see an archived version of it [here](https://thoppe.github.io/Landmark/LasVegasMemorialLandmark.html).
 
 But you can build your own "Landmark" by deploying it to the blockchain.
 If you build one, let us know and we'll list it here!
@@ -35,6 +33,10 @@ Request some ether if there isn't any in the account by using the [faucet](https
 
     # Use parity to sync the ropsten network
     parity --chain ropsten
+
+A test address already on the ropsten network is
+
+[`0xA334472B88830Dac9BD4d800e4366e9Ce584631a`](https://ropsten.etherscan.io/address/0xa334472b88830dac9bd4d800e4366e9ce584631a)
 
 
 ##### *testrpc* (localhost)
