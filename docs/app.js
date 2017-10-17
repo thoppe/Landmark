@@ -2,6 +2,8 @@ var provider_url = 'http://localhost:8545';
 var f_deployed_contract = './build/contracts/Landmark.json';
 
 var FLAG_hidenavbar = false;
+var FLAG_showDates = true;
+var FLAG_showPostID= true;
 
 // Default/Starting contract address
 const default_contract_address = {
@@ -83,28 +85,34 @@ function setAccountBalance(result) {
     $('#accountBalance').text(eth + " ether");
 }
 
-function doesMessageRowExist(n) {
-    return $('#LandmarkPost'+n).length > 0
+function getMessageTD(n) {
+    return $('[data-nonce="'+n+'"]')
 }
 
-const messageTemplateHTML = `<tr class="LandmarkPostRow"><td class="messageNumber"></td>
+function doesMessageRowExist(n) {
+    return getMessageTD(n).length > 0;
+}
+
+
+const messageTemplateHTML = `<tr class="LandmarkPostRow">
+<td class="messageNumber"></td>
 <td class="messageTextCol">
  <div class="messageText"></div>
  <div class="text-muted small">
    <span class="messageDate font-italic"></span>
-   <span class="messageAddress"><a><i class="fa fa-user" aria-hidden="true"></i></a></span>
+   <span class="messageAddress"></span>
  </div>
 </td></tr>`
 
 
 function setMessageContents(result, n) {
     let label = 'LandmarkPost'+n;
-
+    
     if (doesMessageRowExist(n)) return false;
   
     let post = $(messageTemplateHTML);
 
-    post.attr('id', label);
+    post.attr("data-nonce", n);
     post.find('.messageNumber').text("["+(n+1)+"]");
     post.find('.messageText').text(result);
 
@@ -112,22 +120,29 @@ function setMessageContents(result, n) {
 }
 
 function setMessageAddress(result, n) {
-    let post = $('#LandmarkPost'+n);
+    if(!FLAG_showPostID)
+	return false;
+    
+    let post = getMessageTD(n);
     if(post.length == 0)
 	return false;
 
     let url = getESUrl() + 'address/' + result;
+
+    var a = $('<a><i class="fa fa-user" aria-hidden="true"></i></a>');
+    a.attr("title",result).attr("href",url);   
     
-    post.find(".messageAddress").find('a')
-	.attr("title",result)
-	.attr("href",url);   
+    post.find(".messageAddress").append(a);
 }
 
 function setMessageDate(result, n) {
+    if(!FLAG_showDates)
+	return false;
+    
     let timestamp = result.toNumber();
     let datetime = new Date(timestamp*1000);
-    
-    let post = $('#LandmarkPost'+n);
+
+    let post = getMessageTD(n);
     if(post.length == 0)
 	return false;
 
@@ -354,8 +369,8 @@ App = {
 	for (i = 0; i < n; i++) {
 	    if (doesMessageRowExist(i))
 		continue;
-
-	    await App.loadPost(i);
+	    
+	    App.loadPost(i);
 
 	}
 
@@ -520,9 +535,9 @@ App = {
 	contract_deploy = null;
 
 	// Reset the text
-	$('.LandmarkPostRow').find('*').each(function() {
-	    this.remove();
-	});
+	//$('.LandmarkPostRow').find('*').each(function() {
+	//    this.remove();
+	//});
 
 	// Allow the user to interact
 	$('#navbar-isSiteUsable').show();
