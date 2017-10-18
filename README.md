@@ -4,17 +4,13 @@ Landmark is a social network implemented as a smart-contract for ethereum.
 It is completely decentralized, permanent, and uncensorable form of communication for as long as ethereum exists.
 When you _mark_, the message is etched into the blockchain forever.
 
-The canonical address is
+The canonical address is [`0xD38e005a28fae8D8c4238444BC08E7Da83902310`](https://thoppe.github.io/Landmark/index.html?address=0xD38e005a28fae8D8c4238444BC08E7Da83902310). You'll need a web3 interface (like [Metamask](https://metamask.io/)) to see/post to the site live.
 
-[`0xD38e005a28fae8D8c4238444BC08E7Da83902310`](https://thoppe.github.io/Landmark/index.html?address=0xD38e005a28fae8D8c4238444BC08E7Da83902310)
+A memorial Landmark was built for victims of the [2017 Las Vegas shooting](https://www.nytimes.com/2017/10/02/us/vegas-victims-names.html). The live version can be found at [`0x1B11aC23fbB37B1F943c2b36a566fc77f64BB8a9`](https://thoppe.github.io/Landmark/index.html?address=0x1B11aC23fbB37B1F943c2b36a566fc77f64BB8a9)
 
-A memorial Landmark built for the [victims of the Las Vegas shooting on Oct 1, 2017](https://www.nytimes.com/2017/10/02/us/vegas-victims-names.html) can be found here
+This Landmark has been closed for future marks, but you can see an [archived version](https://thoppe.github.io/Landmark/LasVegasMemorialLandmark.html) without Metamask.
 
-[`0x1B11aC23fbB37B1F943c2b36a566fc77f64BB8a9`](https://thoppe.github.io/Landmark/index.html?address=0x1B11aC23fbB37B1F943c2b36a566fc77f64BB8a9)
-
-The Landmark is closed, and you can see an [archived version](https://thoppe.github.io/Landmark/LasVegasMemorialLandmark.html) without Metamask or an ethereum node.
-
-You can build your own "Landmark" by deploying the [contract](contracts/Landmark.sol) to the blockchain. If you build one, let me know and I'll list it here!
+You can also build your own "Landmark" by deploying the [contract](contracts/Landmark.sol) to the blockchain. If you build one, let me know and I'll list it here!
 
 ### Development
 
