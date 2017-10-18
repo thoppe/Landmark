@@ -1,5 +1,4 @@
 # [Landmark](https://thoppe.github.io/Landmark/index.html?address=0xD38e005a28fae8D8c4238444BC08E7Da83902310)
-_social media on the blockchain_
 
 Landmark is a social network implemented as a smart-contract for ethereum.
 It is completely decentralized, permanent, and uncensorable form of communication for as long as ethereum exists.
