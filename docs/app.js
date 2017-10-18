@@ -19,12 +19,26 @@ const default_contract_address = {
     3: "0xA334472B88830Dac9BD4d800e4366e9Ce584631a",
 }
 var used_default_address = false;
-
 var contract_address = null;
 var contract_deploy = null;
 var contract_network = null;
-
 const updateInterval = 1500;
+
+
+function changeURIAddress(address, reload=false) {
+    var loc = new URI($(location).attr('href'));
+    loc.removeSearch("address").addSearch("address", address);
+    window.history.pushState(null, null, loc);
+
+    if(reload)
+	location.reload();
+}
+
+function getURIAddress() {
+    return URI($(location).attr('href')).search(true)["address"];
+}
+
+
 
 const closeButtonHTML = `<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 <span aria-hidden="true">&times;</span>`;
@@ -185,7 +199,12 @@ App = {
 	    web3 = new Web3(web3.currentProvider);
 	} else {
 	    // set the provider you want from Web3.providers
-	    App.web3Provider = new web3.providers.HttpProvider(provider_url);
+	    try {
+		App.web3Provider = new web3.providers.HttpProvider(provider_url);	    }
+	    catch (err) {
+		
+		throw(err);
+	    }
 	    web3 = new Web3(App.web3Provider);
 	}
 	return App.initContract();
@@ -217,24 +236,37 @@ App = {
 	catch (err) {
 	    statusError(err.message);
 	}
-    },
+    },    
 
     getContractDeploy: async function() {
 
 	if(!used_default_address) {
-	    // Get the network version
 	    contract_network = await web3.version.network;
 
-	    // Load the default address if we know it
-	    if(contract_network in default_contract_address) {
-		contract_address = default_contract_address[contract_network];
+	    // Try to load the url param address
+	    let url_address = getURIAddress();
+	    if(isAddress(url_address)) {
+		contract_address = url_address
 	    }
-	    // Otherwise, assume we are on testnet
+
+	    // If not, set from the default networks
 	    else {
-		contract_address = default_contract_address[0];
+	    
+		// Load the default address if we know it
+		if(contract_network in default_contract_address) {
+		    contract_address = default_contract_address[contract_network];
+		}
+		// Otherwise, assume we are on testnet
+		else {
+		    contract_address = default_contract_address[0];
+		}
 	    }
+	    
 	    used_default_address = true;
+	    changeURIAddress(contract_address);
+	    setContractHash(contract_address);
 	}
+
 
 	contract_deploy  = App.contracts.Landmark.at(contract_address);
     },
@@ -278,7 +310,6 @@ App = {
 
 	await App.getContractDeploy();
 
-	setContractHash(contract_address);
 	$("#modalAddressText").val(contract_address);
 	
 	$('#AddressChangeModal').on('shown.bs.modal', function () {
@@ -549,16 +580,8 @@ App = {
 	contract_address = address;
 	contract_deploy = null;
 
-	// Reset the text
-	$('.LandmarkPostRow').find('*').each(function() {
-	    this.remove();
-	});
-
-	// Allow the user to interact
-	$('#navbar-isSiteUsable').show();
-
-	App.getContractDeploy();
-	App.setInfo();
+	// Set the address and reload
+	changeURIAddress(address, reload=true);
 
     },
 
