@@ -388,7 +388,7 @@ App = {
 	    return $(b).data("nonce")-$(a).data("nonce");
 	});
 
-	$("tbody").empty().html(loadedPosts);
+	$("#marks").find("tbody").empty().html(loadedPosts);
     },
 
     loadAccountInfo: function() {
