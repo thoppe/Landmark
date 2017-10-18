@@ -2,8 +2,8 @@ var provider_url = 'http://localhost:8545';
 var f_deployed_contract = './build/contracts/Landmark.json';
 
 var FLAG_hidenavbar = false;
-var FLAG_showDates = false;
-var FLAG_showPostID= false;
+var FLAG_showDates = true;
+var FLAG_showPostID= true;
 
 // Default/Starting contract address
 const default_contract_address = {
@@ -550,9 +550,9 @@ App = {
 	contract_deploy = null;
 
 	// Reset the text
-	//$('.LandmarkPostRow').find('*').each(function() {
-	//    this.remove();
-	//});
+	$('.LandmarkPostRow').find('*').each(function() {
+	    this.remove();
+	});
 
 	// Allow the user to interact
 	$('#navbar-isSiteUsable').show();
