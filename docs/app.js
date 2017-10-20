@@ -129,7 +129,7 @@ function setMessageContents(result, n) {
     let post = $(messageTemplateHTML);
 
     post.attr("data-nonce", n);
-    post.find('.messageNumber').text("["+(n+1)+"]");
+    post.find('.messageNumber').text("#"+(n+1)+"");
     post.find('.messageText').text(result);
 
     $("#marks").find('tbody').prepend(post);
