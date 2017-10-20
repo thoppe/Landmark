@@ -49,8 +49,12 @@ nav a {
     padding-bottom:0;
 }
 
-.no-underline:hover {
-    text-decoration: none;
+.no-underline {
+    text-decoration: none !important;
+}
+
+.wrapper {
+    display: inline-block;
 }
 
 .messageNumber {
@@ -60,7 +64,7 @@ nav a {
 }
 
 .messageDate {
-
+    padding-right: 0.5em;
 }
 .messageText {
     white-space: pre;
@@ -68,7 +72,6 @@ nav a {
 
 .messageAddress a {
     color: inherit;
-    padding-left: 0.5em;
 }
 
 #curatorNote {

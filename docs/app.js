@@ -143,10 +143,15 @@ function setMessageAddress(result, n) {
 
     let url = getESUrl() + 'address/' + result;
 
-    var a = $('<a><i class="fa fa-user" aria-hidden="true"></i></a>');
-    a.attr("title",result).attr("href",url);   
+    var div = $('<span class="wrapper"><a><i class="fa fa-user" aria-hidden="true"></i></a></div>');
     
-    post.find(".messageAddress").append(a);
+    div.find('a')
+	.attr("title",result)
+	.attr("href",url)
+	.append(" "+result)
+	.addClass("no-underline");
+    
+    post.find(".messageAddress").append(div);
 }
 
 function setMessageDate(result, n) {
