@@ -1,560 +1,534 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Landmark: A Blockchain Social Network</title>
-
-    <meta property="og:title" content="Landmark" />
-    <meta property="og:description" content="A Blockchain Social Network" />
-    <meta name="description" content="A Blockchain Social Network" />
-    <meta property="og:image" content="LandmarkMediaLogo.png" />
-    
-    <link href="bootswatch.min.css" rel="stylesheet">
-    <link rel="stylesheet" 
-	  href="bower_components/components-font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="app.css">
-
-    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
-    
-  </head>
-
-  <body>
-
-
-    <nav class="navbar navbar-default">
-      <div class="container">
-
-	<div class="navbar-header navbar-left">
-	  <div class="navbar-brand logo">Landmark</div>
-	</div>
-
-	<p class="navbar-text">
-	  <a class="" id="contractHash"
-	     href="https://etherscan.io/address/0x1b11ac23fbb37b1f943c2b36a566fc77f64bb8a9"
-	     data-toggle="modal" data-target="#AddressChangeModal">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Landmark: A Blockchain Social Network</title>
+<meta content="Landmark" property="og:title"/>
+<meta content="A Blockchain Social Network" property="og:description"/>
+<meta content="A Blockchain Social Network" name="description"/>
+<meta content="LandmarkMediaLogo.png" property="og:image"/>
+<link href="bootswatch.min.css" rel="stylesheet"/>
+<link href="bower_components/components-font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+<link href="app.css" rel="stylesheet"/>
+<link href="favicon.png" rel="shortcut icon" type="image/x-icon"/>
+</head>
+<body>
+<nav class="navbar navbar-default">
+<div class="container">
+<div class="navbar-header navbar-left">
+<div class="navbar-brand logo">Landmark</div>
+</div>
+<p class="navbar-text">
+<a class="" data-target="#AddressChangeModal" data-toggle="modal" href="https://etherscan.io/address/0x1b11ac23fbb37b1f943c2b36a566fc77f64bb8a9" id="contractHash">
 	    0x1B11aC23fbB37B1F943c2b36a566fc77f64BB8a9
 	  </a>
-	</p>
-
-
-	<div class="navbar-right navbar-text" id="navbar-isSiteUsable">
-	  
-	  <a class="navbar-link no-underline"
-	     href="index.html?address=0x1B11aC23fbB37B1F943c2b36a566fc77f64BB8a9">
-	    <i class="fa fa-superpowers" aria-hidden="true"></i>
-	    &nbsp; Archived site (go live)
+</p>
+<div class="navbar-right navbar-text" id="navbar-isSiteUsable">
+<a class="navbar-link no-underline" href="index.html?address=0x1B11aC23fbB37B1F943c2b36a566fc77f64BB8a9">
+<i aria-hidden="true" class="fa fa-superpowers"></i>
+	      Archived site (go live)
 	  </a>
-
-	</div>
-
-      </div>
-    </nav>
-
-    
-    <div class="container">
-      <div class="small" id="curatorMessage" style="display:inline">
-	<blockquote class="blockquote">
-	  <p class="md-0" id="curatorMessageText">
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="small" id="curatorMessage" style="display:inline">
+<blockquote class="blockquote">
+<p class="md-0" id="curatorMessageText">
 	    This Landmark is dedicated to those lost during the Las Vegas shootings. On Oct 1st, 2017 a gunman opened fire and killed 58 men and women. Each name is carved into the ethereum blockchain as a memorial to those lost.
 	  </p>
-	<footer class="blockquote-footer"><cite title="Source Title">
+<footer class="blockquote-footer"><cite title="Source Title">
 	    Message from the Landmark curator</cite></footer>
-	</blockquote>
-      </div>
-    </div>
-      
-    <div class="container">
-    <table class="table table-striped" id="marks">
-      <thead>
-	<tr>
-	  <th style="width: 3%"></th>
-	  <th style="width: 97%"></th>
-	</tr>
-      </thead>
+</blockquote>
+</div>
+</div>
+<div class="container">
+<table class="table table-striped" id="marks">
+<thead>
+<tr>
+<th style="width: 3%"></th>
+<th style="width: 97%"></th>
+</tr>
+</thead>
+<tbody><tr class="LandmarkPostRow" data-nonce="57">
+<td class="messageNumber">[58]</td>
+<td class="messageTextCol">
+<div class="messageText">Bill Wolfe Jr.</div>
+<div class="text-muted small">
 
-      <tbody><tr class="LandmarkPostRow" data-nonce="57">
-	  <td class="messageNumber">[58]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Bill Wolfe Jr.</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="56">
-	  <td class="messageNumber">[57]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Kurt Von Tillow</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="55">
-	  <td class="messageNumber">[56]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Michelle Vo</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="54">
-	  <td class="messageNumber">[55]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Neysa Tonks</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="53">
-	  <td class="messageNumber">[54]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Derrick Taylor</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="52">
-	  <td class="messageNumber">[53]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Brennan Stewart</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="51">
-	  <td class="messageNumber">[52]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Susan Smith</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="50">
-	  <td class="messageNumber">[51]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Erick Silva</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="49">
-	  <td class="messageNumber">[50]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Laura Shipp</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="48">
-	  <td class="messageNumber">[49]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Bailey Schweitzer</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="47">
-	  <td class="messageNumber">[48]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Brett Schwanbeck</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="46">
-	  <td class="messageNumber">[47]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Christopher Roybal</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="45">
-	  <td class="messageNumber">[46]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Lisa Romero-Muniz</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="44">
-	  <td class="messageNumber">[45]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Tara Roe Smith</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="43">
-	  <td class="messageNumber">[44]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Cameron Robinson</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="42">
-	  <td class="messageNumber">[43]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Quinton Robbins</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="41">
-	  <td class="messageNumber">[42]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Jordyn Rivera</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="40">
-	  <td class="messageNumber">[41]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Melissa Ramirez</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="39">
-	  <td class="messageNumber">[40]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">John Phippen</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="38">
-	  <td class="messageNumber">[39]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Lisa Patterson</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="37">
-	  <td class="messageNumber">[38]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Carrie Parsons</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="36">
-	  <td class="messageNumber">[37]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Jennifer Parks</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="35">
-	  <td class="messageNumber">[36]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Rachael Parker</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="34">
-	  <td class="messageNumber">[35]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Adrian Murfitt</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="33">
-	  <td class="messageNumber">[34]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Austin Meyer</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="32">
-	  <td class="messageNumber">[33]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Pati Mestas</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="31">
-	  <td class="messageNumber">[32]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Sonny Melton</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="30">
-	  <td class="messageNumber">[31]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Calla Medig</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="29">
-	  <td class="messageNumber">[30]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Kelsey Meadows</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="28">
-	  <td class="messageNumber">[29]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Jordan McIldoon</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="27">
-	  <td class="messageNumber">[28]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Victor Link</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="26">
-	  <td class="messageNumber">[27]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Rhonda LeRocque</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="25">
-	  <td class="messageNumber">[26]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Carly Kreibaum</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="24">
-	  <td class="messageNumber">[25]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Jessica Klymchuk</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="23">
-	  <td class="messageNumber">[24]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Nicol Kimura</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="22">
-	  <td class="messageNumber">[23]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Jennifer Irvine</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="21">
-	  <td class="messageNumber">[22]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Chris Hazencomb</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="20">
-	  <td class="messageNumber">[21]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Charleston Hartfield</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="19">
-	  <td class="messageNumber">[20]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Rocio Guillen</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="18">
-	  <td class="messageNumber">[19]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Angela Gomez</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="17">
-	  <td class="messageNumber">[18]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Dana Gardner</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="16">
-	  <td class="messageNumber">[17]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Keri Galvan</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="15">
-	  <td class="messageNumber">[16]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Brian Fraser</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="14">
-	  <td class="messageNumber">[15]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Stacee Etcheber</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="13">
-	  <td class="messageNumber">[14]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Christiana Duarte</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="12">
-	  <td class="messageNumber">[13]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Thomas Day Jr.</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="11">
-	  <td class="messageNumber">[12]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Austin Davis</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="10">
-	  <td class="messageNumber">[11]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Denise Cohen</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="9">
-	  <td class="messageNumber">[10]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Andrea Castilla</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="8">
-	  <td class="messageNumber">[9]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Sandy Casey</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="7">
-	  <td class="messageNumber">[8]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Denise Salmon Burditus</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="6">
-	  <td class="messageNumber">[7]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Candice Bowers</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="5">
-	  <td class="messageNumber">[6]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Steve Berger</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="4">
-	  <td class="messageNumber">[5]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Jack Beaton</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="3">
-	  <td class="messageNumber">[4]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Carrie Barnette</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="2">
-	  <td class="messageNumber">[3]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Dorene Anderson</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="1">
-	  <td class="messageNumber">[2]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Heather Alvarado</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-	</td></tr><tr class="LandmarkPostRow" data-nonce="0">
-	  <td class="messageNumber">[1]</td>
-	  <td class="messageTextCol">
-	    <div class="messageText">Hannah Ahlers</div>
-	    <div class="text-muted small">
-	      <span class="messageDate font-italic"></span>
-	      <span class="messageAddress"></span>
-	    </div>
-      </td></tr></tbody>
-    </table>
-    </div>
 
-    
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="56">
+<td class="messageNumber">[57]</td>
+<td class="messageTextCol">
+<div class="messageText">Kurt Von Tillow</div>
+<div class="text-muted small">
 
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="55">
+<td class="messageNumber">[56]</td>
+<td class="messageTextCol">
+<div class="messageText">Michelle Vo</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="54">
+<td class="messageNumber">[55]</td>
+<td class="messageTextCol">
+<div class="messageText">Neysa Tonks</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="53">
+<td class="messageNumber">[54]</td>
+<td class="messageTextCol">
+<div class="messageText">Derrick Taylor</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="52">
+<td class="messageNumber">[53]</td>
+<td class="messageTextCol">
+<div class="messageText">Brennan Stewart</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="51">
+<td class="messageNumber">[52]</td>
+<td class="messageTextCol">
+<div class="messageText">Susan Smith</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="50">
+<td class="messageNumber">[51]</td>
+<td class="messageTextCol">
+<div class="messageText">Erick Silva</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="49">
+<td class="messageNumber">[50]</td>
+<td class="messageTextCol">
+<div class="messageText">Laura Shipp</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="48">
+<td class="messageNumber">[49]</td>
+<td class="messageTextCol">
+<div class="messageText">Bailey Schweitzer</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="47">
+<td class="messageNumber">[48]</td>
+<td class="messageTextCol">
+<div class="messageText">Brett Schwanbeck</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="46">
+<td class="messageNumber">[47]</td>
+<td class="messageTextCol">
+<div class="messageText">Christopher Roybal</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="45">
+<td class="messageNumber">[46]</td>
+<td class="messageTextCol">
+<div class="messageText">Lisa Romero-Muniz</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="44">
+<td class="messageNumber">[45]</td>
+<td class="messageTextCol">
+<div class="messageText">Tara Roe Smith</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="43">
+<td class="messageNumber">[44]</td>
+<td class="messageTextCol">
+<div class="messageText">Cameron Robinson</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="42">
+<td class="messageNumber">[43]</td>
+<td class="messageTextCol">
+<div class="messageText">Quinton Robbins</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="41">
+<td class="messageNumber">[42]</td>
+<td class="messageTextCol">
+<div class="messageText">Jordyn Rivera</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="40">
+<td class="messageNumber">[41]</td>
+<td class="messageTextCol">
+<div class="messageText">Melissa Ramirez</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="39">
+<td class="messageNumber">[40]</td>
+<td class="messageTextCol">
+<div class="messageText">John Phippen</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="38">
+<td class="messageNumber">[39]</td>
+<td class="messageTextCol">
+<div class="messageText">Lisa Patterson</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="37">
+<td class="messageNumber">[38]</td>
+<td class="messageTextCol">
+<div class="messageText">Carrie Parsons</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="36">
+<td class="messageNumber">[37]</td>
+<td class="messageTextCol">
+<div class="messageText">Jennifer Parks</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="35">
+<td class="messageNumber">[36]</td>
+<td class="messageTextCol">
+<div class="messageText">Rachael Parker</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="34">
+<td class="messageNumber">[35]</td>
+<td class="messageTextCol">
+<div class="messageText">Adrian Murfitt</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="33">
+<td class="messageNumber">[34]</td>
+<td class="messageTextCol">
+<div class="messageText">Austin Meyer</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="32">
+<td class="messageNumber">[33]</td>
+<td class="messageTextCol">
+<div class="messageText">Pati Mestas</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="31">
+<td class="messageNumber">[32]</td>
+<td class="messageTextCol">
+<div class="messageText">Sonny Melton</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="30">
+<td class="messageNumber">[31]</td>
+<td class="messageTextCol">
+<div class="messageText">Calla Medig</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="29">
+<td class="messageNumber">[30]</td>
+<td class="messageTextCol">
+<div class="messageText">Kelsey Meadows</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="28">
+<td class="messageNumber">[29]</td>
+<td class="messageTextCol">
+<div class="messageText">Jordan McIldoon</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="27">
+<td class="messageNumber">[28]</td>
+<td class="messageTextCol">
+<div class="messageText">Victor Link</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="26">
+<td class="messageNumber">[27]</td>
+<td class="messageTextCol">
+<div class="messageText">Rhonda LeRocque</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="25">
+<td class="messageNumber">[26]</td>
+<td class="messageTextCol">
+<div class="messageText">Carly Kreibaum</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="24">
+<td class="messageNumber">[25]</td>
+<td class="messageTextCol">
+<div class="messageText">Jessica Klymchuk</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="23">
+<td class="messageNumber">[24]</td>
+<td class="messageTextCol">
+<div class="messageText">Nicol Kimura</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="22">
+<td class="messageNumber">[23]</td>
+<td class="messageTextCol">
+<div class="messageText">Jennifer Irvine</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="21">
+<td class="messageNumber">[22]</td>
+<td class="messageTextCol">
+<div class="messageText">Chris Hazencomb</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="20">
+<td class="messageNumber">[21]</td>
+<td class="messageTextCol">
+<div class="messageText">Charleston Hartfield</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="19">
+<td class="messageNumber">[20]</td>
+<td class="messageTextCol">
+<div class="messageText">Rocio Guillen</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="18">
+<td class="messageNumber">[19]</td>
+<td class="messageTextCol">
+<div class="messageText">Angela Gomez</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="17">
+<td class="messageNumber">[18]</td>
+<td class="messageTextCol">
+<div class="messageText">Dana Gardner</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="16">
+<td class="messageNumber">[17]</td>
+<td class="messageTextCol">
+<div class="messageText">Keri Galvan</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="15">
+<td class="messageNumber">[16]</td>
+<td class="messageTextCol">
+<div class="messageText">Brian Fraser</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="14">
+<td class="messageNumber">[15]</td>
+<td class="messageTextCol">
+<div class="messageText">Stacee Etcheber</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="13">
+<td class="messageNumber">[14]</td>
+<td class="messageTextCol">
+<div class="messageText">Christiana Duarte</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="12">
+<td class="messageNumber">[13]</td>
+<td class="messageTextCol">
+<div class="messageText">Thomas Day Jr.</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="11">
+<td class="messageNumber">[12]</td>
+<td class="messageTextCol">
+<div class="messageText">Austin Davis</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="10">
+<td class="messageNumber">[11]</td>
+<td class="messageTextCol">
+<div class="messageText">Denise Cohen</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="9">
+<td class="messageNumber">[10]</td>
+<td class="messageTextCol">
+<div class="messageText">Andrea Castilla</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="8">
+<td class="messageNumber">[9]</td>
+<td class="messageTextCol">
+<div class="messageText">Sandy Casey</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="7">
+<td class="messageNumber">[8]</td>
+<td class="messageTextCol">
+<div class="messageText">Denise Salmon Burditus</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="6">
+<td class="messageNumber">[7]</td>
+<td class="messageTextCol">
+<div class="messageText">Candice Bowers</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="5">
+<td class="messageNumber">[6]</td>
+<td class="messageTextCol">
+<div class="messageText">Steve Berger</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="4">
+<td class="messageNumber">[5]</td>
+<td class="messageTextCol">
+<div class="messageText">Jack Beaton</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="3">
+<td class="messageNumber">[4]</td>
+<td class="messageTextCol">
+<div class="messageText">Carrie Barnette</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="2">
+<td class="messageNumber">[3]</td>
+<td class="messageTextCol">
+<div class="messageText">Dorene Anderson</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="1">
+<td class="messageNumber">[2]</td>
+<td class="messageTextCol">
+<div class="messageText">Heather Alvarado</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr><tr class="LandmarkPostRow" data-nonce="0">
+<td class="messageNumber">[1]</td>
+<td class="messageTextCol">
+<div class="messageText">Hannah Ahlers</div>
+<div class="text-muted small">
+
+
+</div>
+</td></tr></tbody>
+</table>
+</div>
 <footer class="bd-footer text-muted">
-  <div class="container">
-    <a href="https://github.com/thoppe/ethereum_Landmark">
+<div class="container">
+<a href="https://github.com/thoppe/ethereum_Landmark">
       Landmark</a>
-    <span id="versiontag"></span>
-    <span>is a permanent, decentralized, and uncensorable tool for communication</span>
-    <br>
-    <a href="https://twitter.com/metasemantic?lang=en">@metasemantic</a>
-  </div>
+<span id="versiontag"></span>
+<span>is a permanent, decentralized, and uncensorable tool for communication</span>
+<br/>
+<a href="https://twitter.com/metasemantic?lang=en">@metasemantic</a>
+</div>
 </footer>
-  
 <!---
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/web3/dist/web3.min.js"></script>
@@ -562,6 +536,5 @@
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="app.js"></script>
 --->
-
-  </body>
+</body>
 </html>
