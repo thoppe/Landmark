@@ -108,14 +108,16 @@ function doesMessageRowExist(n) {
 }
 
 
-const messageTemplateHTML = `<tr class="LandmarkPostRow">
-<td class="messageNumber"></td>
-<td class="messageTextCol">
- <div class="messageText"></div>
- <div class="text-muted small">
-   <span class="messageDate font-italic"></span>
-   <span class="messageAddress"></span>
- </div>
+const messageTemplateHTML = `
+      <tr class="LandmarkPostRow">
+      <td><span class="messageAvatar"></span></td>
+      <td class="messageTextCol">
+      <div class="messageText"></div>
+      <div class="text-muted small">
+      <span class="messageNumber"></span>
+      <span class="messageDate font-italic"></span>
+      <span class="messageAddress"></span>
+      </div>
 </td></tr>`
 
 
@@ -153,7 +155,7 @@ function setMessageAddress(result, n) {
 
     img = $("<img></img>");
     img.attr("src", "https://robohash.org/"+result+"?size=75x75");
-    post.find('.messageNumber').append(img);
+    post.find('.messageAvatar').append(img);
     
     post.find(".messageAddress").append(div);
     
