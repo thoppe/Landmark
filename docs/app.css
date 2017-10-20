@@ -12,6 +12,11 @@
     font-style: normal;
 }
 
+body {
+    color: #333;
+    background-color:white;
+    font-family:"Apercu light";
+}
 
 nav {
     font-family:"Apercu light";
@@ -36,17 +41,14 @@ nav a {
     color:white;
 }
 
+.ellipsis {
+    
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width:100%;
 
-.tight-header {
-    margin:0;
-}
-
-.no-vertical {
-    line-height:100%;
-    margin-top:0;
-    margin-bottom:0;
-    padding-top:0;
-    padding-bottom:0;
 }
 
 .no-underline {
@@ -55,6 +57,14 @@ nav a {
 
 .wrapper {
     display: inline-block;
+}
+
+.no-vertical {
+    line-height:100%;
+    margin-top:0;
+    margin-bottom:0;
+    padding-top:0;
+    padding-bottom:0;
 }
 
 .messageNumber {
@@ -80,12 +90,6 @@ nav a {
 
 #curatorMessage {
     display:none;
-}
-
-body {
-    color: #333;
-    background-color:white;
-    font-family:"Apercu light";
 }
 
 #statusNotFound {
