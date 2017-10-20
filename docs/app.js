@@ -150,8 +150,13 @@ function setMessageAddress(result, n) {
 	.attr("href",url)
 	.append(" "+result)
 	.addClass("no-underline")
+
+    img = $("<img></img>");
+    img.attr("src", "https://robohash.org/"+result+"?size=75x75");
+    post.find('.messageNumber').append(img);
     
     post.find(".messageAddress").append(div);
+    
 }
 
 function setMessageDate(result, n) {
