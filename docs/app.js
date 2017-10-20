@@ -116,7 +116,7 @@ const messageTemplateHTML = `
       <div class="text-muted small">
       <span class="messageNumber"></span>
       <span class="messageDate font-italic"></span>
-      <span class="messageAddress"></span>
+      <div class="messageAddress"></div>
       </div>
 </td></tr>`
 
@@ -154,7 +154,7 @@ function setMessageAddress(result, n) {
 	.addClass("no-underline")
 
     img = $("<img></img>");
-    img.attr("src", "https://robohash.org/"+result+"?size=75x75");
+    img.attr("src", "https://robohash.org/"+result+"?size=70x70");
     post.find('.messageAvatar').append(img);
     
     post.find(".messageAddress").append(div);
