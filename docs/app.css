@@ -67,20 +67,19 @@ nav a {
     padding-bottom:0;
 }
 
-.messageNumber {
-/*
-    font-family:monospace;
-    font-size:80%;
-    vertical-align:middle !important; 
-*/
+.img-responsive {
+    min-width:20px;
+    max-width:80px;
 }
+
 
 .messageDate {
     padding-right: 0.5em;
 }
-.messageText {
-    white-space: pre;
-}
+
+.messageNumber { }
+
+.messageText { }
 
 .messageAddress a {
     color: inherit;
