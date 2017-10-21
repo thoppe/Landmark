@@ -73,6 +73,8 @@ nav a {
 }
 
 
+
+
 .messageDate {
     padding-right: 0.5em;
 }
@@ -83,6 +85,10 @@ nav a {
 
 .messageAddress a {
     color: inherit;
+}
+
+#marks {
+    max-width:750px;
 }
 
 #curatorNote {
