@@ -1,4 +1,3 @@
-var provider_url = 'http://localhost:8545';
 var f_deployed_contract = './build/contracts/Landmark.json';
 
 var FLAG_hidenavbar = false;
@@ -13,16 +12,23 @@ const default_contract_address = {
 
     // Mainnet
     1: "0xD38e005a28fae8D8c4238444BC08E7Da83902310",
+
+    // Test contract for LV memorial
     //1: "0x1B11aC23fbB37B1F943c2b36a566fc77f64BB8a9",
         
     // Ropsten
     3: "0xA334472B88830Dac9BD4d800e4366e9Ce584631a",
 }
+
 var used_default_address = false;
 var contract_address = null;
 var contract_deploy = null;
 var contract_network = null;
 const updateInterval = 1500;
+
+// Please don't steal this key! Get your own at https://infura.io/
+var provider_url = 'https://mainnet.infura.io/rk62RV4O5kpptwlDiV69'
+//var provider_url = 'http://localhost:8545';
 
 
 function changeURIAddress(address, reload=false) {
@@ -210,16 +216,15 @@ App = {
     initWeb3: function() {
 	// Initialize web3 and set the provider to the testRPC.
 	if (typeof web3 !== 'undefined') {
+	    console.log("Using injected url");
 	    App.web3Provider = web3.currentProvider;
 	    web3 = new Web3(web3.currentProvider);
 	} else {
-	    // set the provider you want from Web3.providers
-	    try {
-		App.web3Provider = new web3.providers.HttpProvider(provider_url);	    }
-	    catch (err) {
-		
-		throw(err);
-	    }
+	    console.log("Using provider_url");
+	    window.web3 = new Web3(
+		new Web3.providers.HttpProvider(provider_url));
+	    
+	    App.web3Provider = new web3.providers.HttpProvider(provider_url);
 	    web3 = new Web3(App.web3Provider);
 	}
 	return App.initContract();
