@@ -212,6 +212,7 @@ App = {
     updater: null,
 
     init: function() {
+	console.log("Landmakr App init")
 	return App.initWeb3();
     },
 
