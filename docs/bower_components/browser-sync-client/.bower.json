@@ -1,0 +1,15 @@
+{
+  "name": "browser-sync-client",
+  "homepage": "https://github.com/BrowserSync/browser-sync-client",
+  "version": "2.5.1",
+  "_release": "2.5.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.5.1",
+    "commit": "3bca592e7f08b5aedb0e48a6b27155c7ca211c5d"
+  },
+  "_source": "https://github.com/BrowserSync/browser-sync-client.git",
+  "_target": "^2.5.1",
+  "_originalSource": "browser-sync-client",
+  "_direct": true
+}
