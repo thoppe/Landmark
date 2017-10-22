@@ -115,7 +115,7 @@ function doesMessageRowExist(n) {
 
 
 const messageTemplateHTML = `
-      <tr class="LandmarkPostRow">
+<tr class="LandmarkPostRow">
       <td class="messageAvatar"></td>
       <td>
       <div class="messageText"></div>
@@ -151,7 +151,8 @@ function setMessageAddress(result, n) {
 
     let url = getESUrl() + 'address/' + result;
 
-    var div = $('<span class="wrapper"><a><i class="fa fa-user" aria-hidden="true"></i></a></span>');
+    var div = $('<span class="wrapper"><a> \
+		 <i class="fa fa-user" aria-hidden="true"></i></a></span>');
     
     div.find('a')
 	.attr("title",result)
@@ -214,13 +215,15 @@ App = {
     },
 
     initWeb3: function() {
+	console.log("Starting initWeb3 interface");
+	
 	// Initialize web3 and set the provider to the testRPC.
 	if (typeof web3 !== 'undefined') {
 	    console.log("Using injected url");
 	    App.web3Provider = web3.currentProvider;
 	    web3 = new Web3(web3.currentProvider);
 	} else {
-	    console.log("Using provider_url");
+	    console.log("Using provider url");
 	    window.web3 = new Web3(
 		new Web3.providers.HttpProvider(provider_url));
 	    
