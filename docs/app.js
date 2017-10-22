@@ -3,7 +3,7 @@ var f_deployed_contract = './build/contracts/Landmark.json';
 var FLAG_hidenavbar = false;
 var FLAG_showDates = true;
 var FLAG_showPostID= true;
-var FLAG_call_only=false;
+var FLAG_metamask_enabled=true;
 
 // Default/Starting contract address
 const default_contract_address = {
@@ -212,7 +212,7 @@ App = {
     updater: null,
 
     init: function() {
-	console.log("Landmakr App init")
+	console.log("Landmark App init")
 	return App.initWeb3();
     },
 
@@ -223,19 +223,18 @@ App = {
 	if (typeof web3 !== 'undefined') {
 	    console.log("Using injected url");
 	    App.web3Provider = web3.currentProvider;
-	    web3 = new Web3(web3.currentProvider);
 	} else {
 	    console.log("Using provider url");
 	    window.web3 = new Web3();
 	    App.web3Provider = new web3.providers.HttpProvider(provider_url);
-	    web3 = new Web3(App.web3Provider);
 
 	    // Disable post buttons
 	    $("#navbar-postLink").addClass("disabled")
 	    $("#curatorPostMessageBtn").addClass("disabled")
-	    FLAG_call_only = true;
-	    
+	    FLAG_metamask_enabled = false;	    
 	}
+	
+	web3 = new Web3(App.web3Provider);
 	return App.initContract();
     },
 
@@ -248,6 +247,8 @@ App = {
 	// Load the contract data from file
 	$.getJSON(f_deployed_contract, function(data) {
 	    App.contracts.Landmark = TruffleContract(data);
+
+	    console.log("Provider", App.web3Provider);
 	    App.contracts.Landmark.setProvider(App.web3Provider);
 	    
 	    return App.bindEvents();
@@ -554,7 +555,7 @@ App = {
 
     processAdminInfo: async function() {
 
-	if(!FLAG_call_only)
+	if(FLAG_metamask_enabled)
 	    App.loadAccountInfo();
 
 	// Break if address is not found
