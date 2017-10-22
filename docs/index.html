@@ -41,14 +41,15 @@
 
       <div class="navbar-right navbar-text" id="navbar-isSiteUsable">
 
-	<a class="navbar-link no-underline"
+	<a class="navbar-link no-underline btn"
+	   id="navbar-postLink"
 	   style="padding-right:1.5em;"
 	   data-toggle="modal" data-target="#PostModal">
 	  <i class="fa fa-plus-circle" aria-hidden="true"></i>
 	  &nbsp; Post
 	</a>
 	
-	<a class="navbar-link no-underline"
+	<a class="navbar-link no-underline btn"
 	   data-toggle="modal" data-target="#AdminModal">
 	  <i class="fa fa-superpowers" aria-hidden="true"></i>
 	  &nbsp; Admin
@@ -74,7 +75,10 @@
 
     <table class="table table-striped"  id="marks">
       <h3 id="statusLooking"
-	  class="text-muted">Looking for marks...</h3>
+	  class="text-muted">
+	Looking for marks...
+	<i class="fa fa-refresh fa-spin fa-fw"></i>
+      </h3>
       <h3 id="statusNotFound"
 	  class="">Landmark not found at this address.</h3>
       <h3 id="statusEmpty"
@@ -244,6 +248,7 @@
 	  <td class="pull-right">
 	    <button
 	      type="button"
+	      id="curatorPostMessageBtn"
 	      class="btn btn-info btn-sm btn-process-curatormsg">
 	      Set Curator message
 	    </button>

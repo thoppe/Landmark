@@ -3,6 +3,7 @@ var f_deployed_contract = './build/contracts/Landmark.json';
 var FLAG_hidenavbar = false;
 var FLAG_showDates = true;
 var FLAG_showPostID= true;
+var FLAG_call_only=false;
 
 // Default/Starting contract address
 const default_contract_address = {
@@ -224,11 +225,15 @@ App = {
 	    web3 = new Web3(web3.currentProvider);
 	} else {
 	    console.log("Using provider url");
-	    window.web3 = new Web3(
-		new Web3.providers.HttpProvider(provider_url));
-	    
+	    window.web3 = new Web3();
 	    App.web3Provider = new web3.providers.HttpProvider(provider_url);
 	    web3 = new Web3(App.web3Provider);
+
+	    // Disable post buttons
+	    $("#navbar-postLink").addClass("disabled")
+	    $("#curatorPostMessageBtn").addClass("disabled")
+	    FLAG_call_only = true;
+	    
 	}
 	return App.initContract();
     },
@@ -548,7 +553,8 @@ App = {
 
     processAdminInfo: async function() {
 
-	App.loadAccountInfo();
+	if(!FLAG_call_only)
+	    App.loadAccountInfo();
 
 	// Break if address is not found
 	if(! await App.checkIfContractDeployed() ) {
