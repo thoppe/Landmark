@@ -1,11 +1,13 @@
 var f_deployed_contract = './build/contracts/Landmark.json';
 
-var FLAG_hidenavbar = false;
-var FLAG_showDates = true;
-var FLAG_showPostID= true;
-var FLAG_metamask_enabled=true;
+var APP_FLAGS = {
+    "hideNavbar" : false,
+    "showDates"  : true,
+    "showPostID" : true,
+    "showPostNumber" : true,
+    "metamask_enabled" : true,
+};
 
-// Default/Starting contract address
 const default_contract_address = {
 
     // Use 0 as the local testnet fallback
@@ -41,9 +43,11 @@ function changeURIAddress(address, reload=false) {
 	location.reload();
 }
 
-function getURIAddress() {
-    return URI($(location).attr('href')).search(true)["address"];
+function getURI(key) {
+    return URI($(location).attr('href')).search(true)[key];
 }
+
+
 
 
 
@@ -117,7 +121,6 @@ function doesMessageRowExist(n) {
 
 const messageTemplateHTML = `
 <tr class="LandmarkPostRow">
-<!---      <td class="messageAvatar"></td> --->
       <td>
 <div class="row row-no-padding">
 <div class="col-xs-3">
@@ -125,7 +128,7 @@ const messageTemplateHTML = `
 </div>
 <div class="col-xs-9">
       <div class="messageText"></div>
-      <div class="text-muted small">
+      <div class="messageMeta text-muted small">
        <span class="messageNumber"></span>
        <span class="messageDate font-italic"></span>
        <div class="messageAddress"></div>
@@ -145,20 +148,24 @@ function setMessageContents(result, n) {
     let post = $(messageTemplateHTML);
 
     post.attr("data-nonce", n);
-    post.find('.messageNumber').text("#"+(n+1)+"");
     post.find('.messageText').text(result);
+
+    if(APP_FLAGS["showPostNumber"])
+	post.find('.messageNumber').text("#"+(n+1)+"");
 
     $("#marks").find('tbody').prepend(post);
 }
 
 function setMessageAddress(result, n) {
-    if(!FLAG_showPostID)
-	return false;
-    
     let post = getMessageTD(n);
     if(post.length == 0)
 	return false;
 
+    if(!APP_FLAGS["showPostID"]) {
+	post.find(".messageMeta").remove();
+	return false;
+    }
+    
     let url = getESUrl() + 'address/' + result;
 
     var div = $('<span class=""><a> \
@@ -183,7 +190,7 @@ function setMessageAddress(result, n) {
 }
 
 function setMessageDate(result, n) {
-    if(!FLAG_showDates)
+    if(!APP_FLAGS["showDates"])
 	return false;
     
     let timestamp = result.toNumber();
@@ -224,6 +231,7 @@ App = {
     updater: null,
 
     init: function() {
+	App.loadURIflags();
 	return App.initWeb3();
     },
 
@@ -243,7 +251,7 @@ App = {
 	    $("#navbar-postLink").attr("data-target", "#cantPostModal");
 	    
 	    $("#curatorPostMessageBtn").addClass("disabled")
-	    FLAG_metamask_enabled = false;	    
+	    APP_FLAGS["metamask_enabled"] = false;	    
 	}
 	
 	web3 = new Web3(App.web3Provider);
@@ -283,7 +291,7 @@ App = {
 	    contract_network = await web3.version.network;
 
 	    // Try to load the url param address
-	    let url_address = getURIAddress();
+	    let url_address = getURI("address");
 	    if(isAddress(url_address)) {
 		contract_address = url_address
 	    }
@@ -335,9 +343,6 @@ App = {
 	    $('#statusLooking').hide();
 	    $("#statusEmpty").hide();
 
-	    if(FLAG_hidenavbar)
-		$('#navbar-isSiteUsable').hide();
-	    
 	    return false;
 	}
 	
@@ -345,7 +350,24 @@ App = {
 
     },
 
-    setInfo: async function () {
+    loadURIflags: function () {
+	// Load the URI flags and act on them
+	
+	let noMeta = getURI("noMeta");
+	if(noMeta !== "undefined") {
+	    if(Boolean(noMeta) & noMeta != "false" & noMeta != "0") {
+		APP_FLAGS["hideNavbar"] = true;
+		APP_FLAGS["showDates"] = false;
+		APP_FLAGS["showPostID"] = false;
+		APP_FLAGS["showPostNumber"] = false;
+	    }
+	}
+
+	if(APP_FLAGS["hideNavbar"])
+	    $('#navbar-isSiteUsable').hide();
+    },
+
+    setInfo: async function () {	
 
 	await App.getContractDeploy();
 
@@ -564,7 +586,7 @@ App = {
 
     processAdminInfo: async function() {
 
-	if(FLAG_metamask_enabled)
+	if(APP_FLAGS["metamask_enabled"])
 	    App.loadAccountInfo();
 
 	// Break if address is not found

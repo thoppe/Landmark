@@ -1,18 +1,22 @@
-# [Landmark](https://thoppe.github.io/Landmark/index.html?address=0xD38e005a28fae8D8c4238444BC08E7Da83902310)
+# Landmark
 
 Landmark is a social network implemented as a smart-contract for ethereum.
 It is completely decentralized, permanent, and uncensorable form of communication for as long as ethereum exists.
 When you _mark_, the message is etched into the blockchain forever.
+You'll need a web3 interface (like [Metamask](https://metamask.io/)) to post to the site live, but you can still view without the extension.
+Notable Landmarks can be found below, but you can create your own by deploying the [contract](contracts/Landmark.sol). If you do, let me know and I'll list it here.
 
-The canonical address is [`0xD38e005a28fae8D8c4238444BC08E7Da83902310`](https://thoppe.github.io/Landmark/index.html?address=0xD38e005a28fae8D8c4238444BC08E7Da83902310). You'll need a web3 interface (like [Metamask](https://metamask.io/)) to see/post to the site live.
+## Notable Landmarks
 
-A memorial Landmark was built for victims of the [2017 Las Vegas shooting](https://www.nytimes.com/2017/10/02/us/vegas-victims-names.html). The live version can be found at [`0x1B11aC23fbB37B1F943c2b36a566fc77f64BB8a9`](https://thoppe.github.io/Landmark/index.html?address=0x1B11aC23fbB37B1F943c2b36a566fc77f64BB8a9)
+### [`0xD38e005a28fae8D8c4238444BC08E7Da83902310`](https://thoppe.github.io/Landmark/index.html?address=0xD38e005a28fae8D8c4238444BC08E7Da83902310)
 
-This Landmark has been closed for future marks, but you can see an [archived version](https://thoppe.github.io/Landmark/LasVegasMemorialLandmark.html) without Metamask.
+The canonical address for Landmark. This is ground-zero for the Landmark experiment. If you've got some ether, you can carve your eternal message into the blockchain for everyone to see!
 
-You can also build your own "Landmark" by deploying the [contract](contracts/Landmark.sol) to the blockchain. If you build one, let me know and I'll list it here!
+### [`0x1B11aC23fbB37B1F943c2b36a566fc77f64BB8a9`](https://thoppe.github.io/Landmark/index.html?address=0x1B11aC23fbB37B1F943c2b36a566fc77f64BB8a9&noMeta=true)
 
-### Development
+A memorial Landmark built for victims of the [2017 Las Vegas shooting](https://www.nytimes.com/2017/10/02/us/vegas-victims-names.html). This Landmark has been closed for further marks.
+
+## Development
 
 ##### *ropsten*
 
