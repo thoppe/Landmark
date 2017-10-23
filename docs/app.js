@@ -120,10 +120,10 @@ const messageTemplateHTML = `
 <!---      <td class="messageAvatar"></td> --->
       <td>
 <div class="row row-no-padding">
-<div class="col-xs-2">
+<div class="col-xs-3">
       <span class="messageAvatar"></span>
 </div>
-<div class="col-xs-10">
+<div class="col-xs-9">
       <div class="messageText"></div>
       <div class="text-muted small">
        <span class="messageNumber"></span>
@@ -161,7 +161,7 @@ function setMessageAddress(result, n) {
 
     let url = getESUrl() + 'address/' + result;
 
-    var div = $('<span class="wrapper"><a> \
+    var div = $('<span class=""><a> \
 		 <i class="fa fa-user" aria-hidden="true"></i></a></span>');
     
     div.find('a')
@@ -169,12 +169,11 @@ function setMessageAddress(result, n) {
 	.attr("href",url)
 	.append(" "+result)
 	.addClass("no-underline")
+	.addClass("ellipsis");
 
     img = $("<img></img>");
-    img.attr("src", "https://robohash.org/"+result+"?size=100x100");
+    img.attr("src", "https://robohash.org/"+result+"?size=80x80");
     img.addClass("img-responsive").addClass("avatar")
-	//.attr('width', 70).attr('height', 70);
-    
     post.find('.messageAvatar')
 	.append(img);
 
@@ -188,7 +187,7 @@ function setMessageDate(result, n) {
 	return false;
     
     let timestamp = result.toNumber();
-    let datetime = new Date(timestamp*1000);
+    let datetime = new Date(timestamp*1000).toDateString();
 
     let post = getMessageTD(n);
     if(post.length == 0)

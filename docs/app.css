@@ -47,16 +47,13 @@ nav a {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width:100%;
+    width:90%;
+    max-width:90%;
 
 }
 
 .no-underline {
     text-decoration: none !important;
-}
-
-.wrapper {
-    display: inline-block;
 }
 
 .no-vertical {
@@ -68,27 +65,19 @@ nav a {
 }
 
 .img-responsive.avatar {
-    
-    min-width:45px;
+    min-width:40px;
     max-width:80px;
     width:100%;
-
 }
 
-.col-xs-2 {
+.LandmarkPostRow .col-xs-3 {
     padding-right: 0 !important;
-}
-
-.col-xs-10 {
-    padding-right: 0 !important;
-    padding-left: 20px !important;
-}
-
-.row-no-padding {
-  [class*="col-"] {
     padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
+}
+
+.LandmarkPostRow .col-xs-9 {
+    padding-right: 5px !important;
+    padding-left: 10px !important;
 }
 
 
