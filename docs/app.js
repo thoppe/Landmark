@@ -620,8 +620,12 @@ App = {
 };
 
 $(function() {
+
+    $(document).ready(function() {App.init()});
+
+    /*
     $(window).on('load', function() {
 	App.init();
     });
-
+    */
 });
