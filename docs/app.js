@@ -117,14 +117,23 @@ function doesMessageRowExist(n) {
 
 const messageTemplateHTML = `
 <tr class="LandmarkPostRow">
-      <td class="messageAvatar"></td>
+<!---      <td class="messageAvatar"></td> --->
       <td>
+<div class="row row-no-padding">
+<div class="col-xs-2">
+      <span class="messageAvatar"></span>
+</div>
+<div class="col-xs-10">
       <div class="messageText"></div>
       <div class="text-muted small">
-      <span class="messageNumber"></span>
-      <span class="messageDate font-italic"></span>
-      <div class="messageAddress"></div>
-      </div></td>
+       <span class="messageNumber"></span>
+       <span class="messageDate font-italic"></span>
+       <div class="messageAddress"></div>
+      </div>
+<div>
+</div>
+
+</td>
 </tr>`
 
 
@@ -163,10 +172,12 @@ function setMessageAddress(result, n) {
 
     img = $("<img></img>");
     img.attr("src", "https://robohash.org/"+result+"?size=100x100");
-    img.addClass("img-responsive").addClass("avatar");
+    img.addClass("img-responsive").addClass("avatar")
+	//.attr('width', 70).attr('height', 70);
+    
     post.find('.messageAvatar')
-	.attr('width', 70).attr('height', 70)
 	.append(img);
+
     
     post.find(".messageAddress").append(div);
     
@@ -212,12 +223,10 @@ App = {
     updater: null,
 
     init: function() {
-	console.log("Landmark App init")
 	return App.initWeb3();
     },
 
     initWeb3: function() {
-	console.log("Starting initWeb3 interface");
 	
 	// Initialize web3 and set the provider to the testRPC.
 	if (typeof web3 !== 'undefined') {
@@ -247,10 +256,7 @@ App = {
 	// Load the contract data from file
 	$.getJSON(f_deployed_contract, function(data) {
 	    App.contracts.Landmark = TruffleContract(data);
-
-	    console.log("Provider", App.web3Provider);
 	    App.contracts.Landmark.setProvider(App.web3Provider);
-	    
 	    return App.bindEvents();
 	});
 

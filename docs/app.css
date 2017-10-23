@@ -67,12 +67,29 @@ nav a {
     padding-bottom:0;
 }
 
-.img-responsive {
-    min-width:20px;
+.img-responsive.avatar {
+    
+    min-width:45px;
     max-width:80px;
+    width:100%;
+
 }
 
+.col-xs-2 {
+    padding-right: 0 !important;
+}
 
+.col-xs-10 {
+    padding-right: 0 !important;
+    padding-left: 20px !important;
+}
+
+.row-no-padding {
+  [class*="col-"] {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
 
 
 .messageDate {
