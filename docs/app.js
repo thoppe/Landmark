@@ -237,7 +237,9 @@ App = {
 	    App.web3Provider = new web3.providers.HttpProvider(provider_url);
 
 	    // Disable post buttons
-	    $("#navbar-postLink").addClass("disabled")
+	    //$("#navbar-postLink").addClass("disabled");
+	    $("#navbar-postLink").attr("data-target", "#cantPostModal");
+	    
 	    $("#curatorPostMessageBtn").addClass("disabled")
 	    FLAG_metamask_enabled = false;	    
 	}
