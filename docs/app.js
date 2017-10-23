@@ -187,7 +187,9 @@ function setMessageDate(result, n) {
 	return false;
     
     let timestamp = result.toNumber();
-    let datetime = new Date(timestamp*1000).toDateString();
+    let dateVal = new Date(timestamp*1000).toDateString();
+    let timeVal = new Date(timestamp*1000).toLocaleTimeString();
+    let datetime = dateVal + ', ' + timeVal;
 
     let post = getMessageTD(n);
     if(post.length == 0)
