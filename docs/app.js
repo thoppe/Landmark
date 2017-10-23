@@ -173,7 +173,7 @@ function setMessageAddress(result, n) {
 
     img = $("<img></img>");
     img.attr("src", "https://robohash.org/"+result+"?size=80x80");
-    img.addClass("img-responsive").addClass("avatar")
+    img.addClass("img-responsive").addClass("avatar").addClass("center-block");
     post.find('.messageAvatar')
 	.append(img);
 
