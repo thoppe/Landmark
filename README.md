@@ -34,8 +34,7 @@ Request some ether if there isn't any in the account by using the [faucet](https
 
 A test address already on the ropsten network is
 
-[`0xA334472B88830Dac9BD4d800e4366e9Ce584631a`](https://ropsten.etherscan.io/address/0xa334472b88830dac9bd4d800e4366e9ce584631a)
-
+### [`0xA334472B88830Dac9BD4d800e4366e9Ce584631a`](https://thoppe.github.io/Landmark/index.html?networkID=3&address=0xA334472B88830Dac9BD4d800e4366e9Ce584631a)
 
 ##### *testrpc* (localhost)
 

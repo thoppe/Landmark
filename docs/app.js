@@ -25,7 +25,7 @@ const default_contract_address = {
     3: "0xA334472B88830Dac9BD4d800e4366e9Ce584631a",
 }
 
-var default_network_id = null;
+var default_network_id = 1;
 
 var used_default_address = false;
 var contract_address = null;
@@ -34,8 +34,10 @@ var contract_network = null;
 const updateInterval = 1500;
 
 // Please don't steal this key! Get your own at https://infura.io/
-var provider_url = 'https://mainnet.infura.io/rk62RV4O5kpptwlDiV69'
-//var provider_url = 'http://localhost:8545';
+var provider_URLS = {
+    1: 'https://mainnet.infura.io/rk62RV4O5kpptwlDiV69',
+    3: 'https://ropsten.infura.io/rk62RV4O5kpptwlDiV69',
+};
 
 
 function changeURIAddress(address, reload=false) {
@@ -255,7 +257,15 @@ App = {
 	} else {
 	    console.log("Using provider url");
 	    window.web3 = new Web3();
-	    App.web3Provider = new web3.providers.HttpProvider(provider_url);
+
+	    if(default_network_id in provider_URLS) {
+		var url = provider_URLS[default_network_id];
+	    }
+	    else {
+		console.log("Network ID not found", default_network_id);
+	    }
+	    
+	    App.web3Provider = new web3.providers.HttpProvider(url);
 
 	    // Disable post buttons
 	    //$("#navbar-postLink").addClass("disabled");
@@ -302,7 +312,17 @@ App = {
 	    
 	    contract_network = await web3.version.network;
 
-	    console.log("HERE", contract_network);
+	    // Check if URI requests an address but Metamask reports something diff
+	    if(default_network_id != null & default_network_id!=contract_network) {
+
+		statusError("Network mismatch, Metamask reports "+contract_network+
+			    "but URI requests "+default_network_id+
+			   ". Check Metamask settings.");
+	    }
+	    if(default_network_id != null) {
+		contract_network = default_network_id;
+	    }
+
 
 	    // Try to load the url param address
 	    let url_address = getURI("address");
