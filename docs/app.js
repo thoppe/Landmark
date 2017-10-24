@@ -5,7 +5,9 @@ var APP_FLAGS = {
     "showDates"  : true,
     "showPostID" : true,
     "showPostNumber" : true,
+    
     "metamask_enabled" : true,
+    "renderEmoji": true,
 };
 
 const default_contract_address = {
@@ -22,6 +24,8 @@ const default_contract_address = {
     // Ropsten
     3: "0xA334472B88830Dac9BD4d800e4366e9Ce584631a",
 }
+
+var default_network_id = null;
 
 var used_default_address = false;
 var contract_address = null;
@@ -149,6 +153,13 @@ function setMessageContents(result, n) {
 
     post.attr("data-nonce", n);
     post.find('.messageText').text(result);
+
+    if(APP_FLAGS["renderEmoji"]) {
+	$(function(){
+	    post.find('.messageText').Emoji({
+		path:'bower_components/jqueryemoji/img/apple40/'});
+	});
+    };
 
     if(APP_FLAGS["showPostNumber"])
 	post.find('.messageNumber').text("#"+(n+1)+"");
@@ -288,7 +299,10 @@ App = {
     getContractDeploy: async function() {
 
 	if(!used_default_address) {
+	    
 	    contract_network = await web3.version.network;
+
+	    console.log("HERE", contract_network);
 
 	    // Try to load the url param address
 	    let url_address = getURI("address");
@@ -352,9 +366,14 @@ App = {
 
     loadURIflags: function () {
 	// Load the URI flags and act on them
+
+	let networkID = getURI("networkID");
+	if(networkID != null) {
+	    default_network_id = parseInt(networkID);
+	}
 	
 	let noMeta = getURI("noMeta");
-	if(noMeta !== "undefined") {
+	if(noMeta != null) {
 	    if(Boolean(noMeta) & noMeta != "false" & noMeta != "0") {
 		APP_FLAGS["hideNavbar"] = true;
 		APP_FLAGS["showDates"] = false;

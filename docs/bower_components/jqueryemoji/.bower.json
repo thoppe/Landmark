@@ -1,0 +1,50 @@
+{
+  "name": "jqueryemoji",
+  "version": "1.0.1",
+  "homepage": "https://github.com/rodrigopolo/jqueryemoji",
+  "description": "Yet another jQuery emoji parser plug-in, designed differently to be fast, small, simple and scalable.",
+  "main": [
+    "js/jQueryEmoji.min.js",
+    "js/jQueryEmoji.js",
+    "css/style.css"
+  ],
+  "ignore": [
+    "css/demo.css",
+    "img/emojione.txt",
+    "img/google.txt",
+    "img/microsoft.txt",
+    "img/twemoji.txt",
+    "img_demo*",
+    "img/apple72*",
+    "js/jQueryEmoji_un.js",
+    "README*",
+    "LICENSE*",
+    ".git*",
+    ".travis*",
+    "*bower.json",
+    "*jquery.json",
+    "index*"
+  ],
+  "dependencies": {
+    "jquery": "latest"
+  },
+  "keywords": [
+    "emoji",
+    "parser",
+    "html"
+  ],
+  "authors": [
+    "Rodrigo Polo"
+  ],
+  "license": "MIT",
+  "_release": "1.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.1",
+    "commit": "f0a0a9009e95f3869a2473936464d6e3c59104e6"
+  },
+  "_source": "https://github.com/rodrigopolo/jqueryemoji.git",
+  "_target": "^1.0.1",
+  "_originalSource": "jqueryemoji",
+  "_direct": true
+}
