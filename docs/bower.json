@@ -20,6 +20,7 @@
     "bootstrap": "^3.3.7",
     "components-font-awesome": "^4.7.0",
     "urijs": "uri.js#^1.19.0",
-    "browser-sync-client": "^2.5.1"
+    "browser-sync-client": "^2.5.1",
+    "jqueryemoji": "^1.0.1"
   }
 }
