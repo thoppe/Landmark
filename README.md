@@ -36,6 +36,14 @@ A test address already on the ropsten network is
 
 ### [`0xA334472B88830Dac9BD4d800e4366e9Ce584631a`](https://thoppe.github.io/Landmark/index.html?networkID=3&address=0xA334472B88830Dac9BD4d800e4366e9Ce584631a)
 
+There are a few URI params that can be set
+
+    address=[contract address]
+    renderEmoji=[true/false]
+    networkID=[1 or 3]
+
+As an example, the above contract can be rendered without emojis using [`0xA334472B88830Dac9BD4d800e4366e9Ce584631a`](https://thoppe.github.io/Landmark/index.html?networkID=3&address=0xA334472B88830Dac9BD4d800e4366e9Ce584631a&renderEmoji=false).
+
 ##### *testrpc* (localhost)
 
 Start the testrpc with the following seed to keep the accounts in sync

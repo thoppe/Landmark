@@ -387,6 +387,17 @@ App = {
     loadURIflags: function () {
 	// Load the URI flags and act on them
 
+	let renderEmoji = getURI("renderEmoji");
+	if(renderEmoji != null) {
+	    console.log(renderEmoji);
+	    if(Boolean(renderEmoji) & renderEmoji != "false" & renderEmoji != "0") {
+		APP_FLAGS["renderEmoji"] = true;
+	    }
+	    else {
+	    	APP_FLAGS["renderEmoji"] = false;
+	    }
+	}
+
 	let networkID = getURI("networkID");
 	if(networkID != null) {
 	    default_network_id = parseInt(networkID);
