@@ -121,11 +121,6 @@ function getMessageTD(n) {
     return $('[data-nonce='+n+']')
 }
 
-function doesMessageRowExist(n) {
-    return getMessageTD(n).length > 0;
-}
-
-
 const messageTemplateHTML = `
 <tr class="LandmarkPostRow">
       <td>
@@ -149,9 +144,6 @@ const messageTemplateHTML = `
 
 function setMessageContents(result, n) {
     let label = 'LandmarkPost'+n;
-    
-    if (doesMessageRowExist(n)) return false;
-  
     let post = $(messageTemplateHTML);
 
     post.attr("data-nonce", n);
@@ -522,7 +514,7 @@ App = {
 	hasLoadedNewPost = false;
 	
 	for (i = 0; i < n; i++) {
-	    if (doesMessageRowExist(i))
+	    if(i in App.messages)
 		continue;    
 	    App.loadPost(i);
 	    hasLoadedNewPost = true;
