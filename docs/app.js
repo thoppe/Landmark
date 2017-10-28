@@ -121,11 +121,6 @@ function getMessageTD(n) {
     return $('[data-nonce='+n+']')
 }
 
-function doesMessageRowExist(n) {
-    return getMessageTD(n).length > 0;
-}
-
-
 const messageTemplateHTML = `
 <tr class="LandmarkPostRow">
       <td>
@@ -149,9 +144,6 @@ const messageTemplateHTML = `
 
 function setMessageContents(result, n) {
     let label = 'LandmarkPost'+n;
-    
-    if (doesMessageRowExist(n)) return false;
-  
     let post = $(messageTemplateHTML);
 
     post.attr("data-nonce", n);
@@ -244,6 +236,9 @@ App = {
     contracts: {},
     updater: null,
 
+    // Save the loaded messages into this dictionary
+    messages: {},
+
     init: function() {
 	App.loadURIflags();
 	return App.initWeb3();
@@ -269,7 +264,6 @@ App = {
 	    App.web3Provider = new web3.providers.HttpProvider(url);
 
 	    // Disable post buttons
-	    //$("#navbar-postLink").addClass("disabled");
 	    $("#navbar-postLink").attr("data-target", "#cantPostModal");
 	    
 	    $("#curatorPostMessageBtn").addClass("disabled")
@@ -355,7 +349,7 @@ App = {
   
     bindEvents: function() {
 
-	// Disable curator buttons until we pass a check
+	// By default, disable curator buttons until we pass a check
 	$('#curatorPostMessageBtn').prop('disabled', true);
 	$('#curatorCloseMessageBtn').prop('disabled', true);
 	
@@ -479,12 +473,16 @@ App = {
     },
 
     loadPost: async function(i) {
-	const msg = await App.LandmarkCall("getMessageContents", i);
-	const address = await App.LandmarkCall("getMessageAddress", i);
-	const date = await App.LandmarkCall("getMessageTimestamp", i);
-	setMessageContents(msg, i);
-	setMessageAddress(address, i);
-	setMessageDate(date, i);
+
+	App.messages[i] = {
+	    "msg" : await App.LandmarkCall("getMessageContents", i),
+	    "adr" : await App.LandmarkCall("getMessageAddress", i),
+	    "date": await App.LandmarkCall("getMessageTimestamp", i),
+	}
+	
+	setMessageContents(App.messages[i].msg, i);
+	setMessageAddress(App.messages[i].adr, i);
+	setMessageDate(App.messages[i].date, i);
     },
 
     loadAllPosts: async function () {
@@ -513,11 +511,10 @@ App = {
 	$('#statusLooking').hide();
 	$("#statusEmpty").hide();
 
-
 	hasLoadedNewPost = false;
 	
 	for (i = 0; i < n; i++) {
-	    if (doesMessageRowExist(i))
+	    if(i in App.messages)
 		continue;    
 	    App.loadPost(i);
 	    hasLoadedNewPost = true;
@@ -542,7 +539,6 @@ App = {
     loadAccountInfo: function() {
 	web3.eth.getAccounts(async function(error, accounts) {
 	    setAccountHash(accounts);
-
 
 	    // Check if user is the curator and if so, allow curator options
 	    const Uadr = accounts[0];
@@ -718,11 +714,8 @@ App = {
 
 $(function() {
 
-    $(document).ready(function() {App.init()});
-
-    /*
-    $(window).on('load', function() {
-	App.init();
+    $(document).ready(function() {
+	App.init()
     });
-    */
+
 });
