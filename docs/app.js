@@ -269,7 +269,6 @@ App = {
 	    App.web3Provider = new web3.providers.HttpProvider(url);
 
 	    // Disable post buttons
-	    //$("#navbar-postLink").addClass("disabled");
 	    $("#navbar-postLink").attr("data-target", "#cantPostModal");
 	    
 	    $("#curatorPostMessageBtn").addClass("disabled")
@@ -355,7 +354,7 @@ App = {
   
     bindEvents: function() {
 
-	// Disable curator buttons until we pass a check
+	// By default, disable curator buttons until we pass a check
 	$('#curatorPostMessageBtn').prop('disabled', true);
 	$('#curatorCloseMessageBtn').prop('disabled', true);
 	
@@ -513,7 +512,6 @@ App = {
 	$('#statusLooking').hide();
 	$("#statusEmpty").hide();
 
-
 	hasLoadedNewPost = false;
 	
 	for (i = 0; i < n; i++) {
@@ -542,7 +540,6 @@ App = {
     loadAccountInfo: function() {
 	web3.eth.getAccounts(async function(error, accounts) {
 	    setAccountHash(accounts);
-
 
 	    // Check if user is the curator and if so, allow curator options
 	    const Uadr = accounts[0];
@@ -718,11 +715,8 @@ App = {
 
 $(function() {
 
-    $(document).ready(function() {App.init()});
-
-    /*
-    $(window).on('load', function() {
-	App.init();
+    $(document).ready(function() {
+	App.init()
     });
-    */
+
 });
