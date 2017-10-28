@@ -474,6 +474,14 @@ App = {
 
     loadPost: async function(i) {
 
+	// Create an item while we wait so we don't double load
+	App.messages[i] = {
+	    "msg" : "Loading",
+	    "adr" : "0x",
+	    "date": "",
+	}
+	
+
 	App.messages[i] = {
 	    "msg" : await App.LandmarkCall("getMessageContents", i),
 	    "adr" : await App.LandmarkCall("getMessageAddress", i),
