@@ -244,6 +244,9 @@ App = {
     contracts: {},
     updater: null,
 
+    // Save the loaded messages into this dictionary
+    messages: {},
+
     init: function() {
 	App.loadURIflags();
 	return App.initWeb3();
@@ -478,12 +481,16 @@ App = {
     },
 
     loadPost: async function(i) {
-	const msg = await App.LandmarkCall("getMessageContents", i);
-	const address = await App.LandmarkCall("getMessageAddress", i);
-	const date = await App.LandmarkCall("getMessageTimestamp", i);
-	setMessageContents(msg, i);
-	setMessageAddress(address, i);
-	setMessageDate(date, i);
+
+	App.messages[i] = {
+	    "msg" : await App.LandmarkCall("getMessageContents", i),
+	    "adr" : await App.LandmarkCall("getMessageAddress", i),
+	    "date": await App.LandmarkCall("getMessageTimestamp", i),
+	}
+	
+	setMessageContents(App.messages[i].msg, i);
+	setMessageAddress(App.messages[i].adr, i);
+	setMessageDate(App.messages[i].date, i);
     },
 
     loadAllPosts: async function () {
