@@ -102,6 +102,7 @@ function setAccountHash(accounts) {
    
     $('#accountHash').text(accounts[0])
 	.attr('href', getESUrl() + "address/"+accounts[0]);
+
 }
 
 function setContractHash(address) {
@@ -353,6 +354,11 @@ App = {
     },
   
     bindEvents: function() {
+
+	// Disable curator buttons until we pass a check
+	$('#curatorPostMessageBtn').prop('disabled', true);
+	$('#curatorCloseMessageBtn').prop('disabled', true);
+	
 	$(document).on('click', '.btn-process-post',
 		       App.processButtonPost);
 	$(document).on('click', '.btn-process-closesite',
@@ -534,10 +540,20 @@ App = {
     },
 
     loadAccountInfo: function() {
-	web3.eth.getAccounts(function(error, accounts) {
+	web3.eth.getAccounts(async function(error, accounts) {
 	    setAccountHash(accounts);
+
+
+	    // Check if user is the curator and if so, allow curator options
+	    const Uadr = accounts[0];
+	    const Cadr = await App.LandmarkCall("getCuratorAddress");
+
+	    if(Uadr == Cadr) {
+		$('#curatorPostMessageBtn').prop('disabled', false);
+		$('#curatorCloseMessageBtn').prop('disabled', false);
+	    }
 	    
-	    web3.eth.getBalance(accounts[0], function(error, val) {
+	    web3.eth.getBalance(Uadr, function(error, val) {
 		setAccountBalance(val);
 	    });
 	});	
