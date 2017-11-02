@@ -29,7 +29,9 @@
     <div class="container">
 
       <div class="navbar-header navbar-left">
-	<div class="navbar-brand logo">Landmark</div>
+	<a class="navbar-brand logo "
+	   data-toggle="modal" data-target="#InfoModal">
+	  Landmark</a>
       </div>
 
       <p class="navbar-text">
@@ -105,6 +107,39 @@
   </div>
 </footer>
 
+
+<div class="modal fade" id="InfoModal" role="dialog" tabindex="-1">
+  <div class="modal-dialog">
+        
+    <div class="modal-content">
+      <div class="modal-header">
+
+	<div class="modal-title">
+          <h4>What is Landmark?</h4>
+	</div>
+      </div>
+
+      
+      <div class="form-group modal-body">
+Landmark is message board on the blockchain.
+What you post will live on the chain forever and can not be edited or removed.
+Your identity is your wallet address, and with a new wallet you'll have a new identity.
+Posting is free except for a small cost you'll pay to the miners to store the information on the chain.
+It is an Ethereum experiment implemented as an altruistic <a href="https://github.com/thoppe/ethereum_Landmark">smart-contract</a>.
+What should you post? That's up to you.
+<br><br>
+by <a href="https://twitter.com/metasemantic?lang=en">@metasemantic</a>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"
+		data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+    
+  </div>
+</div>
 
 <div class="modal fade" id="PostModal" role="dialog" tabindex="-1">
   <div class="modal-dialog">
