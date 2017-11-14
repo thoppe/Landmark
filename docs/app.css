@@ -87,7 +87,9 @@ nav a {
 
 .messageNumber { }
 
-.messageText { }
+.messageText {
+    overflow-wrap: break-word;
+}
 
 .messageAddress a {
     color: inherit;
