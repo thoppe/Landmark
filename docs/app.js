@@ -141,12 +141,25 @@ const messageTemplateHTML = `
 </td>
 </tr>`
 
+function createPostBuffer(n) {
+    let post = $(messageTemplateHTML);
+    let label = 'LandmarkPost'+n;
+    
+    post.attr("data-nonce", n);
+
+    if(APP_FLAGS["showPostNumber"])
+	post.find('.messageNumber').text("#"+(n+1)+"");
+
+    // Hide the post when we create it
+    post.addClass("hidden");
+
+    $("#marks").find('tbody').prepend(post);
+}
+
 
 function setMessageContents(result, n) {
-    let label = 'LandmarkPost'+n;
-    let post = $(messageTemplateHTML);
-
-    post.attr("data-nonce", n);
+    let post = getMessageTD(n);
+    
     post.find('.messageText').text(result);
 
     if(APP_FLAGS["renderEmoji"]) {
@@ -156,10 +169,8 @@ function setMessageContents(result, n) {
 	});
     };
 
-    if(APP_FLAGS["showPostNumber"])
-	post.find('.messageNumber').text("#"+(n+1)+"");
-
-    $("#marks").find('tbody').prepend(post);
+    // Reveal the post when we have some data
+    post.removeClass("hidden");
 }
 
 function setMessageAddress(result, n) {
@@ -472,16 +483,21 @@ App = {
 
     },
 
-    loadPost: async function(i) {
-
+    allocatePostArea: function(i) {
+	
 	// Create an item while we wait so we don't double load
 	App.messages[i] = {
 	    "msg" : "Loading",
 	    "adr" : "0x",
 	    "date": "",
 	}
+
+	createPostBuffer(i);
+    },
 	
 
+    loadPost: async function(i) {
+	
 	App.messages[i] = {
 	    "msg" : await App.LandmarkCall("getMessageContents", i),
 	    "adr" : await App.LandmarkCall("getMessageAddress", i),
@@ -519,29 +535,15 @@ App = {
 	$('#statusLooking').hide();
 	$("#statusEmpty").hide();
 
-	hasLoadedNewPost = false;
-	
+	// Allocate space for posts
 	for (i = 0; i < n; i++) {
-	    if(i in App.messages)
-		continue;    
+	    if(i in App.messages) 
+		continue;
+
+	    await createPostBuffer(i);
 	    App.loadPost(i);
-	    hasLoadedNewPost = true;
 	}
 
-	if(hasLoadedNewPost) 
-	    setTimeout(App.sortPosts, 1000);
-
-    },
-
-    sortPosts: function() {
-	
-	var loadedPosts = $(".LandmarkPostRow").get();
-	
-	loadedPosts.sort(function(a, b){
-	    return $(b).data("nonce")-$(a).data("nonce");
-	});
-
-	$("#marks").find("tbody").empty().html(loadedPosts);
     },
 
     loadAccountInfo: function() {
