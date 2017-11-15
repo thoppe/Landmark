@@ -59,3 +59,7 @@ Which you can import into MetaMask to test the DApp.
 `truffle deploy` will push the contract out to the address:
 
      0x90a9b125b6e4b22ecb139819778dc01d1339ef5c
+
+## Presentations
+
+[Hack && Tell DC: Round 50](https://thoppe.github.io/Landmark/presentations/HnT_presentation.html)
