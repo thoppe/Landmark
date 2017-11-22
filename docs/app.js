@@ -459,7 +459,8 @@ App = {
 	App.loadCuratorMessage();
 
 	App.loadAllPosts();
-	updater = setInterval(App.loadAllPosts, updateInterval);
+	
+	//updater = setInterval(App.loadAllPosts, updateInterval);
 
 
 	$('#marktext').keydown(function (event) {
