@@ -54,9 +54,6 @@ function getURI(key) {
 }
 
 
-
-
-
 const closeButtonHTML = `<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 <span aria-hidden="true">&times;</span>`;
 const infoButtonHTML = `<div>
@@ -128,11 +125,12 @@ const messageTemplateHTML = `
 <div class="col-xs-3">
       <span class="messageAvatar"></span>
 </div>
-<div class="col-xs-9">
+    <div class="col-xs-9">
       <div class="messageText"></div>
-      <div class="messageMeta text-muted small">
+    <div class="messageMeta text-muted small">
        <span class="messageNumber"></span>
-       <span class="messageDate font-italic"></span>
+    <span class="messageDate font-italic"></span>
+    <span class="messagePermalink"></span>
        <div class="messageAddress"></div>
       </div>
 <div>
@@ -155,7 +153,6 @@ function createPostBuffer(n) {
 
     $("#marks").find('tbody').prepend(post);
 }
-
 
 function setMessageContents(result, n) {
     let post = getMessageTD(n);
@@ -222,6 +219,13 @@ function setMessageDate(result, n) {
     post.find(".messageDate")
 	.attr("title",datetime)
 	.text(datetime);
+
+    // Set the permalink icon
+    let icon = $('<a><i class="fa fa-link" aria-hidden="true"></i></a></span>');
+    post.find(".messagePermalink")
+	.append(icon);
+    
+    
 }
 
 var isAddress = function (address) {
@@ -507,7 +511,7 @@ App = {
 	
 	setMessageContents(App.messages[i].msg, i);
 	setMessageAddress(App.messages[i].adr, i);
-	setMessageDate(App.messages[i].date, i);
+	setMessageDate(App.messages[i].date, i);	
     },
 
     loadAllPosts: async function () {

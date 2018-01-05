@@ -95,6 +95,10 @@ nav a {
     color: inherit;
 }
 
+.messagePermalink a {
+    color: inherit;
+}
+
 #marks {
     max-width:750px;
 }
