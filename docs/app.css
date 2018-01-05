@@ -80,6 +80,11 @@ nav a {
     padding-left: 10px !important;
 }
 
+.highlightedPost {
+    background-color:#DAECF9 !important;
+    font-size:125%;
+}
+
 
 .messageDate {
     padding-right: 0.5em;
@@ -92,6 +97,10 @@ nav a {
 }
 
 .messageAddress a {
+    color: inherit;
+}
+
+.messagePermalink a {
     color: inherit;
 }
 

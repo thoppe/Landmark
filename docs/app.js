@@ -54,9 +54,6 @@ function getURI(key) {
 }
 
 
-
-
-
 const closeButtonHTML = `<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 <span aria-hidden="true">&times;</span>`;
 const infoButtonHTML = `<div>
@@ -128,9 +125,10 @@ const messageTemplateHTML = `
 <div class="col-xs-3">
       <span class="messageAvatar"></span>
 </div>
-<div class="col-xs-9">
+    <div class="col-xs-9">
       <div class="messageText"></div>
-      <div class="messageMeta text-muted small">
+    <div class="messageMeta text-muted small">
+       <span class="messagePermalink"></span>
        <span class="messageNumber"></span>
        <span class="messageDate font-italic"></span>
        <div class="messageAddress"></div>
@@ -155,7 +153,6 @@ function createPostBuffer(n) {
 
     $("#marks").find('tbody').prepend(post);
 }
-
 
 function setMessageContents(result, n) {
     let post = getMessageTD(n);
@@ -222,6 +219,21 @@ function setMessageDate(result, n) {
     post.find(".messageDate")
 	.attr("title",datetime)
 	.text(datetime);
+
+    // Set the permalink icon and link
+    let icon = $('<a><i class="fa fa-link" aria-hidden="true"></i></a></span>');
+    let loc = new URI($(location).attr('href'));
+    loc.removeSearch("postNumber").addSearch("postNumber", n+1);
+
+    icon.attr("href", loc);
+    post.find(".messagePermalink").append(icon);
+
+    // Check if the current post is the permalink if so, highlight
+    let URIpostNumber = getURI("postNumber");
+    if(URIpostNumber != null && URIpostNumber == n+1) {
+	post.addClass("highlightedPost")
+    }
+    
 }
 
 var isAddress = function (address) {
@@ -455,32 +467,43 @@ App = {
 	
 	const vn = parseInt(await App.LandmarkCall("getVersionNumber"));
 	setVersionNumber(vn);
-
-	App.loadCuratorMessage();
-
-	App.loadAllPosts();
 	
-	//updater = setInterval(App.loadAllPosts, updateInterval);
-
-
 	$('#marktext').keydown(function (event) {
 	    if ((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey){
 		App.processButtonPost();
 	    }
 	});
 
+	App.loadCuratorMessage();
+	App.loadAllPosts();
+	
+	//updater = setInterval(App.loadAllPosts, updateInterval);
 
     },
 
     loadCuratorMessage: async function() {
 
-	const cMsg = await App.LandmarkCall("getCuratorMessage");
+	// If a permalink is requested, modify the message
+	let URIpostNumber = getURI("postNumber");
 
-	if(cMsg) {
+	if(URIpostNumber != null) {
+	    let loc = new URI($(location).attr('href'));
+	    loc.removeSearch("postNumber");
+	    
+	    let msg = ("Permalink to post #"+URIpostNumber
+		       +", <a>return to the active chain.</a>");
+	    $("#curatorMessageText").html(msg)
+		.find("a").attr("href", loc);
+	    $("#curatorMessage").find(".blockquote-footer").hide();
 	    $("#curatorMessage").show();
-	    $("#curatorMessageText").text(cMsg);
 	}
-
+	else {
+	    const cMsg = await App.LandmarkCall("getCuratorMessage");
+	    if(cMsg) {
+		$("#curatorMessageText").text(cMsg);
+		$("#curatorMessage").show();
+	    }
+	}
 
     },
 
@@ -498,6 +521,12 @@ App = {
 	
 
     loadPost: async function(i) {
+
+	// If a permalink is requested, only load that one
+	let URIpostNumber = getURI("postNumber");
+	if(URIpostNumber != null && URIpostNumber != i+1) {
+	    return false;
+	}
 	
 	App.messages[i] = {
 	    "msg" : await App.LandmarkCall("getMessageContents", i),
@@ -508,6 +537,7 @@ App = {
 	setMessageContents(App.messages[i].msg, i);
 	setMessageAddress(App.messages[i].adr, i);
 	setMessageDate(App.messages[i].date, i);
+
     },
 
     loadAllPosts: async function () {
@@ -544,6 +574,8 @@ App = {
 	    await createPostBuffer(i);
 	    App.loadPost(i);
 	}
+
+	
 
     },
 
