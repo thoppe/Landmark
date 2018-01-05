@@ -81,7 +81,8 @@ nav a {
 }
 
 .highlightedPost {
-    color: red;
+    background-color:#DAECF9;
+    font-size:125%;
 }
 
 
