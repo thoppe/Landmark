@@ -223,19 +223,16 @@ function setMessageDate(result, n) {
     // Set the permalink icon and link
     let icon = $('<a><i class="fa fa-link" aria-hidden="true"></i></a></span>');
     let loc = new URI($(location).attr('href'));
-    loc.removeSearch("postNumber").addSearch("postNumber", n);
+    loc.removeSearch("postNumber").addSearch("postNumber", n+1);
 
     icon.attr("href", loc);
     post.find(".messagePermalink").append(icon);
 
-    // Check if the current post is the permalink
+    // Check if the current post is the permalink if so, highlight
     let URIpostNumber = getURI("postNumber");
-    if(URIpostNumber != null && URIpostNumber == n) {
-	console.log("HERE", n);
-	post.addClass("highlightedPost");
+    if(URIpostNumber != null && URIpostNumber == n+1) {
+	post.addClass("highlightedPost")
     }
-    
-
     
 }
 
@@ -470,20 +467,17 @@ App = {
 	
 	const vn = parseInt(await App.LandmarkCall("getVersionNumber"));
 	setVersionNumber(vn);
-
-	App.loadCuratorMessage();
-
-	App.loadAllPosts();
 	
-	//updater = setInterval(App.loadAllPosts, updateInterval);
-
-
 	$('#marktext').keydown(function (event) {
 	    if ((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey){
 		App.processButtonPost();
 	    }
 	});
 
+	App.loadCuratorMessage();
+	App.loadAllPosts();
+	
+	//updater = setInterval(App.loadAllPosts, updateInterval);
 
     },
 
@@ -513,6 +507,12 @@ App = {
 	
 
     loadPost: async function(i) {
+
+	// If a permalink is requested, only load that one
+	let URIpostNumber = getURI("postNumber");
+	if(URIpostNumber != null && URIpostNumber != i+1) {
+	    return false;
+	}
 	
 	App.messages[i] = {
 	    "msg" : await App.LandmarkCall("getMessageContents", i),
@@ -523,6 +523,7 @@ App = {
 	setMessageContents(App.messages[i].msg, i);
 	setMessageAddress(App.messages[i].adr, i);
 	setMessageDate(App.messages[i].date, i);
+
     },
 
     loadAllPosts: async function () {
@@ -559,6 +560,8 @@ App = {
 	    await createPostBuffer(i);
 	    App.loadPost(i);
 	}
+
+	
 
     },
 
