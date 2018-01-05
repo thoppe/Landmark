@@ -483,13 +483,27 @@ App = {
 
     loadCuratorMessage: async function() {
 
-	const cMsg = await App.LandmarkCall("getCuratorMessage");
+	// If a permalink is requested, modify the message
+	let URIpostNumber = getURI("postNumber");
 
-	if(cMsg) {
+	if(URIpostNumber != null) {
+	    let loc = new URI($(location).attr('href'));
+	    loc.removeSearch("postNumber");
+	    
+	    let msg = ("Permalink to post #"+URIpostNumber
+		       +", <a>return to the active chain.</a>");
+	    $("#curatorMessageText").html(msg)
+		.find("a").attr("href", loc);
+	    $("#curatorMessage").find(".blockquote-footer").hide();
 	    $("#curatorMessage").show();
-	    $("#curatorMessageText").text(cMsg);
 	}
-
+	else {
+	    const cMsg = await App.LandmarkCall("getCuratorMessage");
+	    if(cMsg) {
+		$("#curatorMessageText").text(cMsg);
+		$("#curatorMessage").show();
+	    }
+	}
 
     },
 
