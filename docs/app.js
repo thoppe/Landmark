@@ -128,9 +128,9 @@ const messageTemplateHTML = `
     <div class="col-xs-9">
       <div class="messageText"></div>
     <div class="messageMeta text-muted small">
+       <span class="messagePermalink"></span>
        <span class="messageNumber"></span>
-    <span class="messageDate font-italic"></span>
-    <span class="messagePermalink"></span>
+       <span class="messageDate font-italic"></span>
        <div class="messageAddress"></div>
       </div>
 <div>
@@ -222,8 +222,11 @@ function setMessageDate(result, n) {
 
     // Set the permalink icon
     let icon = $('<a><i class="fa fa-link" aria-hidden="true"></i></a></span>');
-    post.find(".messagePermalink")
-	.append(icon);
+    let loc = new URI($(location).attr('href'));
+    loc.removeSearch("postNumber").addSearch("postNumber", n);
+
+    icon.attr("href", loc);
+    post.find(".messagePermalink").append(icon);
     
     
 }
