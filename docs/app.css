@@ -80,6 +80,10 @@ nav a {
     padding-left: 10px !important;
 }
 
+.highlightedPost {
+    color: red;
+}
+
 
 .messageDate {
     padding-right: 0.5em;

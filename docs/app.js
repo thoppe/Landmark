@@ -220,14 +220,22 @@ function setMessageDate(result, n) {
 	.attr("title",datetime)
 	.text(datetime);
 
-    // Set the permalink icon
+    // Set the permalink icon and link
     let icon = $('<a><i class="fa fa-link" aria-hidden="true"></i></a></span>');
     let loc = new URI($(location).attr('href'));
     loc.removeSearch("postNumber").addSearch("postNumber", n);
 
     icon.attr("href", loc);
     post.find(".messagePermalink").append(icon);
+
+    // Check if the current post is the permalink
+    let URIpostNumber = getURI("postNumber");
+    if(URIpostNumber != null && URIpostNumber == n) {
+	console.log("HERE", n);
+	post.addClass("highlightedPost");
+    }
     
+
     
 }
 
@@ -514,7 +522,7 @@ App = {
 	
 	setMessageContents(App.messages[i].msg, i);
 	setMessageAddress(App.messages[i].adr, i);
-	setMessageDate(App.messages[i].date, i);	
+	setMessageDate(App.messages[i].date, i);
     },
 
     loadAllPosts: async function () {
