@@ -35,8 +35,15 @@ const updateInterval = 1500;
 
 // Please don't steal this key! Get your own at https://infura.io/
 var provider_URLS = {
-    1: 'https://mainnet.infura.io/rk62RV4O5kpptwlDiV69',
-    3: 'https://ropsten.infura.io/rk62RV4O5kpptwlDiV69',
+
+    // Updated v3 API keys, keyed to thoppe.github.io*
+    // See account on infura.io
+    1: 'https://mainnet.infura.io/v3/520f1fa015604187bcef2f7ba922a49e',
+    3: 'https://ropsten.infura.io/v3/520f1fa015604187bcef2f7ba922a49e',    
+    
+    // Older API keys
+    //1: 'https://mainnet.infura.io/rk62RV4O5kpptwlDiV69',
+    //3: 'https://ropsten.infura.io/rk62RV4O5kpptwlDiV69',
 };
 
 
